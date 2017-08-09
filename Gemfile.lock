@@ -1,0 +1,43 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.5.1)
+      public_suffix (~> 2.0, >= 2.0.2)
+    domain_name (0.5.20170404)
+      unf (>= 0.0.5, < 1.0.0)
+    httmultiparty (0.3.16)
+      httparty (>= 0.7.3)
+      mimemagic
+      multipart-post
+    http (2.2.2)
+      addressable (~> 2.3)
+      http-cookie (~> 1.0)
+      http-form_data (~> 1.0.1)
+      http_parser.rb (~> 0.6.0)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
+    http-form_data (1.0.3)
+    http_parser.rb (0.6.0)
+    httparty (0.15.6)
+      multi_xml (>= 0.5.2)
+    mimemagic (0.3.2)
+    multi_xml (0.6.0)
+    multipart-post (2.0.0)
+    public_suffix (2.0.5)
+    rake (12.0.0)
+    sentry-api (0.3.3)
+      httmultiparty (~> 0.3.16)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.4)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  http
+  rake
+  sentry-api
+
+BUNDLED WITH
+   1.15.1
