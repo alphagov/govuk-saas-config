@@ -2,6 +2,10 @@
 
 Collection of scripts to configure Software as a Service applications we use.
 
-## Sentry
+## [Sentry](/sentry)
 
 Tool to create and manage lots of applications in Sentry
+
+## [GitHub](/github)
+
+Tool to make sure all GOV.UK repos have the same settings and webhooks.
