@@ -6,6 +6,11 @@ namespace :github do
     ConfigureRepos.new.configure!
   end
 
+  desc "List repos that the task will configure"
+  task :list_repos do
+    ConfigureRepos.new.list_repos
+  end
+
   desc "Remove old webhooks"
   task :remove_old_webhooks do
     HOOKS_TO_DELETE = %w[

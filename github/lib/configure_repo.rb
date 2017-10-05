@@ -12,6 +12,8 @@ class ConfigureRepo
     protect_branch
     update_webhooks
     puts "√ #{repo}"
+  rescue Octokit::NotFound => e
+    puts "Could not find #{repo}. Possibly the govuk-ci user doesn't have admin access to this repo."
   end
 
 private

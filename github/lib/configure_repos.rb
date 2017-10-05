@@ -10,6 +10,10 @@ class ConfigureRepos
     end
   end
 
+  def list_repos
+    puts repos.to_yaml
+  end
+
 private
 
   def repos
@@ -17,6 +21,7 @@ private
       .org_repos("alphagov", accept: "application/vnd.github.mercy-preview+json")
       .select { |repo| repo.topics.to_a.include?("govuk") }
       .map(&:full_name)
+      .sort
   end
 
   def client
