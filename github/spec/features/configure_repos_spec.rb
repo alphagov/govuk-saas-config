@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../spec_helper'
 require_relative '../../lib/configure_repos'
 
 RSpec.describe ConfigureRepos do
