@@ -18,7 +18,7 @@ RSpec.describe ConfigureRepos do
 
   def given_theres_a_repo
     stub_request(:get, "https://api.github.com/orgs/alphagov/repos?per_page=100").
-      to_return(headers: { content_type: 'application/json' }, body: [ { full_name: 'alphagov/publishing-api', topics: ["govuk"] } ].to_json)
+      to_return(headers: { content_type: 'application/json' }, body: [ { full_name: 'alphagov/publishing-api', topics: ["govuk"] }, { full_name: 'alphagov/ignored-for-test', topics: ["govuk"] } ].to_json)
 
     stub_request(:get, "https://api.github.com/repos/alphagov/publishing-api/hooks?per_page=100").
       to_return(body: [].to_json, headers: { content_type: 'application/json' })

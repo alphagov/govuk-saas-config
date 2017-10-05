@@ -20,8 +20,13 @@ private
     client
       .org_repos("alphagov", accept: "application/vnd.github.mercy-preview+json")
       .select { |repo| repo.topics.to_a.include?("govuk") }
+      .reject { |repo| ignored_repos.include?(repo.full_name) }
       .map(&:full_name)
       .sort
+  end
+
+  def ignored_repos
+    @ignored_repos ||= YAML.load_file("#{__dir__}/../ignored_repos.yml")
   end
 
   def client

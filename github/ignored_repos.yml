@@ -1,0 +1,8 @@
+# Repos that should not be auto-configured
+
+# We have a process that force-pushes to this repo, which doesn't work
+# with branch protection enabled.
+- alphagov/transition-stats
+
+# Ignored for the specs
+- alphagov/ignored-for-test
