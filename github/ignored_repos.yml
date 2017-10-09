@@ -9,3 +9,6 @@
 
 # Ignored for the specs
 - alphagov/ignored-for-test
+
+# We don't have CI for Smokey
+- alphagov/smokey
