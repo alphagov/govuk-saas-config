@@ -4,5 +4,8 @@
 # with branch protection enabled.
 - alphagov/transition-stats
 
+# We shouldn't enable CI for RFCs
+- alphagov/govuk-rfcs
+
 # Ignored for the specs
 - alphagov/ignored-for-test
