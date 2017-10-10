@@ -33,10 +33,7 @@ private
       "master",
       {
         enforce_admins: true,
-        required_status_checks: {
-          strict: false, # "Require branches to be up to date before merging"
-          contexts: ["continuous-integration/jenkins/branch"]
-        },
+        required_status_checks: required_status_checks,
         required_pull_request_reviews: {
           dismiss_stale_reviews: false,
         }
@@ -64,5 +61,21 @@ private
         }
       )
     end
+  end
+
+  def required_status_checks
+    if jenkinsfile_exists?
+      {
+        strict: false, # "Require branches to be up to date before merging"
+        contexts: ["continuous-integration/jenkins/branch"]
+      }
+    end
+  end
+
+  def jenkinsfile_exists?
+    client.contents(repo, path: "Jenkinsfile")
+    true
+  rescue Octokit::NotFound
+    false
   end
 end

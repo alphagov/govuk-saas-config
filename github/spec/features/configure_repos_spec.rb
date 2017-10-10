@@ -4,9 +4,21 @@ require_relative '../../lib/configure_repos'
 RSpec.describe ConfigureRepos do
   it "Updates a repo" do
     given_theres_a_repo
+    and_the_repo_has_a_jenkinsfile
     when_the_script_runs
     the_repo_is_updated_with_correct_settings
     the_repo_has_branch_protection_activated
+    the_repo_has_ci_enabled
+    the_repo_has_webhooks_configured
+  end
+
+  it "Doesn't set up CI if there is no Jenkinsfile" do
+    given_theres_a_repo
+    and_the_repo_does_not_have_a_jenkinsfile
+    when_the_script_runs
+    the_repo_is_updated_with_correct_settings
+    the_repo_has_branch_protection_activated
+    the_repo_has_ci_disabled
     the_repo_has_webhooks_configured
   end
 
@@ -28,6 +40,16 @@ RSpec.describe ConfigureRepos do
     @hook_creation = stub_request(:post, "https://api.github.com/repos/alphagov/publishing-api/hooks").to_return(body: {}.to_json)
   end
 
+  def and_the_repo_has_a_jenkinsfile
+    stub_request(:get, "https://api.github.com/repos/alphagov/publishing-api/contents/Jenkinsfile").
+      to_return(status: 200)
+  end
+
+  def and_the_repo_does_not_have_a_jenkinsfile
+    stub_request(:get, "https://api.github.com/repos/alphagov/publishing-api/contents/Jenkinsfile").
+      to_return(status: 404)
+  end
+
   def and_the_repo_has_a_github_trello_webhook_already
     payload = [
       { config: { url: "https://github-trello-poster.cloudapps.digital/payload" }}
@@ -47,6 +69,27 @@ RSpec.describe ConfigureRepos do
 
   def the_repo_has_branch_protection_activated
     expect(@branch_protection_update).to have_been_requested
+  end
+
+  def the_repo_has_ci_enabled
+    payload = {
+      required_status_checks: {
+        strict: false,
+        contexts: ["continuous-integration/jenkins/branch"]
+      }
+    }
+
+    expect(WebMock).to have_requested(:put, "https://api.github.com/repos/alphagov/publishing-api/branches/master/protection").
+      with(body: hash_including(payload))
+  end
+
+  def the_repo_has_ci_disabled
+    payload = {
+      required_status_checks: nil
+    }
+
+    expect(WebMock).to have_requested(:put, "https://api.github.com/repos/alphagov/publishing-api/branches/master/protection").
+      with(body: hash_including(payload))
   end
 
   def the_repo_has_webhooks_configured
