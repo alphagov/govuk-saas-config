@@ -72,10 +72,15 @@ private
     end
   end
 
+  def jenkinsfile
+    @jenkinsfile ||= begin
+      client.contents(repo, path: "Jenkinsfile")
+    rescue Octokit::NotFound
+      nil
+    end
+  end
+
   def jenkinsfile_exists?
-    client.contents(repo, path: "Jenkinsfile")
-    true
-  rescue Octokit::NotFound
-    false
+    !jenkinsfile.nil?
   end
 end
