@@ -21,6 +21,7 @@ private
       .org_repos("alphagov", accept: "application/vnd.github.mercy-preview+json")
       .select { |repo| repo.topics.to_a.include?("govuk") }
       .reject { |repo| ignored_repos.include?(repo.full_name) }
+      .reject { |repo| repo.archived }
       .map(&:full_name)
       .sort
   end
