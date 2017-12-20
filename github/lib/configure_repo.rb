@@ -67,15 +67,35 @@ private
     if jenkinsfile_exists?
       {
         strict: false, # "Require branches to be up to date before merging"
-        contexts: ["continuous-integration/jenkins/branch"]
+        contexts: [
+          "continuous-integration/jenkins/branch",
+          jenkinsfile_runs_e2e_tests? ? "continuous-integration/jenkins/publishing-e2e-tests" : nil,
+        ].compact
       }
     end
   end
 
+  def jenkinsfile
+    @jenkinsfile ||= begin
+      client.contents(repo, path: "Jenkinsfile")
+    rescue Octokit::NotFound
+      nil
+    end
+  end
+
   def jenkinsfile_exists?
-    client.contents(repo, path: "Jenkinsfile")
-    true
-  rescue Octokit::NotFound
-    false
+    !jenkinsfile.nil?
+  end
+
+  def jenkinsfile_content
+    return nil unless jenkinsfile_exists?
+    raise "Unknown encoding" unless jenkinsfile.encoding == "base64"
+    Base64.decode64(jenkinsfile.content)
+  end
+
+  def jenkinsfile_runs_e2e_tests?
+    return false unless jenkinsfile_exists?
+
+    /publishingE2ETests\:\s*true/.match(jenkinsfile_content)
   end
 end

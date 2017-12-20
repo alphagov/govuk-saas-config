@@ -20,6 +20,16 @@ RSpec.describe ConfigureRepos do
     the_repo_is_not_updated
   end
 
+  it "Updates a repo with e2e tests" do
+    given_theres_a_repo
+    and_the_repo_has_a_jenkinsfile(with_e2e_tests: true)
+    when_the_script_runs
+    the_repo_is_updated_with_correct_settings
+    the_repo_has_branch_protection_activated
+    the_repo_has_ci_enabled(with_e2e_tests: true)
+    the_repo_has_webhooks_configured
+  end
+
   it "Doesn't set up CI if there is no Jenkinsfile" do
     given_theres_a_repo
     and_the_repo_does_not_have_a_jenkinsfile
@@ -48,9 +58,15 @@ RSpec.describe ConfigureRepos do
     @hook_creation = stub_request(:post, "https://api.github.com/repos/alphagov/publishing-api/hooks").to_return(body: {}.to_json, status: archived ? 403 : 200)
   end
 
-  def and_the_repo_has_a_jenkinsfile
+  def and_the_repo_has_a_jenkinsfile(with_e2e_tests: false)
+    payload = {
+      name: "Jenkinsfile",
+      content: Base64.encode64(with_e2e_tests ? "node { govuk.buildProject(publishingE2ETests: true) }" : ""),
+      encoding: "base64",
+    }
+
     stub_request(:get, "https://api.github.com/repos/alphagov/publishing-api/contents/Jenkinsfile").
-      to_return(status: 200)
+      to_return(body: payload.to_json, headers: { content_type: "application/json" }, status: 200)
   end
 
   def and_the_repo_does_not_have_a_jenkinsfile
@@ -84,11 +100,14 @@ RSpec.describe ConfigureRepos do
     expect(@branch_protection_update).to have_been_requested
   end
 
-  def the_repo_has_ci_enabled
+  def the_repo_has_ci_enabled(with_e2e_tests: false)
     payload = {
       required_status_checks: {
         strict: false,
-        contexts: ["continuous-integration/jenkins/branch"]
+        contexts: [
+          "continuous-integration/jenkins/branch",
+          with_e2e_tests ? "continuous-integration/jenkins/publishing-e2e-tests" : nil,
+        ].compact
       }
     }
 
