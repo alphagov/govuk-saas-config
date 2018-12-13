@@ -44,6 +44,7 @@ private
   def update_webhooks
     existing_webhooks = client.hooks(repo)
 
+    # GitHub Trello Poster
     if existing_webhooks.map(&:config).map(&:url).include?("https://github-trello-poster.cloudapps.digital/payload")
       puts "√ GitHub Trello Poster webhook exists"
     else
@@ -60,6 +61,27 @@ private
           active: true,
         }
       )
+    end
+
+    # Jenkins CI
+    if jenkinsfile_exists?
+      if existing_webhooks.map(&:config).map(&:url).include?("https://ci.integration.publishing.service.gov.uk/github-webhook/")
+        puts "√ Jenkins CI webhook exists"
+      else
+        puts "Creating Jenkins CI webhook"
+        client.create_hook(
+          repo,
+          "web",
+          {
+            url: "https://ci.integration.publishing.service.gov.uk/github-webhook/",
+            content_type: "json",
+          },
+          {
+            events: ["push"],
+            active: true,
+          }
+        )
+      end
     end
   end
 

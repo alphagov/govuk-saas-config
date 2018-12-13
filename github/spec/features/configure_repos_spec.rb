@@ -37,12 +37,12 @@ RSpec.describe ConfigureRepos do
     the_repo_is_updated_with_correct_settings
     the_repo_has_branch_protection_activated
     the_repo_has_ci_disabled
-    the_repo_has_webhooks_configured
+    the_repo_has_webhooks_configured(number_of_webhooks: 1)
   end
 
   it "Only creates a webhook when missing" do
     given_theres_a_repo
-    and_the_repo_has_a_github_trello_webhook_already
+    and_the_repo_already_has_webhooks
     then_no_webhooks_are_changed
   end
 
@@ -74,9 +74,10 @@ RSpec.describe ConfigureRepos do
       to_return(status: 404)
   end
 
-  def and_the_repo_has_a_github_trello_webhook_already
+  def and_the_repo_already_has_webhooks
     payload = [
-      { config: { url: "https://github-trello-poster.cloudapps.digital/payload" }}
+      { config: { url: "https://github-trello-poster.cloudapps.digital/payload" }},
+      { config: { url: "https://ci.integration.publishing.service.gov.uk/github-webhook/" }}
     ]
 
     stub_request(:get, "https://api.github.com/repos/alphagov/publishing-api/hooks?per_page=100").
@@ -124,8 +125,8 @@ RSpec.describe ConfigureRepos do
       with(body: hash_including(payload))
   end
 
-  def the_repo_has_webhooks_configured
-    expect(@hook_creation).to have_been_requested
+  def the_repo_has_webhooks_configured(number_of_webhooks: 2)
+    expect(@hook_creation).to have_been_requested.times(number_of_webhooks)
   end
 
   def then_no_webhooks_are_changed
