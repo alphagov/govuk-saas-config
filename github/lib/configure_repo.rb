@@ -35,7 +35,7 @@ private
         enforce_admins: true,
         required_status_checks: required_status_checks,
         required_pull_request_reviews: {
-          dismiss_stale_reviews: false,
+          dismiss_stale_reviews: true,
         }
       }
     )
