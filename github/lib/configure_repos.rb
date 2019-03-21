@@ -6,7 +6,7 @@ require_relative "./configure_repo"
 class ConfigureRepos
   def configure!
     repos.each do |repo|
-      ConfigureRepo.new(repo, client).configure!
+      ConfigureRepo.new(repo, client, repo_overrides[repo]).configure!
     end
   end
 
@@ -28,6 +28,10 @@ private
 
   def ignored_repos
     @ignored_repos ||= YAML.load_file("#{__dir__}/../ignored_repos.yml")
+  end
+
+  def repo_overrides
+    @repo_overrides ||= YAML.load_file("#{__dir__}/../repo_overrides.yml")
   end
 
   def client

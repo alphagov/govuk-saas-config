@@ -1,9 +1,10 @@
 class ConfigureRepo
   attr_reader :repo, :client
 
-  def initialize(repo, client)
+  def initialize(repo, client, overrides = nil)
     @repo = repo
     @client = client
+    @overrides = overrides || {}
   end
 
   def configure!
@@ -18,11 +19,13 @@ class ConfigureRepo
 
 private
 
+  attr_reader :overrides
+
   def update_repo_settings
     client.edit_repository(
       repo,
       allow_merge_commit: true,
-      allow_squash_merge: false,
+      allow_squash_merge: overrides.fetch("allow_squash_merge", false),
       allow_rebase_merge: false,
     )
   end
