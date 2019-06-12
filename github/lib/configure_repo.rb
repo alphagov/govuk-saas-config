@@ -94,7 +94,7 @@ private
         strict: false, # "Require branches to be up to date before merging"
         contexts: [
           "continuous-integration/jenkins/branch",
-          jenkinsfile_runs_e2e_tests? ? "continuous-integration/jenkins/publishing-e2e-tests" : nil,
+          #jenkinsfile_runs_e2e_tests? ? "continuous-integration/jenkins/publishing-e2e-tests" : nil, # Temporarily disable e2e tests
         ].compact
       }
     end
