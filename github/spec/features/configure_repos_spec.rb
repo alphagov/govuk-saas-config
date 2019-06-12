@@ -27,15 +27,15 @@ RSpec.describe ConfigureRepos do
     the_repo_is_not_updated
   end
 
-  it "Updates a repo with e2e tests" do
-    given_theres_a_repo
-    and_the_repo_has_a_jenkinsfile(with_e2e_tests: true)
-    when_the_script_runs
-    the_repo_is_updated_with_correct_settings
-    the_repo_has_branch_protection_activated
-    the_repo_has_ci_enabled(with_e2e_tests: true)
-    the_repo_has_webhooks_configured
-  end
+  #it "Updates a repo with e2e tests" do
+  #  given_theres_a_repo
+  #  and_the_repo_has_a_jenkinsfile(with_e2e_tests: true)
+  #  when_the_script_runs
+  #  the_repo_is_updated_with_correct_settings
+  #  the_repo_has_branch_protection_activated
+  #  the_repo_has_ci_enabled(with_e2e_tests: true)
+  #  the_repo_has_webhooks_configured
+  #end
 
   it "Doesn't set up CI if there is no Jenkinsfile" do
     given_theres_a_repo
