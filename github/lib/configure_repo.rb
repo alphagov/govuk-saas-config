@@ -95,6 +95,9 @@ private
         contexts: [
           "continuous-integration/jenkins/branch",
           jenkinsfile_runs_e2e_tests? ? "continuous-integration/jenkins/publishing-e2e-tests" : nil,
+          *overrides
+             .fetch("required_status_checks", {})
+             .fetch("additional_contexts", [])
         ].compact
       }
     end
