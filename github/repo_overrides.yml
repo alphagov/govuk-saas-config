@@ -1,2 +1,36 @@
 alphagov/smartanswers:
   allow_squash_merge: true
+
+alphagov/govuk-content-schemas:
+  required_status_checks:
+    additional_contexts:
+      - continuous-integration/jenkins/calculators
+      - continuous-integration/jenkins/calendars
+      - continuous-integration/jenkins/collections
+      - continuous-integration/jenkins/collections-publisher
+      - continuous-integration/jenkins/contacts
+      - continuous-integration/jenkins/content-data-api
+      - continuous-integration/jenkins/content-store
+      - continuous-integration/jenkins/content-tagger
+      - continuous-integration/jenkins/email-alert-frontend
+      - continuous-integration/jenkins/email-alert-service
+      - continuous-integration/jenkins/feedback
+      - continuous-integration/jenkins/finder-frontend
+      - continuous-integration/jenkins/frontend
+      - continuous-integration/jenkins/government-frontend
+      - continuous-integration/jenkins/hmrc-manuals-api
+      - continuous-integration/jenkins/info-frontend
+      - continuous-integration/jenkins/licencefinder
+      - continuous-integration/jenkins/manuals-frontend
+      - continuous-integration/jenkins/manuals-publisher
+      - continuous-integration/jenkins/publisher
+      - continuous-integration/jenkins/publishing-api
+      - continuous-integration/jenkins/rummager
+      - continuous-integration/jenkins/search-admin
+      - continuous-integration/jenkins/service-manual-frontend
+      - continuous-integration/jenkins/service-manual-publisher
+      - continuous-integration/jenkins/short-url-manager
+      - continuous-integration/jenkins/smartanswers
+      - continuous-integration/jenkins/specialist-publisher
+      - continuous-integration/jenkins/static
+      - continuous-integration/jenkins/whitehall
