@@ -25,7 +25,7 @@ alphagov/govuk-content-schemas:
       - continuous-integration/jenkins/manuals-publisher
       - continuous-integration/jenkins/publisher
       - continuous-integration/jenkins/publishing-api
-      - continuous-integration/jenkins/rummager
+      - continuous-integration/jenkins/search-api
       - continuous-integration/jenkins/search-admin
       - continuous-integration/jenkins/service-manual-frontend
       - continuous-integration/jenkins/service-manual-publisher
