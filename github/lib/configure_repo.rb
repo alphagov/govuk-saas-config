@@ -27,6 +27,7 @@ private
       allow_merge_commit: true,
       allow_squash_merge: overrides.fetch("allow_squash_merge", false),
       allow_rebase_merge: false,
+      delete_branch_on_merge: true,
     )
   end
 

@@ -66,6 +66,7 @@ RSpec.describe ConfigureRepos do
           allow_merge_commit: true,
           allow_squash_merge: allow_squash_merge,
           allow_rebase_merge: false,
+          delete_branch_on_merge: true,
           name: full_name.split('/').last,
         }.to_json
       )
