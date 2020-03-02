@@ -24,7 +24,7 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     public_suffix (2.0.5)
-    rake (12.0.0)
+    rake (12.3.3)
     sentry-api (0.3.3)
       httmultiparty (~> 0.3.16)
     unf (0.1.4)
