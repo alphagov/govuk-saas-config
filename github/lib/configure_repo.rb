@@ -95,7 +95,6 @@ private
         strict: false, # "Require branches to be up to date before merging"
         contexts: [
           "continuous-integration/jenkins/branch",
-          jenkinsfile_runs_e2e_tests? ? "continuous-integration/jenkins/publishing-e2e-tests" : nil,
           *overrides
              .fetch("required_status_checks", {})
              .fetch("additional_contexts", [])
