@@ -2,55 +2,84 @@ require_relative '../spec_helper'
 require_relative '../../lib/configure_repos'
 
 RSpec.describe ConfigureRepos do
-  it "Updates a repo" do
-    given_theres_a_repo
-    and_the_repo_has_a_jenkinsfile
-    when_the_script_runs
-    the_repo_is_updated_with_correct_settings
-    the_repo_has_branch_protection_activated
-    the_repo_has_ci_enabled
-    the_repo_has_webhooks_configured
+  context "when a repo uses Jenkins for CI" do
+    it "Updates a repo" do
+      given_theres_a_repo
+      and_the_repo_has_a_jenkinsfile
+      when_the_script_runs
+      the_repo_is_updated_with_correct_settings
+      the_repo_has_branch_protection_activated
+      the_repo_has_ci_enabled
+      the_repo_has_webhooks_configured
+    end
+
+    it "Updates an overridden repo" do
+      given_theres_a_repo(full_name: "alphagov/smartanswers", allow_squash_merge: true)
+      and_the_repo_has_a_jenkinsfile(full_name: "alphagov/smartanswers")
+      when_the_script_runs
+      the_repo_is_updated_with_correct_settings
+    end
+
+    it "Doesn't update a repo if it's archived" do
+      given_theres_a_repo(archived: true)
+      and_the_repo_has_a_jenkinsfile
+      when_the_script_runs
+      then_no_webhooks_are_changed
+      the_repo_is_not_updated
+    end
+
+    it "Updates a repo with e2e tests" do
+      given_theres_a_repo
+      and_the_repo_has_a_jenkinsfile(with_e2e_tests: true)
+      when_the_script_runs
+      the_repo_is_updated_with_correct_settings
+      the_repo_has_branch_protection_activated
+      the_repo_has_ci_enabled(with_e2e_tests: true)
+      the_repo_has_webhooks_configured
+    end
   end
 
-  it "Updates an overridden repo" do
-    given_theres_a_repo(full_name: "alphagov/smartanswers", allow_squash_merge: true)
-    and_the_repo_has_a_jenkinsfile(full_name: "alphagov/smartanswers")
-    when_the_script_runs
-    the_repo_is_updated_with_correct_settings
+  context "when a repo uses GitHub Actions for CI" do
+    it "Updates a repo" do
+      given_theres_a_repo(full_name: "alphagov/rubocop-govuk")
+      and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/rubocop-govuk")
+      and_the_repo_uses_github_actions(full_name: "alphagov/rubocop-govuk")
+      when_the_script_runs
+      the_repo_is_updated_with_correct_settings
+      the_repo_has_branch_protection_activated
+      the_repo_has_ci_enabled(full_name: "alphagov/rubocop-govuk", provider: "github_actions")
+      the_repo_has_webhooks_configured(number_of_webhooks: 1)
+    end
+
+    it "Updates an overridden repo" do
+      given_theres_a_repo(full_name: "alphagov/govuk-coronavirus-content", allow_squash_merge: true)
+      and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/govuk-coronavirus-content")
+      and_the_repo_uses_github_actions(full_name: "alphagov/govuk-coronavirus-content")
+      when_the_script_runs
+      the_repo_is_updated_with_correct_settings
+    end
   end
 
-  it "Doesn't update a repo if it's archived" do
-    given_theres_a_repo(archived: true)
-    and_the_repo_has_a_jenkinsfile
-    when_the_script_runs
-    then_no_webhooks_are_changed
-    the_repo_is_not_updated
+  context "when there are no supported CI provider config files" do
+    it "doesn't set up CI if there is no Jenkinsfile or GitHub Actions config" do
+      given_theres_a_repo
+      and_the_repo_does_not_have_a_jenkinsfile
+      and_the_repo_does_not_use_github_actions
+      when_the_script_runs
+      the_repo_is_updated_with_correct_settings
+      the_repo_has_branch_protection_activated
+      the_repo_has_ci_disabled
+      the_repo_has_webhooks_configured(number_of_webhooks: 1)
+    end
   end
 
-  it "Updates a repo with e2e tests" do
-    given_theres_a_repo
-    and_the_repo_has_a_jenkinsfile(with_e2e_tests: true)
-    when_the_script_runs
-    the_repo_is_updated_with_correct_settings
-    the_repo_has_branch_protection_activated
-    the_repo_has_ci_enabled(with_e2e_tests: true)
-    the_repo_has_webhooks_configured
-  end
 
-  it "Doesn't set up CI if there is no Jenkinsfile" do
-    given_theres_a_repo
-    and_the_repo_does_not_have_a_jenkinsfile
-    when_the_script_runs
-    the_repo_is_updated_with_correct_settings
-    the_repo_has_branch_protection_activated
-    the_repo_has_ci_disabled
-    the_repo_has_webhooks_configured(number_of_webhooks: 1)
-  end
-
-  it "Only creates a webhook when missing" do
-    given_theres_a_repo
-    and_the_repo_already_has_webhooks
-    then_no_webhooks_are_changed
+  describe "webhooks" do
+    it "Only creates a webhook when missing" do
+      given_theres_a_repo
+      and_the_repo_already_has_webhooks
+      then_no_webhooks_are_changed
+    end
   end
 
   def given_theres_a_repo(archived: false, full_name: "alphagov/publishing-api", allow_squash_merge: false)
@@ -87,8 +116,22 @@ RSpec.describe ConfigureRepos do
       to_return(body: payload.to_json, headers: { content_type: "application/json" }, status: 200)
   end
 
-  def and_the_repo_does_not_have_a_jenkinsfile
-    stub_request(:get, "https://api.github.com/repos/alphagov/publishing-api/contents/Jenkinsfile").
+  def and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/publishing-api")
+    stub_request(:get, "https://api.github.com/repos/#{full_name}/contents/Jenkinsfile").
+      to_return(status: 404)
+  end
+
+  def and_the_repo_uses_github_actions(full_name: "alphagov/govuk-coronavirus-content")
+    payload = {
+      path: ".github/workflows/ci.yml",
+    }
+
+    stub_request(:get, "https://api.github.com/repos/#{full_name}/contents/.github/workflows/ci.yml").
+      to_return(body: payload.to_json, headers: { content_type: "application/json" }, status: 200)
+  end
+
+  def and_the_repo_does_not_use_github_actions
+    stub_request(:get, "https://api.github.com/repos/alphagov/publishing-api/contents/.github/workflows/ci.yml").
       to_return(status: 404)
   end
 
@@ -119,27 +162,28 @@ RSpec.describe ConfigureRepos do
     expect(@branch_protection_update).to have_been_requested
   end
 
-  def the_repo_has_ci_enabled(with_e2e_tests: false)
+  def the_repo_has_ci_enabled(full_name: "alphagov/publishing-api", provider: "jenkins", with_e2e_tests: false)
     payload = {
       required_status_checks: {
         strict: false,
         contexts: [
-          "continuous-integration/jenkins/branch",
+          provider == "jenkins" ? "continuous-integration/jenkins/branch" : nil,
+          provider == "github_actions" ? "test" : nil,
           with_e2e_tests ? "continuous-integration/jenkins/publishing-e2e-tests" : nil,
         ].compact
       }
     }
 
-    expect(WebMock).to have_requested(:put, "https://api.github.com/repos/alphagov/publishing-api/branches/master/protection").
+    expect(WebMock).to have_requested(:put, "https://api.github.com/repos/#{full_name}/branches/master/protection").
       with(body: hash_including(payload))
   end
 
-  def the_repo_has_ci_disabled
+  def the_repo_has_ci_disabled(full_name: "alphagov/publishing-api")
     payload = {
       required_status_checks: nil
     }
 
-    expect(WebMock).to have_requested(:put, "https://api.github.com/repos/alphagov/publishing-api/branches/master/protection").
+    expect(WebMock).to have_requested(:put, "https://api.github.com/repos/#{full_name}/branches/master/protection").
       with(body: hash_including(payload))
   end
 

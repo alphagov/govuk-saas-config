@@ -101,6 +101,16 @@ private
              .fetch("additional_contexts", [])
         ].compact
       }
+    elsif github_actions_exists?
+      {
+        strict: false, # "Require branches to be up to date before merging"
+        contexts: [
+          "test",
+          *overrides
+             .fetch("required_status_checks", {})
+             .fetch("additional_contexts", [])
+        ].compact
+      }
     end
   end
 
@@ -126,5 +136,17 @@ private
     return false unless jenkinsfile_exists?
 
     /publishingE2ETests\:\s*true/.match(jenkinsfile_content)
+  end
+
+  def github_actions
+    @github_actions ||= begin
+      client.contents(repo, path: ".github/workflows/ci.yml")
+    rescue Octokit::NotFound
+      nil
+    end
+  end
+
+  def github_actions_exists?
+    !github_actions.nil?
   end
 end
