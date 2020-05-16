@@ -51,11 +51,21 @@ RSpec.describe ConfigureRepos do
       the_repo_has_webhooks_configured(number_of_webhooks: 1)
     end
 
-    it "Updates an overridden repo" do
+    it "Updates a squash merge overridden repo" do
       given_theres_a_repo(full_name: "alphagov/govuk-coronavirus-content", allow_squash_merge: true)
       and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/govuk-coronavirus-content")
       and_the_repo_uses_github_actions(full_name: "alphagov/govuk-coronavirus-content")
       when_the_script_runs
+      the_repo_is_updated_with_correct_settings
+    end
+
+    it "Updates a strict status checks overriden repo" do
+      given_theres_a_repo(full_name: "alphagov/govuk-coronavirus-vulnerable-people-form")
+      and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/govuk-coronavirus-vulnerable-people-form")
+      and_the_repo_uses_github_actions(full_name: "alphagov/govuk-coronavirus-vulnerable-people-form")
+      when_the_script_runs
+      the_repo_has_ci_enabled(full_name: "alphagov/govuk-coronavirus-vulnerable-people-form", provider: "github_actions", up_to_date_branches: true)
+      the_repo_has_branch_protection_activated
       the_repo_is_updated_with_correct_settings
     end
   end
@@ -162,10 +172,10 @@ RSpec.describe ConfigureRepos do
     expect(@branch_protection_update).to have_been_requested
   end
 
-  def the_repo_has_ci_enabled(full_name: "alphagov/publishing-api", provider: "jenkins", with_e2e_tests: false)
+  def the_repo_has_ci_enabled(full_name: "alphagov/publishing-api", provider: "jenkins", with_e2e_tests: false, up_to_date_branches: false)
     payload = {
       required_status_checks: {
-        strict: false,
+        strict: up_to_date_branches,
         contexts: [
           provider == "jenkins" ? "continuous-integration/jenkins/branch" : nil,
           provider == "github_actions" ? "test" : nil,

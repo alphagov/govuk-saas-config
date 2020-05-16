@@ -92,7 +92,7 @@ private
   def required_status_checks
     if jenkinsfile_exists?
       {
-        strict: false, # "Require branches to be up to date before merging"
+        strict: overrides.fetch("up_to_date_branches", false),
         contexts: [
           "continuous-integration/jenkins/branch",
           jenkinsfile_runs_e2e_tests? ? "continuous-integration/jenkins/publishing-e2e-tests" : nil,
@@ -103,7 +103,7 @@ private
       }
     elsif github_actions_exists?
       {
-        strict: false, # "Require branches to be up to date before merging"
+        strict: overrides.fetch("up_to_date_branches", false),
         contexts: [
           "test",
           *overrides
