@@ -90,28 +90,19 @@ private
   end
 
   def required_status_checks
-    if jenkinsfile_exists?
-      {
-        strict: overrides.fetch("up_to_date_branches", false),
-        contexts: [
-          "continuous-integration/jenkins/branch",
-          jenkinsfile_runs_e2e_tests? ? "continuous-integration/jenkins/publishing-e2e-tests" : nil,
-          *overrides
-             .fetch("required_status_checks", {})
-             .fetch("additional_contexts", [])
-        ].compact
-      }
-    elsif github_actions_exists?
-      {
-        strict: overrides.fetch("up_to_date_branches", false),
-        contexts: [
-          "test",
-          *overrides
-             .fetch("required_status_checks", {})
-             .fetch("additional_contexts", [])
-        ].compact
-      }
-    end
+    return nil unless jenkinsfile_exists? || github_actions_exists?
+
+    {
+      strict: overrides.fetch("up_to_date_branches", false),
+      contexts: [
+        jenkinsfile_exists? ? "continuous-integration/jenkins/branch" : nil,
+        jenkinsfile_runs_e2e_tests? ? "continuous-integration/jenkins/publishing-e2e-tests" : nil,
+        github_actions_exists? ? "test" : nil,
+        *overrides
+          .fetch("required_status_checks", {})
+          .fetch("additional_contexts", [])
+      ].compact
+    }
   end
 
   def jenkinsfile
