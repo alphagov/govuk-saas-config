@@ -6,12 +6,7 @@ RSpec.describe "aws_logstash.conf" do
   logstash = nil
 
   before :all do
-    config = <<~CONFIG
-    input { stdin { } }
-    output { stdout { } }
-    #{File.read "#{__dir__}/../aws_logstash.conf"}
-    CONFIG
-
+    config = File.read "#{__dir__}/../aws_logstash.conf"
     logstash = Logstash.new config
     logstash.wait_to_start
   end
