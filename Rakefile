@@ -1,7 +1,7 @@
 begin
   require 'rspec/core/rake_task'
   RSpec::Core::RakeTask.new(:spec) do |t|
-    t.pattern = ['github/spec/**/*_spec.rb']
+    t.pattern = ['github/spec/**/*_spec.rb', 'logit/spec/**/*_spec.rb']
   end
 
   task default: :spec
