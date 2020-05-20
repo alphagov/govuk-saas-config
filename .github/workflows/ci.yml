@@ -21,6 +21,6 @@ jobs:
           sudo apt-get update && sudo apt-get install logstash
           echo "::add-path::/usr/share/logstash/bin/"
 
-      - run: echo "$PATH"
       - run: bundle install --jobs 4 --retry 3 --deployment
-      - run: bundle exec rake
+      - run: ruby -e 'load "logit/spec/helpers/logstash_helper.rb"; puts(Logstash.new(File.read("logit/aws_logstash.conf")).wait_to_start.parse_line "banana")'
+      - run: bundle exec rspec --format d logit/spec/aws_logstash_spec.rb

@@ -12,8 +12,10 @@ class Logstash
     output { stdout { } }
     #{config}
     CONFIG
+    puts ENV['PATH']
+    puts prepended_config
     @logstash_stdin, @logstash_stdout, @logstash_stderr, @logstash_process =
-      Open3.popen3 "logstash", "--log.level", "error", "-e", prepended_config
+      Open3.popen3 "/usr/share/logstash/bin/logstash", "--log.level", "error", "-e", prepended_config
   end
 
   def wait_to_start
@@ -24,7 +26,7 @@ class Logstash
       # Write a line to the input and wait for the first chunk of output
       @logstash_stdin.write "ping\n"
       output_messages.first
-      true
+      self
     end
   end
 
@@ -40,12 +42,7 @@ class Logstash
 
   def close
     @logstash_stdin.close
-    status = @logstash_process.value
-
-    puts "logstash stdout:\n#{@logstash_stdout.read}"
-    puts "logstash stderr:\n#{@logstash_stderr.read}"
-
-    status
+    @logstash_process.value
   end
 
   private
