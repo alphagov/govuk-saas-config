@@ -21,5 +21,6 @@ jobs:
           sudo apt-get update && sudo apt-get install logstash
           echo "::add-path::/usr/share/logstash/bin/"
 
+      - run: echo "$PATH"
       - run: bundle install --jobs 4 --retry 3 --deployment
       - run: bundle exec rake
