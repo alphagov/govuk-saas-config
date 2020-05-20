@@ -18,7 +18,8 @@ class Logstash
 
   def wait_to_start
     Timeout::timeout(@start_timeout_secs, nil, "logstash did not start within #{@start_timeout_secs} seconds") do
-      return close unless @logstash_process.alive? or @logstash_stdin.closed?
+      raise "logstash did not start" unless @logstash_process.alive?
+      raise "logstash closed STDIN" if @logstash_stdin.closed?
 
       # Write a line to the input and wait for the first chunk of output
       @logstash_stdin.write "ping\n"
@@ -29,7 +30,8 @@ class Logstash
 
   def parse_line(input)
     Timeout::timeout(@message_timeout_secs, nil, "logstash didn't parse the message within #{@message_timeout_secs} seconds") do
-      return close unless @logstash_process.alive? or @logstash_stdin.closed?
+      raise "logstash is not running" unless @logstash_process.alive?
+      raise "logstash closed STDIN" if @logstash_stdin.closed?
 
       @logstash_stdin.write input + "\n"
       output_messages.first
