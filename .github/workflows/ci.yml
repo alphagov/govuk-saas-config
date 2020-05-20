@@ -11,6 +11,14 @@ jobs:
           key: bundle-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: bundle
 
-      - run: brew install logstash
+      - name: install logstash
+        run: |
+          set -eu
+
+          wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+          sudo apt-get install apt-transport-https
+          echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
+          sudo apt-get update && sudo apt-get install logstash
+
       - run: bundle install --jobs 4 --retry 3 --deployment
       - run: bundle exec rake
