@@ -12,7 +12,7 @@ RSpec.describe "aws_logstash.conf" do
   end
 
   after :all do
-    logstash.close
+    logstash.close unless logstash.nil?
   end
 
   it "should pass through unformatted log messages" do
