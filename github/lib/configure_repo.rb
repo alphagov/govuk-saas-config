@@ -90,18 +90,19 @@ private
   end
 
   def required_status_checks
-    if jenkinsfile_exists?
-      {
-        strict: false, # "Require branches to be up to date before merging"
-        contexts: [
-          "continuous-integration/jenkins/branch",
-          jenkinsfile_runs_e2e_tests? ? "continuous-integration/jenkins/publishing-e2e-tests" : nil,
-          *overrides
-             .fetch("required_status_checks", {})
-             .fetch("additional_contexts", [])
-        ].compact
-      }
-    end
+    return nil unless jenkinsfile_exists? || github_actions_exists?
+
+    {
+      strict: overrides.fetch("up_to_date_branches", false),
+      contexts: [
+        jenkinsfile_exists? ? "continuous-integration/jenkins/branch" : nil,
+        jenkinsfile_runs_e2e_tests? ? "continuous-integration/jenkins/publishing-e2e-tests" : nil,
+        github_actions_exists? ? "test" : nil,
+        *overrides
+          .fetch("required_status_checks", {})
+          .fetch("additional_contexts", [])
+      ].compact
+    }
   end
 
   def jenkinsfile
@@ -126,5 +127,17 @@ private
     return false unless jenkinsfile_exists?
 
     /publishingE2ETests\:\s*true/.match(jenkinsfile_content)
+  end
+
+  def github_actions
+    @github_actions ||= begin
+      client.contents(repo, path: ".github/workflows/ci.yml")
+    rescue Octokit::NotFound
+      nil
+    end
+  end
+
+  def github_actions_exists?
+    !github_actions.nil?
   end
 end
