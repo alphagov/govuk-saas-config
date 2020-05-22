@@ -4,6 +4,9 @@ alphagov/smartanswers:
 alphagov/govuk-coronavirus-content:
   allow_squash_merge: true
 
+alphagov/repo-for-govuk-saas-config-automated-tests:
+  up_to_date_branches: true
+
 alphagov/govuk-content-schemas:
   required_status_checks:
     additional_contexts:
