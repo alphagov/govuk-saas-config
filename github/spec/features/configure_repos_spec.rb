@@ -63,11 +63,11 @@ RSpec.describe ConfigureRepos do
     end
 
     it "Updates a strict status checks overriden repo" do
-      given_theres_a_repo(full_name: "alphagov/govuk-coronavirus-vulnerable-people-form")
-      and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/govuk-coronavirus-vulnerable-people-form")
-      and_the_repo_uses_github_actions(full_name: "alphagov/govuk-coronavirus-vulnerable-people-form")
+      given_theres_a_repo(full_name: "alphagov/repo-for-govuk-saas-config-automated-tests")
+      and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/repo-for-govuk-saas-config-automated-tests")
+      and_the_repo_uses_github_actions(full_name: "alphagov/repo-for-govuk-saas-config-automated-tests")
       when_the_script_runs
-      the_repo_has_ci_enabled(full_name: "alphagov/govuk-coronavirus-vulnerable-people-form", providers: ["github_actions"], up_to_date_branches: true)
+      the_repo_has_ci_enabled(full_name: "alphagov/repo-for-govuk-saas-config-automated-tests", providers: ["github_actions"], up_to_date_branches: true)
       the_repo_has_branch_protection_activated
       the_repo_is_updated_with_correct_settings
     end

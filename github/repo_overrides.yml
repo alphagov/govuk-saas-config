@@ -4,13 +4,7 @@ alphagov/smartanswers:
 alphagov/govuk-coronavirus-content:
   allow_squash_merge: true
 
-alphagov/govuk-coronavirus-vulnerable-people-form:
-  up_to_date_branches: true
-
-alphagov/govuk-coronavirus-business-volunteer-form:
-  up_to_date_branches: true
-
-alphagov/govuk-coronavirus-find-support:
+alphagov/repo-for-govuk-saas-config-automated-tests:
   up_to_date_branches: true
 
 alphagov/govuk-content-schemas:
