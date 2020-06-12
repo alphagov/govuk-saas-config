@@ -1,5 +1,6 @@
 alphagov/smartanswers:
   allow_squash_merge: true
+  need_production_access_to_merge: true
 
 alphagov/govuk-coronavirus-content:
   allow_squash_merge: true

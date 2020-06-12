@@ -15,7 +15,7 @@ RSpec.describe ConfigureRepos do
     end
 
     it "Updates an overridden repo" do
-      given_theres_a_repo(full_name: "alphagov/smartanswers", allow_squash_merge: true)
+      given_theres_a_repo(full_name: "alphagov/smartanswers", allow_squash_merge: true, need_production_access_to_merge: true)
       and_the_repo_has_a_jenkinsfile(full_name: "alphagov/smartanswers")
       and_the_repo_does_not_use_github_actions(full_name: "alphagov/smartanswers")
       when_the_script_runs
@@ -106,7 +106,10 @@ RSpec.describe ConfigureRepos do
     end
   end
 
-  def given_theres_a_repo(archived: false, full_name: "alphagov/publishing-api", allow_squash_merge: false)
+  def given_theres_a_repo(archived: false,
+                          full_name: "alphagov/publishing-api",
+                          allow_squash_merge: false,
+                          need_production_access_to_merge: false)
     stub_request(:get, "https://api.github.com/orgs/alphagov/repos?per_page=100").
       to_return(headers: { content_type: 'application/json' }, body: [ { full_name: full_name, archived: archived, topics: ["govuk"] }, { full_name: 'alphagov/ignored-for-test', topics: ["govuk"] } ].to_json)
 
@@ -114,19 +117,29 @@ RSpec.describe ConfigureRepos do
       to_return(body: [].to_json, headers: { content_type: 'application/json' })
 
     @repo_update = stub_request(:patch, "https://api.github.com/repos/#{full_name}")
-      .with(
-        body: {
-          allow_merge_commit: true,
-          allow_squash_merge: allow_squash_merge,
-          allow_rebase_merge: false,
-          delete_branch_on_merge: true,
-          name: full_name.split('/').last,
-        }.to_json
-      )
+      .with(body: {
+              allow_merge_commit: true,
+              allow_squash_merge: allow_squash_merge,
+              allow_rebase_merge: false,
+              delete_branch_on_merge: true,
+              name: full_name.split('/').last,
+            })
       .to_return(body: {}.to_json, status: archived ? 403 : 200)
 
-    @branch_protection_update = stub_request(:put, "https://api.github.com/repos/#{full_name}/branches/master/protection").to_return(body: {}.to_json, status: archived ? 403 : 200)
-    @hook_creation = stub_request(:post, "https://api.github.com/repos/#{full_name}/hooks").to_return(body: {}.to_json, status: archived ? 403 : 200)
+    @branch_protection_update = stub_request(:put, "https://api.github.com/repos/#{full_name}/branches/master/protection")
+      .with(body: { enforce_admins: true,
+              required_status_checks: hash_including({}),
+              required_pull_request_reviews: {
+                dismiss_stale_reviews: false,
+              },
+              restrictions: need_production_access_to_merge ?
+               { users: [], teams: %w[alphagov/gov-uk-production] } : nil,
+            })
+      .to_return(body: {}.to_json, status: archived ? 403 : 200)
+
+
+    @hook_creation = stub_request(:post, "https://api.github.com/repos/#{full_name}/hooks")
+      .to_return(body: {}.to_json, status: archived ? 403 : 200)
   end
 
   def and_the_repo_has_a_jenkinsfile(with_e2e_tests: false, full_name: "alphagov/publishing-api")
