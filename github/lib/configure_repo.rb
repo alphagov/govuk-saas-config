@@ -32,17 +32,21 @@ private
   end
 
   def protect_branch
-    client.protect_branch(
-      repo,
-      "master",
-      {
-        enforce_admins: true,
-        required_status_checks: required_status_checks,
-        required_pull_request_reviews: {
-          dismiss_stale_reviews: false,
-        }
+    config = {
+      enforce_admins: true,
+      required_status_checks: required_status_checks,
+      required_pull_request_reviews: {
+        dismiss_stale_reviews: false,
       }
-    )
+    }
+
+    if overrides["need_production_access_to_merge"]
+      config.merge!(
+        restrictions: { users: [], teams: %w[alphagov/gov-uk-production] }
+      )
+    end
+
+    client.protect_branch(repo, "master", config)
   end
 
   def update_webhooks
