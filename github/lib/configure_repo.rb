@@ -42,7 +42,7 @@ private
 
     if overrides["need_production_access_to_merge"]
       config.merge!(
-        restrictions: { users: [], teams: %w[alphagov/gov-uk-production] }
+        restrictions: { users: [], teams: %w[gov-uk-production] }
       )
     end
 
