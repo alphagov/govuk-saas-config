@@ -15,9 +15,9 @@ RSpec.describe ConfigureRepos do
     end
 
     it "Updates an overridden repo" do
-      given_theres_a_repo(full_name: "alphagov/smartanswers", allow_squash_merge: true, need_production_access_to_merge: true)
-      and_the_repo_has_a_jenkinsfile(full_name: "alphagov/smartanswers")
-      and_the_repo_does_not_use_github_actions(full_name: "alphagov/smartanswers")
+      given_theres_a_repo(full_name: "alphagov/smart-answers", allow_squash_merge: true, need_production_access_to_merge: true)
+      and_the_repo_has_a_jenkinsfile(full_name: "alphagov/smart-answers")
+      and_the_repo_does_not_use_github_actions(full_name: "alphagov/smart-answers")
       when_the_script_runs
       the_repo_is_updated_with_correct_settings
     end
