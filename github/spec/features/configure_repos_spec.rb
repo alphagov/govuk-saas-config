@@ -107,7 +107,7 @@ RSpec.describe ConfigureRepos do
   end
 
   def given_theres_a_repo(archived: false,
-                          full_name: "alphagov/publishing-api",
+                          full_name: "alphagov/smart-sandwich",
                           allow_squash_merge: false,
                           need_production_access_to_merge: false)
     stub_request(:get, "https://api.github.com/orgs/alphagov/repos?per_page=100").
@@ -142,7 +142,7 @@ RSpec.describe ConfigureRepos do
       .to_return(body: {}.to_json, status: archived ? 403 : 200)
   end
 
-  def and_the_repo_has_a_jenkinsfile(with_e2e_tests: false, full_name: "alphagov/publishing-api")
+  def and_the_repo_has_a_jenkinsfile(with_e2e_tests: false, full_name: "alphagov/smart-sandwich")
     payload = {
       name: "Jenkinsfile",
       content: Base64.encode64(with_e2e_tests ? "node { govuk.buildProject(publishingE2ETests: true) }" : ""),
@@ -153,7 +153,7 @@ RSpec.describe ConfigureRepos do
       to_return(body: payload.to_json, headers: { content_type: "application/json" }, status: 200)
   end
 
-  def and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/publishing-api")
+  def and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/smart-sandwich")
     stub_request(:get, "https://api.github.com/repos/#{full_name}/contents/Jenkinsfile").
       to_return(status: 404)
   end
@@ -165,7 +165,7 @@ RSpec.describe ConfigureRepos do
       to_return(body: payload.to_json, headers: { content_type: "application/json" }, status: 200)
   end
 
-  def and_the_repo_does_not_use_github_actions(full_name: "alphagov/publishing-api")
+  def and_the_repo_does_not_use_github_actions(full_name: "alphagov/smart-sandwich")
     stub_request(:get, "https://api.github.com/repos/#{full_name}/contents/.github/workflows/ci.yml").
       to_return(status: 404)
   end
@@ -176,7 +176,7 @@ RSpec.describe ConfigureRepos do
       { config: { url: "https://ci.integration.publishing.service.gov.uk/github-webhook/" }}
     ]
 
-    stub_request(:get, "https://api.github.com/repos/alphagov/publishing-api/hooks?per_page=100").
+    stub_request(:get, "https://api.github.com/repos/alphagov/smart-sandwich/hooks?per_page=100").
       to_return(body: payload.to_json, headers: { content_type: 'application/json' })
   end
 
@@ -197,7 +197,7 @@ RSpec.describe ConfigureRepos do
     expect(@branch_protection_update).to have_been_requested
   end
 
-  def the_repo_has_ci_enabled(full_name: "alphagov/publishing-api", providers: ["jenkins"], with_e2e_tests: false, up_to_date_branches: false)
+  def the_repo_has_ci_enabled(full_name: "alphagov/smart-sandwich", providers: ["jenkins"], with_e2e_tests: false, up_to_date_branches: false)
     payload = {
       required_status_checks: {
         strict: up_to_date_branches,
@@ -213,7 +213,7 @@ RSpec.describe ConfigureRepos do
       with(body: hash_including(payload))
   end
 
-  def the_repo_has_ci_disabled(full_name: "alphagov/publishing-api")
+  def the_repo_has_ci_disabled(full_name: "alphagov/smart-sandwich")
     payload = {
       required_status_checks: nil
     }
