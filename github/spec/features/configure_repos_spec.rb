@@ -15,9 +15,9 @@ RSpec.describe ConfigureRepos do
     end
 
     it "Updates an overridden repo" do
-      given_theres_a_repo(full_name: "alphagov/smart-answers", allow_squash_merge: true, need_production_access_to_merge: true)
-      and_the_repo_has_a_jenkinsfile(full_name: "alphagov/smart-answers")
-      and_the_repo_does_not_use_github_actions(full_name: "alphagov/smart-answers")
+      given_theres_a_repo(full_name: "alphagov/govuk-puppet", do_not_need_production_access_to_merge: true)
+      and_the_repo_has_a_jenkinsfile(full_name: "alphagov/govuk-puppet")
+      and_the_repo_does_not_use_github_actions(full_name: "alphagov/govuk-puppet")
       when_the_script_runs
       the_repo_is_updated_with_correct_settings
     end
@@ -109,7 +109,7 @@ RSpec.describe ConfigureRepos do
   def given_theres_a_repo(archived: false,
                           full_name: "alphagov/smart-sandwich",
                           allow_squash_merge: false,
-                          need_production_access_to_merge: false)
+                          do_not_need_production_access_to_merge: false)
     stub_request(:get, "https://api.github.com/orgs/alphagov/repos?per_page=100").
       to_return(headers: { content_type: 'application/json' }, body: [ { full_name: full_name, archived: archived, topics: ["govuk"] }, { full_name: 'alphagov/ignored-for-test', topics: ["govuk"] } ].to_json)
 
@@ -127,13 +127,14 @@ RSpec.describe ConfigureRepos do
       .to_return(body: {}.to_json, status: archived ? 403 : 200)
 
     @branch_protection_update = stub_request(:put, "https://api.github.com/repos/#{full_name}/branches/master/protection")
-      .with(body: { enforce_admins: true,
+      .with(body: {
+              enforce_admins: true,
               required_status_checks: hash_including({}),
               required_pull_request_reviews: {
                 dismiss_stale_reviews: false,
               },
-              restrictions: need_production_access_to_merge ?
-               { users: [], teams: %w[gov-uk-production] } : nil,
+              restrictions: do_not_need_production_access_to_merge ?
+               nil : { users: [], teams: %w[gov-uk-production] },
             })
       .to_return(body: {}.to_json, status: archived ? 403 : 200)
 
