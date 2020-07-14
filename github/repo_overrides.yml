@@ -1,3 +1,13 @@
+alphagov/datagovuk_find:
+  required_status_checks:
+    additional_contexts:
+      - continuous-integration/travis-ci
+
+alphagov/datagovuk_publish:
+  required_status_checks:
+    additional_contexts:
+      - continuous-integration/travis-ci
+
 alphagov/smart-answers:
   allow_squash_merge: true
   need_production_access_to_merge: true
