@@ -109,9 +109,10 @@ RSpec.describe ConfigureRepos do
   def given_theres_a_repo(archived: false,
                           full_name: "alphagov/smart-sandwich",
                           allow_squash_merge: false,
-                          need_production_access_to_merge: false)
+                          need_production_access_to_merge: false,
+                          default_branch: "main")
     stub_request(:get, "https://api.github.com/orgs/alphagov/repos?per_page=100").
-      to_return(headers: { content_type: 'application/json' }, body: [ { full_name: full_name, archived: archived, topics: ["govuk"] }, { full_name: 'alphagov/ignored-for-test', topics: ["govuk"] } ].to_json)
+      to_return(headers: { content_type: 'application/json' }, body: [ { full_name: full_name, archived: archived, topics: ["govuk"], default_branch: default_branch }, { full_name: 'alphagov/ignored-for-test', topics: ["govuk"] } ].to_json)
 
     stub_request(:get, "https://api.github.com/repos/#{full_name}/hooks?per_page=100").
       to_return(body: [].to_json, headers: { content_type: 'application/json' })
@@ -126,7 +127,7 @@ RSpec.describe ConfigureRepos do
             })
       .to_return(body: {}.to_json, status: archived ? 403 : 200)
 
-    @branch_protection_update = stub_request(:put, "https://api.github.com/repos/#{full_name}/branches/master/protection")
+    @branch_protection_update = stub_request(:put, "https://api.github.com/repos/#{full_name}/branches/#{default_branch}/protection")
       .with(body: { enforce_admins: true,
               required_status_checks: hash_including({}),
               required_pull_request_reviews: {
@@ -197,7 +198,7 @@ RSpec.describe ConfigureRepos do
     expect(@branch_protection_update).to have_been_requested
   end
 
-  def the_repo_has_ci_enabled(full_name: "alphagov/smart-sandwich", providers: ["jenkins"], with_e2e_tests: false, up_to_date_branches: false)
+  def the_repo_has_ci_enabled(full_name: "alphagov/smart-sandwich", providers: ["jenkins"], with_e2e_tests: false, up_to_date_branches: false, default_branch: "main")
     payload = {
       required_status_checks: {
         strict: up_to_date_branches,
@@ -209,16 +210,16 @@ RSpec.describe ConfigureRepos do
       }
     }
 
-    expect(WebMock).to have_requested(:put, "https://api.github.com/repos/#{full_name}/branches/master/protection").
+    expect(WebMock).to have_requested(:put, "https://api.github.com/repos/#{full_name}/branches/#{default_branch}/protection").
       with(body: hash_including(payload))
   end
 
-  def the_repo_has_ci_disabled(full_name: "alphagov/smart-sandwich")
+  def the_repo_has_ci_disabled(full_name: "alphagov/smart-sandwich", default_branch: "main")
     payload = {
       required_status_checks: nil
     }
 
-    expect(WebMock).to have_requested(:put, "https://api.github.com/repos/#{full_name}/branches/master/protection").
+    expect(WebMock).to have_requested(:put, "https://api.github.com/repos/#{full_name}/branches/#{default_branch}/protection").
       with(body: hash_including(payload))
   end
 
