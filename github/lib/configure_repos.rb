@@ -6,7 +6,7 @@ require_relative "./configure_repo"
 class ConfigureRepos
   def configure!
     repos.each do |repo|
-      ConfigureRepo.new(repo, client, repo_overrides[repo]).configure!
+      ConfigureRepo.new(repo, client, repo_overrides[repo[:full_name]]).configure!
     end
   end
 
@@ -22,8 +22,7 @@ private
       .select { |repo| repo.topics.to_a.include?("govuk") }
       .reject { |repo| ignored_repos.include?(repo.full_name) }
       .reject { |repo| repo.archived }
-      .map(&:full_name)
-      .sort
+      .sort_by { |repo| repo[:full_name] }
   end
 
   def ignored_repos

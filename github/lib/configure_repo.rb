@@ -8,13 +8,13 @@ class ConfigureRepo
   end
 
   def configure!
-    puts "Updating #{repo}"
+    puts "Updating #{repo[:full_name]}"
     update_repo_settings
     protect_branch
     update_webhooks
-    puts "√ #{repo}"
+    puts "√ #{repo[:full_name]}"
   rescue Octokit::NotFound => e
-    puts "Could not find #{repo}. Possibly the govuk-ci user doesn't have admin access to this repo."
+    puts "Could not find #{repo[:full_name]}. Possibly the govuk-ci user doesn't have admin access to this repo[:full_name]."
   end
 
 private
@@ -23,7 +23,7 @@ private
 
   def update_repo_settings
     client.edit_repository(
-      repo,
+      repo[:full_name],
       allow_merge_commit: true,
       allow_squash_merge: overrides.fetch("allow_squash_merge", false),
       allow_rebase_merge: false,
@@ -46,11 +46,11 @@ private
       )
     end
 
-    client.protect_branch(repo, "master", config)
+    client.protect_branch(repo[:full_name], repo[:default_branch], config)
   end
 
   def update_webhooks
-    existing_webhooks = client.hooks(repo)
+    existing_webhooks = client.hooks(repo[:full_name])
 
     # GitHub Trello Poster
     if existing_webhooks.map(&:config).map(&:url).include?("https://github-trello-poster.cloudapps.digital/payload")
@@ -58,7 +58,7 @@ private
     else
       puts "Creating GitHub Trello Poster webhook"
       client.create_hook(
-        repo,
+        repo[:full_name],
         "web",
         {
           url: "https://github-trello-poster.cloudapps.digital/payload",
@@ -78,7 +78,7 @@ private
       else
         puts "Creating Jenkins CI webhook"
         client.create_hook(
-          repo,
+          repo[:full_name],
           "web",
           {
             url: "https://ci.integration.publishing.service.gov.uk/github-webhook/",
@@ -111,7 +111,7 @@ private
 
   def jenkinsfile
     @jenkinsfile ||= begin
-      client.contents(repo, path: "Jenkinsfile")
+      client.contents(repo[:full_name], path: "Jenkinsfile")
     rescue Octokit::NotFound
       nil
     end
@@ -135,7 +135,7 @@ private
 
   def github_actions
     @github_actions ||= begin
-      client.contents(repo, path: ".github/workflows/ci.yml")
+      client.contents(repo[:full_name], path: ".github/workflows/ci.yml")
     rescue Octokit::NotFound
       nil
     end
