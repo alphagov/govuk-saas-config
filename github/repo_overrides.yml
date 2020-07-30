@@ -1,7 +1,7 @@
 alphagov/datagovuk_find:
   required_status_checks:
     additional_contexts:
-      - continuous-integration/travis-ci
+      - continuous-integration/travis
 
 alphagov/datagovuk_publish:
   required_status_checks:
