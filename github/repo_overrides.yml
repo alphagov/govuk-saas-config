@@ -10,9 +10,38 @@ alphagov/datagovuk_publish:
 
 alphagov/smart-answers:
   allow_squash_merge: true
+  # required for continuous deployment
+  # https://docs.google.com/document/d/18y2flzqbhytlithxuiyxkzndw4tzmpiqzak-3rkgpbg/edit
   need_production_access_to_merge: true
 
 alphagov/publishing-api:
+  # required for continuous deployment
+  # https://docs.google.com/document/d/18y2flzqbhytlithxuiyxkzndw4tzmpiqzak-3rkgpbg/edit
+  need_production_access_to_merge: true
+
+alphagov/travel-advice-publisher:
+  # required for continuous deployment
+  # https://docs.google.com/document/d/18y2flzqbhytlithxuiyxkzndw4tzmpiqzak-3rkgpbg/edit
+  need_production_access_to_merge: true
+
+alphagov/publisher:
+  # required for continuous deployment
+  # https://docs.google.com/document/d/18y2flzqbhytlithxuiyxkzndw4tzmpiqzak-3rkgpbg/edit
+  need_production_access_to_merge: true
+
+alphagov/finder-frontend:
+  # required for continuous deployment
+  # https://docs.google.com/document/d/18y2flzqbhytlithxuiyxkzndw4tzmpiqzak-3rkgpbg/edit
+  need_production_access_to_merge: true
+
+alphagov/collections:
+  # required for continuous deployment
+  # https://docs.google.com/document/d/18y2flzqbhytlithxuiyxkzndw4tzmpiqzak-3rkgpbg/edit
+  need_production_access_to_merge: true
+
+alphagov/government-frontend:
+  # required for continuous deployment
+  # https://docs.google.com/document/d/18y2flzqbhytlithxuiyxkzndw4tzmpiqzak-3rkgpbg/edit
   need_production_access_to_merge: true
 
 alphagov/govuk-coronavirus-content:
