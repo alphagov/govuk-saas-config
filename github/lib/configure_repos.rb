@@ -14,8 +14,6 @@ class ConfigureRepos
     puts repos.to_yaml
   end
 
-private
-
   def repos
     client
       .org_repos("alphagov", accept: "application/vnd.github.mercy-preview+json")
