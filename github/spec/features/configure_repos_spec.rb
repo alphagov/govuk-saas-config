@@ -174,8 +174,7 @@ RSpec.describe ConfigureRepos do
   def and_the_repo_already_has_webhooks
     payload = [
       { config: { url: "https://github-trello-poster.cloudapps.digital/payload" }},
-      { config: { url: "https://ci.integration.publishing.service.gov.uk/github-webhook/" }},
-      { config: { url: "https://ci.blue.integration.govuk.digital/github-webhook/" }}
+      { config: { url: "https://ci.integration.publishing.service.gov.uk/github-webhook/" }}
     ]
 
     stub_request(:get, "https://api.github.com/repos/alphagov/smart-sandwich/hooks?per_page=100").
@@ -224,7 +223,7 @@ RSpec.describe ConfigureRepos do
       with(body: hash_including(payload))
   end
 
-  def the_repo_has_webhooks_configured(number_of_webhooks: 3)
+  def the_repo_has_webhooks_configured(number_of_webhooks: 2)
     expect(@hook_creation).to have_been_requested.times(number_of_webhooks)
   end
 

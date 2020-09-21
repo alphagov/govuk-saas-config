@@ -91,27 +91,6 @@ private
         )
       end
     end
-
-    # AWS CI, testing new CI in AWS Integration
-    if jenkinsfile_exists?
-      if existing_webhooks.map(&:config).map(&:url).include?("https://ci.blue.integration.govuk.digital/github-webhook/")
-        puts "√ Jenkins CI webhook exists"
-      else
-        puts "Creating Jenkins CI webhook"
-        client.create_hook(
-          repo[:full_name],
-          "web",
-          {
-            url: "https://ci.blue.integration.govuk.digital/github-webhook/",
-            content_type: "json",
-          },
-          {
-            events: ["push"],
-            active: true,
-          }
-        )
-      end
-    end
   end
 
   def required_status_checks

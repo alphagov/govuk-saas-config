@@ -14,7 +14,7 @@ namespace :github do
   desc "Remove old webhooks"
   task :remove_old_webhooks do
     HOOKS_TO_DELETE = %w[
-      https://snyk.io/webhook/github
+      https://ci.blue.integration.govuk.digital/github-webhook/
     ]
 
     repos.map do |repo|
