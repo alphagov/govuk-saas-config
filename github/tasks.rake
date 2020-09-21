@@ -13,15 +13,6 @@ namespace :github do
 
   desc "Remove old webhooks"
   task :remove_old_webhooks do
-    HOOKS_TO_DELETE = %w[
-      https://ci.blue.integration.govuk.digital/github-webhook/
-    ]
-
-    repos.map do |repo|
-      client.hooks(repo).each do |hook|
-        next unless HOOKS_TO_DELETE.include?(hook.config.url)
-        client.remove_hook(repo, hook.id)
-      end
-    end
+    ConfigureRepos.new.remove_old_webhooks!
   end
 end
