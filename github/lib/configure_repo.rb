@@ -33,7 +33,7 @@ private
 
   def protect_branch
     config = {
-      enforce_admins: true,
+      enforce_admins: false,    # Temporary
       required_status_checks: required_status_checks,
       required_pull_request_reviews: {
         dismiss_stale_reviews: false,

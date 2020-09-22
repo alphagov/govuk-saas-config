@@ -128,7 +128,7 @@ RSpec.describe ConfigureRepos do
       .to_return(body: {}.to_json, status: archived ? 403 : 200)
 
     @branch_protection_update = stub_request(:put, "https://api.github.com/repos/#{full_name}/branches/#{default_branch}/protection")
-      .with(body: { enforce_admins: true,
+      .with(body: { enforce_admins: false,
               required_status_checks: hash_including({}),
               required_pull_request_reviews: {
                 dismiss_stale_reviews: false,
