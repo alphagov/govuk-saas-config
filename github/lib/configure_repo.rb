@@ -1,3 +1,6 @@
+require 'base64'
+require 'yaml'
+
 class ConfigureRepo
   attr_reader :repo, :client
 
@@ -136,7 +139,9 @@ private
 
   def github_actions
     @github_actions ||= begin
-      client.contents(repo[:full_name], path: ".github/workflows/ci.yml")
+      encoded_content = client.contents(repo[:full_name], path: ".github/workflows/ci.yml").content
+      decoded_content = Base64.decode64(encoded_content)
+      YAML.load(decoded_content)
     rescue Octokit::NotFound
       nil
     end
@@ -147,10 +152,10 @@ private
   end
 
   def github_actions_test_exists?
-    !github_actions.nil? && github_actions.key?(:jobs) && github_actions[:jobs].key?(:test)
+    !github_actions.nil? && github_actions.key?("jobs") && github_actions["jobs"].key?("test")
   end
 
   def github_actions_pre_commit_exists?
-    !github_actions.nil? && github_actions.key?(:jobs) && github_actions[:jobs].key?(:'pre-commit')
+    !github_actions.nil? && github_actions.key?("jobs") && github_actions["jobs"].key?("pre-commit")
   end
 end
