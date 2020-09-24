@@ -46,7 +46,7 @@ RSpec.describe ConfigureRepos do
     it "Updates a repo" do
       given_theres_a_repo(full_name: "alphagov/rubocop-govuk")
       and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/rubocop-govuk")
-      and_the_repo_uses_github_actions(full_name: "alphagov/rubocop-govuk")
+      and_the_repo_uses_github_actions_for_test(full_name: "alphagov/rubocop-govuk")
       when_the_script_runs
       the_repo_is_updated_with_correct_settings
       the_repo_has_branch_protection_activated
@@ -57,7 +57,7 @@ RSpec.describe ConfigureRepos do
     it "Updates a squash merge overridden repo" do
       given_theres_a_repo(full_name: "alphagov/govuk-coronavirus-content", allow_squash_merge: true)
       and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/govuk-coronavirus-content")
-      and_the_repo_uses_github_actions(full_name: "alphagov/govuk-coronavirus-content")
+      and_the_repo_uses_github_actions_for_test(full_name: "alphagov/govuk-coronavirus-content")
       when_the_script_runs
       the_repo_is_updated_with_correct_settings
     end
@@ -65,11 +65,24 @@ RSpec.describe ConfigureRepos do
     it "Updates a strict status checks overriden repo" do
       given_theres_a_repo(full_name: "alphagov/repo-for-govuk-saas-config-automated-tests")
       and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/repo-for-govuk-saas-config-automated-tests")
-      and_the_repo_uses_github_actions(full_name: "alphagov/repo-for-govuk-saas-config-automated-tests")
+      and_the_repo_uses_github_actions_for_test(full_name: "alphagov/repo-for-govuk-saas-config-automated-tests")
       when_the_script_runs
       the_repo_has_ci_enabled(full_name: "alphagov/repo-for-govuk-saas-config-automated-tests", providers: ["github_actions"], up_to_date_branches: true)
       the_repo_has_branch_protection_activated
       the_repo_is_updated_with_correct_settings
+    end
+  end
+
+  context "when a repo uses GitHub Actions for CI and pre-commit" do
+    it "Updates a repo" do
+      given_theres_a_repo(full_name: "alphagov/rubocop-govuk")
+      and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/rubocop-govuk")
+      and_the_repo_uses_github_actions_for_test_and_pre_commit(full_name: "alphagov/rubocop-govuk")
+      when_the_script_runs
+      the_repo_is_updated_with_correct_settings
+      the_repo_has_branch_protection_activated
+      the_repo_has_ci_enabled(full_name: "alphagov/rubocop-govuk", providers: ["github_actions"], github_actions: %w[test pre-commit])
+      the_repo_has_webhooks_configured(number_of_webhooks: 1)
     end
   end
 
@@ -90,7 +103,7 @@ RSpec.describe ConfigureRepos do
     it "sets up CI for both providers" do
       given_theres_a_repo(full_name: "alphagov/static")
       and_the_repo_has_a_jenkinsfile(full_name: "alphagov/static", with_e2e_tests: true)
-      and_the_repo_uses_github_actions(full_name: "alphagov/static")
+      and_the_repo_uses_github_actions_for_test(full_name: "alphagov/static")
       when_the_script_runs
       the_repo_has_ci_enabled(full_name: "alphagov/static", providers: ["jenkins", "github_actions"], with_e2e_tests: true)
       the_repo_has_branch_protection_activated
@@ -159,8 +172,26 @@ RSpec.describe ConfigureRepos do
       to_return(status: 404)
   end
 
-  def and_the_repo_uses_github_actions(full_name: "alphagov/govuk-coronavirus-content")
-    payload = { path: ".github/workflows/ci.yml" }
+  def and_the_repo_uses_github_actions_for_test(full_name: "alphagov/govuk-coronavirus-content")
+    payload = {
+      on: %w[push pull_request],
+      jobs: {
+        test: {},
+      }
+    }
+
+    stub_request(:get, "https://api.github.com/repos/#{full_name}/contents/.github/workflows/ci.yml").
+      to_return(body: payload.to_json, headers: { content_type: "application/json" }, status: 200)
+  end
+
+  def and_the_repo_uses_github_actions_for_test_and_pre_commit(full_name: "alphagov/govuk-coronavirus-content")
+    payload = {
+      on: %w[push pull_request],
+      jobs: {
+        test: {},
+        'pre-commit': {},
+      }
+    }
 
     stub_request(:get, "https://api.github.com/repos/#{full_name}/contents/.github/workflows/ci.yml").
       to_return(body: payload.to_json, headers: { content_type: "application/json" }, status: 200)
@@ -198,15 +229,15 @@ RSpec.describe ConfigureRepos do
     expect(@branch_protection_update).to have_been_requested
   end
 
-  def the_repo_has_ci_enabled(full_name: "alphagov/smart-sandwich", providers: ["jenkins"], with_e2e_tests: false, up_to_date_branches: false, default_branch: "main")
+  def the_repo_has_ci_enabled(full_name: "alphagov/smart-sandwich", providers: ["jenkins"], with_e2e_tests: false, up_to_date_branches: false, default_branch: "main", github_actions: "test")
     payload = {
       required_status_checks: {
         strict: up_to_date_branches,
         contexts: [
           providers.include?("jenkins") ? "continuous-integration/jenkins/branch" : nil,
           with_e2e_tests ? "continuous-integration/jenkins/publishing-e2e-tests" : nil,
-          providers.include?("github_actions") ? "test" : nil,
-        ].compact
+          providers.include?("github_actions") ? github_actions : nil,
+        ].compact.flatten
       }
     }
 

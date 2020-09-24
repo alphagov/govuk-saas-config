@@ -101,7 +101,8 @@ private
       contexts: [
         jenkinsfile_exists? ? "continuous-integration/jenkins/branch" : nil,
         jenkinsfile_runs_e2e_tests? ? "continuous-integration/jenkins/publishing-e2e-tests" : nil,
-        github_actions_exists? ? "test" : nil,
+        github_actions_test_exists? ? "test" : nil,
+        github_actions_pre_commit_exists? ? "pre-commit" : nil,
         *overrides
           .fetch("required_status_checks", {})
           .fetch("additional_contexts", [])
@@ -142,6 +143,14 @@ private
   end
 
   def github_actions_exists?
-    !github_actions.nil?
+    github_actions_test_exists? || github_actions_pre_commit_exists?
+  end
+
+  def github_actions_test_exists?
+    !github_actions.nil? && github_actions.key?(:jobs) && github_actions[:jobs].key?(:test)
+  end
+
+  def github_actions_pre_commit_exists?
+    !github_actions.nil? && github_actions.key?(:jobs) && github_actions[:jobs].key?(:'pre-commit')
   end
 end
