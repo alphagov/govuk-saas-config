@@ -1,6 +1,9 @@
 require_relative '../spec_helper'
 require_relative '../../lib/configure_repos'
 
+require 'base64'
+require 'yaml'
+
 RSpec.describe ConfigureRepos do
   context "when a repo uses Jenkins for CI" do
     it "Updates a repo" do
@@ -173,11 +176,15 @@ RSpec.describe ConfigureRepos do
   end
 
   def and_the_repo_uses_github_actions_for_test(full_name: "alphagov/govuk-coronavirus-content")
-    payload = {
-      on: %w[push pull_request],
-      jobs: {
-        test: {},
+    content = {
+      "on" => %w[push pull_request],
+      "jobs" => {
+        "test" => {},
       }
+    }
+
+    payload = {
+      content: Base64.encode64(content.to_yaml)
     }
 
     stub_request(:get, "https://api.github.com/repos/#{full_name}/contents/.github/workflows/ci.yml").
@@ -185,12 +192,16 @@ RSpec.describe ConfigureRepos do
   end
 
   def and_the_repo_uses_github_actions_for_test_and_pre_commit(full_name: "alphagov/govuk-coronavirus-content")
-    payload = {
-      on: %w[push pull_request],
-      jobs: {
-        test: {},
-        'pre-commit': {},
+    content = {
+      "on" => %w[push pull_request],
+      "jobs" => {
+        "test" => {},
+        "pre-commit" => {},
       }
+    }
+
+    payload = {
+      content: Base64.encode64(content.to_yaml)
     }
 
     stub_request(:get, "https://api.github.com/repos/#{full_name}/contents/.github/workflows/ci.yml").
