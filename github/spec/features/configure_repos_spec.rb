@@ -160,7 +160,12 @@ RSpec.describe ConfigureRepos do
   end
 
   def and_the_repo_uses_github_actions(full_name: "alphagov/govuk-coronavirus-content")
-    payload = { path: ".github/workflows/ci.yml" }
+    payload = {
+      on: %w[push pull_request],
+      jobs: {
+        test: {}
+      }
+    }
 
     stub_request(:get, "https://api.github.com/repos/#{full_name}/contents/.github/workflows/ci.yml").
       to_return(body: payload.to_json, headers: { content_type: "application/json" }, status: 200)
