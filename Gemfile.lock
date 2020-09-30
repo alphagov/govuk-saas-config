@@ -55,8 +55,5 @@ DEPENDENCIES
   rspec
   webmock
 
-RUBY VERSION
-   ruby 2.7.1p83
-
 BUNDLED WITH
    1.17.3
