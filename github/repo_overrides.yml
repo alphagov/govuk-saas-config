@@ -58,6 +58,7 @@ alphagov/govuk-content-schemas:
       - continuous-integration/jenkins/collections-publisher
       - continuous-integration/jenkins/contacts
       - continuous-integration/jenkins/content-data-api
+      - continuous-integration/jenkins/content-publisher
       - continuous-integration/jenkins/content-store
       - continuous-integration/jenkins/content-tagger
       - continuous-integration/jenkins/email-alert-frontend
