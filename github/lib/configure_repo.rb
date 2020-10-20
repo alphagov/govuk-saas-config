@@ -17,7 +17,7 @@ class ConfigureRepo
     update_webhooks
     puts "√ #{repo[:full_name]}"
   rescue Octokit::NotFound => e
-    puts "Could not find #{repo[:full_name]}. Possibly the govuk-ci user doesn't have admin access to this repo[:full_name]."
+    puts "Could not find #{repo[:full_name]}. Possibly the govuk-ci user doesn't have admin access to this repo."
   end
 
 private
