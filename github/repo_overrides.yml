@@ -8,6 +8,11 @@ alphagov/datagovuk_publish:
     additional_contexts:
       - continuous-integration/travis-ci
 
+alphagov/cache-clearing-service:
+  # required for continuous deployment
+  # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
+  need_production_access_to_merge: true
+
 alphagov/smart-answers:
   allow_squash_merge: true
   # required for continuous deployment
