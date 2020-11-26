@@ -44,6 +44,11 @@ alphagov/info-frontend:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
 
+alphagov/content-publisher:
+  # required for continuous deployment
+  # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
+  need_production_access_to_merge: true
+
 alphagov/govuk-coronavirus-content:
   allow_squash_merge: true
 
