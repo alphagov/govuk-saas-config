@@ -4,6 +4,7 @@ require 'yaml'
 
 ORG_SLUG = 'govuk' # test account
 DEFAULT_TEAM = 'govuk-all'
+GOVUK_DOCS_APP_LIST = "https://docs.publishing.service.gov.uk/apps.json"
 
 SentryApi.configure do |config|
   config.endpoint = 'https://sentry.io/api/0'
@@ -12,7 +13,7 @@ SentryApi.configure do |config|
 end
 
 def fetch_govuk_apps
-  JSON.parse(HTTP.get("https://docs.publishing.service.gov.uk/apps.json").body)
+  JSON.parse(HTTP.get(GOVUK_DOCS_APP_LIST).body)
 end
 
 def team_name(original_slack_name)
@@ -62,26 +63,53 @@ task :update_projects do
   puts "There are #{sentry_projects.size} projects in Sentry"
   puts "There are #{apps.size} applications on GOV.UK"
 
-  apps.map do |app|
-    app_name = app.fetch("app_name")
-    app_slug = "app-#{app_name}"
+  apps.map {|app| create_or_update_projects(app, sentry_projects) }
+end
 
-    project = sentry_projects.find { |project| project.slug == app_slug }
+desc "Create or update Sentry project for a specific GOV.UK application"
+task :update_project, %i[project_name] => [] do |_, args|
+  project_name = args[:project_name]
 
-    if project
-      puts "√ #{app_name} has a Sentry project (#{project.slug})"
-    else
-      team_name = team_name(app["team"])
-      puts "Creating project #{app_name} (#{app_slug}) for team #{team_name}"
-      project = SentryApi.create_project(team_name, name: app_name, slug: app_slug)
-      puts "Created project for #{app_name} (#{project.slug})"
-    end
+  abort("Please provide a project name") if project_name.nil?
 
-    SentryApi.update_project(
-      project.slug,
-      platform: 'ruby',
-      slug: app_slug,
-      subjectTemplate: "[${project} @ ${tag:environment}] ${tag:level}: $title (${tag:release})",
-    )
+  apps = fetch_govuk_apps || []
+  sentry_projects = SentryApi.organization_projects
+  apps_by_name = apps.select{ |app| app["app_name"] == project_name }
+
+  abort("#{GOVUK_DOCS_APP_LIST} has more than one app called #{project_name}") if apps_by_name.count > 1
+  abort(app_not_found_warning(project_name)) if apps_by_name.empty?
+
+  create_or_update_projects(apps_by_name.first, sentry_projects)
+end
+
+def app_not_found_warning(project_name)
+  <<~WARNING
+    The project: #{project_name} is not listed within the GOV.UK docs and so will not be created.
+    Troubleshooting:
+    - Check the spelling of #{project_name}.
+    - Check if it appears in the list of applications at: #{GOVUK_DOCS_APP_LIST}
+  WARNING
+end
+
+def create_or_update_projects(app, sentry_projects)
+  app_name = app.fetch("app_name")
+  app_slug = "app-#{app_name}"
+
+  project = sentry_projects.find { |project| project.slug == app_slug }
+
+  if project
+    puts "√ #{app_name} has a Sentry project (#{project.slug})"
+  else
+    team_name = team_name(app["team"])
+    puts "Creating project #{app_name} (#{app_slug}) for team #{team_name}"
+    project = SentryApi.create_project(team_name, name: app_name, slug: app_slug)
+    puts "Created project for #{app_name} (#{project.slug})"
   end
+
+  SentryApi.update_project(
+    project.slug,
+    platform: 'ruby',
+    slug: app_slug,
+    subjectTemplate: "[${project} @ ${tag:environment}] ${tag:level}: $title (${tag:release})",
+  )
 end
