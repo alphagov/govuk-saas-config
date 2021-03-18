@@ -138,7 +138,6 @@ alphagov/repo-for-govuk-saas-config-automated-tests:
 alphagov/govuk-content-schemas:
   required_status_checks:
     additional_contexts:
-      - continuous-integration/jenkins/calculators
       - continuous-integration/jenkins/collections
       - continuous-integration/jenkins/collections-publisher
       - continuous-integration/jenkins/contacts
