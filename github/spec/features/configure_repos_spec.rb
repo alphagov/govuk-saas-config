@@ -150,7 +150,7 @@ RSpec.describe ConfigureRepos do
                 dismiss_stale_reviews: false,
               },
               restrictions: need_production_access_to_merge ?
-               { users: [], teams: %w[gov-uk-production] } : nil,
+               { users: [], teams: %w[gov-uk-production gov-uk-production-deploy] } : nil,
             })
       .to_return(body: {}.to_json, status: archived ? 403 : 200)
 
