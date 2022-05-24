@@ -45,7 +45,7 @@ private
 
     if overrides["need_production_access_to_merge"]
       config.merge!(
-        restrictions: { users: [], teams: %w[gov-uk-production gov-uk-production-deploy] }
+        restrictions: { users: [], teams: %w[gov-uk-production-admin gov-uk-production-deploy] }
       )
     end
 
