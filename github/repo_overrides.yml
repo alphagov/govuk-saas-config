@@ -209,7 +209,6 @@ alphagov/govuk-content-schemas:
       - continuous-integration/jenkins/hmrc-manuals-api
       - continuous-integration/jenkins/info-frontend
       - continuous-integration/jenkins/licencefinder
-      - continuous-integration/jenkins/manuals-frontend
       - continuous-integration/jenkins/manuals-publisher
       - continuous-integration/jenkins/publisher
       - continuous-integration/jenkins/publishing-api
