@@ -16,3 +16,8 @@ Usage (can run on your Mac or within dev VM):
 ```
 GITHUB_TOKEN=xyz bundle exec rake github:configure_repos
 ```
+## How changes get applied
+
+There is a [jenkins job](https://github.com/alphagov/govuk-puppet/blob/02f4971ec60edf6592b02e2c29227aae534dfa4f/modules/govuk_jenkins/templates/jobs/configure_github_repos.yaml.erb) configured to run at ~8am every day, which automatically runs the above rake command and applies changes.
+
+If you need a change applied sooner, you can either run the rake task or [manually run the jenkins job](https://deploy.blue.production.govuk.digital/job/configure-github-repos/).
