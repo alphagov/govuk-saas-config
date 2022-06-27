@@ -13,6 +13,11 @@ alphagov/account-api:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
 
+alphagov/asset-manager:
+  # required for continuous deployment
+  # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
+  need_production_access_to_merge: true
+
 alphagov/authenticating-proxy:
   # required for continuous deployment
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
