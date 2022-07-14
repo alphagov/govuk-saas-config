@@ -53,6 +53,11 @@ alphagov/content-data-api:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
 
+alphagov/content-tagger:
+  # required for continuous deployment
+  # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
+  need_production_access_to_merge: true
+
 alphagov/email-alert-api:
   # required for continuous deployment
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
