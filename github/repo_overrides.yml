@@ -63,6 +63,12 @@ alphagov/content-tagger:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
 
+alphagov/data-community-tech-docs:
+  allow_squash_merge: true
+
+alphagov/datagovuk-tech-docs:
+  allow_squash_merge: true
+
 alphagov/email-alert-api:
   # required for continuous deployment
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
@@ -87,6 +93,15 @@ alphagov/frontend:
   # required for continuous deployment
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
+
+alphagov/govuk-content-api-docs:
+  allow_squash_merge: true
+
+alphagov/govuk-developer-docs:
+  allow_squash_merge: true
+
+alphagov/govuk-kubernetes-cluster-user-docs:
+  allow_squash_merge: true
 
 alphagov/imminence:
   # required for continuous deployment
