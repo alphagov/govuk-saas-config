@@ -32,17 +32,6 @@ RSpec.describe ConfigureRepos do
       then_no_webhooks_are_changed
       the_repo_is_not_updated
     end
-
-    it "Updates a repo with e2e tests" do
-      given_theres_a_repo
-      and_the_repo_has_a_jenkinsfile(with_e2e_tests: true)
-      and_the_repo_does_not_use_github_actions
-      when_the_script_runs
-      the_repo_is_updated_with_correct_settings
-      the_repo_has_branch_protection_activated
-      the_repo_has_ci_enabled(with_e2e_tests: true)
-      the_repo_has_webhooks_configured
-    end
   end
 
   context "when a repo uses GitHub Actions for CI" do
@@ -105,10 +94,10 @@ RSpec.describe ConfigureRepos do
   context "when a repo uses both Jenkins and GitHub Actions for CI" do
     it "sets up CI for both providers" do
       given_theres_a_repo(full_name: "alphagov/static")
-      and_the_repo_has_a_jenkinsfile(full_name: "alphagov/static", with_e2e_tests: true)
+      and_the_repo_has_a_jenkinsfile(full_name: "alphagov/static")
       and_the_repo_uses_github_actions_for_test(full_name: "alphagov/static")
       when_the_script_runs
-      the_repo_has_ci_enabled(full_name: "alphagov/static", providers: ["jenkins", "github_actions"], with_e2e_tests: true)
+      the_repo_has_ci_enabled(full_name: "alphagov/static", providers: ["jenkins", "github_actions"])
       the_repo_has_branch_protection_activated
       the_repo_is_updated_with_correct_settings
     end
@@ -159,10 +148,10 @@ RSpec.describe ConfigureRepos do
       .to_return(body: {}.to_json, status: archived ? 403 : 200)
   end
 
-  def and_the_repo_has_a_jenkinsfile(with_e2e_tests: false, full_name: "alphagov/smart-sandwich")
+  def and_the_repo_has_a_jenkinsfile(full_name: "alphagov/smart-sandwich")
     payload = {
       name: "Jenkinsfile",
-      content: Base64.encode64(with_e2e_tests ? "node { govuk.buildProject(publishingE2ETests: true) }" : ""),
+      content: "",
       encoding: "base64",
     }
 
@@ -240,13 +229,12 @@ RSpec.describe ConfigureRepos do
     expect(@branch_protection_update).to have_been_requested
   end
 
-  def the_repo_has_ci_enabled(full_name: "alphagov/smart-sandwich", providers: ["jenkins"], with_e2e_tests: false, up_to_date_branches: false, default_branch: "main", github_actions: "test")
+  def the_repo_has_ci_enabled(full_name: "alphagov/smart-sandwich", providers: ["jenkins"], up_to_date_branches: false, default_branch: "main", github_actions: "test")
     payload = {
       required_status_checks: {
         strict: up_to_date_branches,
         contexts: [
           providers.include?("jenkins") ? "continuous-integration/jenkins/branch" : nil,
-          with_e2e_tests ? "continuous-integration/jenkins/publishing-e2e-tests" : nil,
           providers.include?("github_actions") ? github_actions : nil,
         ].compact.flatten
       }
