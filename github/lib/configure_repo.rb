@@ -103,7 +103,6 @@ private
       strict: overrides.fetch("up_to_date_branches", false),
       contexts: [
         jenkinsfile_exists? ? "continuous-integration/jenkins/branch" : nil,
-        jenkinsfile_runs_e2e_tests? ? "continuous-integration/jenkins/publishing-e2e-tests" : nil,
         github_actions_test_exists? ? "test" : nil,
         github_actions_pre_commit_exists? ? "pre-commit" : nil,
         *overrides
@@ -129,12 +128,6 @@ private
     return nil unless jenkinsfile_exists?
     raise "Unknown encoding" unless jenkinsfile.encoding == "base64"
     Base64.decode64(jenkinsfile.content)
-  end
-
-  def jenkinsfile_runs_e2e_tests?
-    return false unless jenkinsfile_exists?
-
-    /publishingE2ETests\:\s*true/.match(jenkinsfile_content)
   end
 
   def github_actions
