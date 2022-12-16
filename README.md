@@ -16,3 +16,8 @@ Tool to make sure all GOV.UK repos have the same settings and webhooks.
 ## [Logit](/logit)
 
 Configuration related to Logit, such as Logstash configuration.
+
+## Licence
+
+[MIT License](LICENCE)
+
