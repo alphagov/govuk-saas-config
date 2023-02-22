@@ -1,6 +1,7 @@
 require "yaml"
 require "json"
 require "octokit"
+require "open-uri"
 require_relative "./configure_repo"
 
 class ConfigureRepos
@@ -34,14 +35,29 @@ class ConfigureRepos
       end
   end
 
+  def verify_repo_tags!
+    # TODO: make these work
+    govuk_repo_names = JSON.load(URI.open("https://docs.publishing.service.gov.uk/repos.json")).map { |repo| repo["app_name"] }
+    github_repo_names = github_repos_tagged_govuk.map { |repo| repo["name"] }
+    
+    untagged_govuk_repo_names = govuk_repo_names - github_repo_names
+    falsely_tagged_govuk_repo_names = github_repo_names - govuk_repo_names
+    # TODO: print these out
+    puts "Untagged govuk repos: #{untagged_govuk_repo_names}"
+    puts "Falsely tagged govuk repos: #{falsely_tagged_govuk_repo_names}"
+  end
+
 private
 
-  def repos
+  def github_repos_tagged_govuk
     client
       .org_repos("alphagov", accept: "application/vnd.github.mercy-preview+json")
-      .select { |repo| repo.topics.to_a.include?("govuk") }
+      .select { |repo| repo.topics.to_a.include?("govuk") && !repo.archived }
+  end
+
+  def repos
+    github_repos_tagged_govuk
       .reject { |repo| ignored_repos.include?(repo.full_name) }
-      .reject { |repo| repo.archived }
       .sort_by { |repo| repo[:full_name] }
   end
 

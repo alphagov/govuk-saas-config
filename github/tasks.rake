@@ -15,4 +15,9 @@ namespace :github do
   task :remove_old_webhooks do
     ConfigureRepos.new.remove_old_webhooks!
   end
+
+  desc "Verify that GOVUK repos are tagged #govuk"
+  task :verify_repo_tags do
+    ConfigureRepos.new.verify_repo_tags!
+  end
 end
