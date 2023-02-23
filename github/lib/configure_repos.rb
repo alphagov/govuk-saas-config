@@ -36,13 +36,12 @@ class ConfigureRepos
   end
 
   def verify_repo_tags!
-    # TODO: make these work
     govuk_repo_names = JSON.load(URI.open("https://docs.publishing.service.gov.uk/repos.json")).map { |repo| repo["app_name"] }
     github_repo_names = github_repos_tagged_govuk.map { |repo| repo["name"] }
     
     untagged_govuk_repo_names = govuk_repo_names - github_repo_names
     falsely_tagged_govuk_repo_names = github_repo_names - govuk_repo_names
-    # TODO: print these out
+    
     puts "Untagged govuk repos: #{untagged_govuk_repo_names}"
     puts "Falsely tagged govuk repos: #{falsely_tagged_govuk_repo_names}"
   end
