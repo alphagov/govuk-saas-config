@@ -1,5 +1,6 @@
 require_relative '../spec_helper'
 require_relative '../../lib/configure_repos'
+require_relative '../../lib/fetch_repos'
 
 require 'base64'
 require 'yaml'
