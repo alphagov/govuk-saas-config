@@ -1,4 +1,6 @@
 require_relative 'lib/configure_repos'
+require_relative 'lib/validate_repos'
+require_relative 'lib/fetch_repos'
 
 namespace :github do
   desc "Configure the repos with correct settings and branch protection"
@@ -14,5 +16,10 @@ namespace :github do
   desc "Remove old webhooks"
   task :remove_old_webhooks do
     ConfigureRepos.new.remove_old_webhooks!
+  end
+
+  desc "Verify that GOVUK repos are tagged #govuk"
+  task :verify_repo_tags do
+    ValidateRepos.new.verify_repo_tags
   end
 end

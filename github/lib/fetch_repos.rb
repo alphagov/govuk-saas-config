@@ -4,6 +4,11 @@ require "octokit"
 require_relative "./configure_repo"
 
 class FetchRepos
+  attr_reader :client
+  def initialize(client = nil)
+    Octokit.auto_paginate = true
+    @client = client || Octokit::Client.new(access_token: ENV.fetch("GITHUB_TOKEN"))
+  end
 
   def repos
     client
@@ -17,10 +22,4 @@ class FetchRepos
   def ignored_repos
     @ignored_repos ||= YAML.load_file("#{__dir__}/../ignored_repos.yml")
   end
-
-  def client
-    Octokit.auto_paginate = true
-    @client ||= Octokit::Client.new(access_token: ENV.fetch("GITHUB_TOKEN"))
-  end
-
 end

@@ -3,8 +3,10 @@ require "json"
 require "octokit"
 require_relative "./configure_repo"
 require_relative "./fetch_repos"
+require_relative "./validate_repos"
 
 class ConfigureRepos
+  
   HOOKS_TO_DELETE = %w[
     https://ci.blue.integration.govuk.digital/github-webhook/
   ]
@@ -42,7 +44,7 @@ private
   end
 
   def client
-    Octokit.auto_paginate = true
-    @client ||= Octokit::Client.new(access_token: ENV.fetch("GITHUB_TOKEN"))
+    ValidateRepos.new.client
   end
+
 end
