@@ -5,6 +5,34 @@ require 'base64'
 require 'yaml'
 
 RSpec.describe ConfigureRepos do
+
+  # I think you’d want a few different test scenarios:
+  # 1) 1 repo in repos.json, 1 repo in GitHub tagged as govuk, should output something like “no mismatches found”
+  # 2) 1 repo in repos.json, no repos in GitHub tagged govuk, should output something like “missing tag: foo”
+  # 3) 0 repo in repos.json, 1 repo in GitHub tagged as govuk, should output something like “tagged repo missing from list: foo”
+  # 4) for good measure, maybe a test that includes a mixture of repos with/without tags etc, so that we can exercise how the script works with more complicated inputs
+
+  it "should ignore any repos that exist in repos.json AND are tagged govuk in GitHub" do
+    repos = [{
+      "app_name": "this-is-a-govuk-repo",
+    }]
+    github_repos = [
+      {
+        "name": "this-is-a-govuk-repo",
+        "topics": [
+          "govuk",
+        ],
+      }
+    ]
+
+    stub_request(:get, "https://docs.publishing.service.gov.uk/repos.json").
+      to_return(status: 200, body: repos.to_json, headers: {})
+    stub_request(:get, "https://api.github.com/orgs/alphagov/repos?per_page=100").
+      to_return(headers: { content_type: 'application/json' }, status: 200, body: github_repos.to_json)
+
+    expect { ConfigureRepos.new.verify_repo_tags! }.to output("Untagged govuk repos: []\nFalsely tagged govuk repos: []\n").to_stdout
+  end
+
   context "when a repo uses Jenkins for CI" do
     it "Updates a repo" do
       given_theres_a_repo
