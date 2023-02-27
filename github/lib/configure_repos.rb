@@ -9,6 +9,10 @@ class ConfigureRepos
     https://ci.blue.integration.govuk.digital/github-webhook/
   ]
 
+  def initialize(client = nil)
+    Octokit.auto_paginate = true
+    @client = client || Octokit::Client.new(access_token: ENV.fetch("GITHUB_TOKEN"))
+  end
 
   def configure!
     repos.each do |repo|
@@ -69,7 +73,6 @@ private
   end
 
   def client
-    Octokit.auto_paginate = true
-    @client ||= Octokit::Client.new(access_token: ENV.fetch("GITHUB_TOKEN"))
+    @client
   end
 end
