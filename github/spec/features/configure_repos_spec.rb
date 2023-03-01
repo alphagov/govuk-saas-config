@@ -204,7 +204,7 @@ RSpec.describe ConfigureRepos do
 
   def and_the_repo_already_has_webhooks
     payload = [
-      { config: { url: "https://github-trello-poster.cloudapps.digital/payload" }},
+      { config: { url: "https://govuk-github-trello-poster.herokuapp.com/payload" }},
       { config: { url: "https://ci.integration.publishing.service.gov.uk/github-webhook/" }}
     ]
 
