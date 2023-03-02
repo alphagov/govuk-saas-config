@@ -103,7 +103,7 @@ private
       strict: overrides.fetch("up_to_date_branches", false),
       contexts: [
         jenkinsfile_exists? ? "continuous-integration/jenkins/branch" : nil,
-        github_actions_test_exists? ? "test" : nil,
+        github_actions_test_job_name,
         github_actions_pre_commit_exists? ? "pre-commit" : nil,
         *overrides
           .fetch("required_status_checks", {})
@@ -141,11 +141,14 @@ private
   end
 
   def github_actions_exists?
-    github_actions_test_exists? || github_actions_pre_commit_exists?
+    !github_actions_test_job_name.nil? || github_actions_pre_commit_exists?
   end
 
-  def github_actions_test_exists?
-    !github_actions.nil? && github_actions.key?("jobs") && github_actions["jobs"].key?("test")
+  def github_actions_test_job_name
+    test_job = github_actions&.dig("jobs", "test")
+    unless test_job.nil?
+      test_job.fetch("name", "test")
+    end
   end
 
   def github_actions_pre_commit_exists?
