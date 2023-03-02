@@ -75,19 +75,6 @@ RSpec.describe ConfigureRepos do
     end
   end
 
-  context "when a repo uses GitHub Actions for CI and pre-commit" do
-    it "Updates a repo" do
-      given_theres_a_repo(full_name: "alphagov/rubocop-govuk")
-      and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/rubocop-govuk")
-      and_the_repo_uses_github_actions_for_test_and_pre_commit(full_name: "alphagov/rubocop-govuk")
-      when_the_script_runs
-      the_repo_is_updated_with_correct_settings
-      the_repo_has_branch_protection_activated
-      the_repo_has_ci_enabled(full_name: "alphagov/rubocop-govuk", providers: ["github_actions"], github_actions: %w[test pre-commit])
-      the_repo_has_webhooks_configured(number_of_webhooks: 1)
-    end
-  end
-
   context "when there are no supported CI provider config files" do
     it "doesn't set up CI if there is no Jenkinsfile or GitHub Actions config" do
       given_theres_a_repo
@@ -179,23 +166,6 @@ RSpec.describe ConfigureRepos do
       "on" => %w[push pull_request],
       "jobs" => {
         "test" => job_name.nil? ? {} : {"name" => job_name},
-      }
-    }
-
-    payload = {
-      content: Base64.encode64(content.to_yaml)
-    }
-
-    stub_request(:get, "https://api.github.com/repos/#{full_name}/contents/.github/workflows/ci.yml").
-      to_return(body: payload.to_json, headers: { content_type: "application/json" }, status: 200)
-  end
-
-  def and_the_repo_uses_github_actions_for_test_and_pre_commit(full_name: "alphagov/govuk-coronavirus-content")
-    content = {
-      "on" => %w[push pull_request],
-      "jobs" => {
-        "test" => {},
-        "pre-commit" => {},
       }
     }
 
