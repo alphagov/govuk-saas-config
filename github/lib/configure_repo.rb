@@ -54,6 +54,15 @@ private
 
   def update_webhooks
     existing_webhooks = client.hooks(repo[:full_name])
+    
+    # Remove after running
+    puts "Removing PaaS hooks"
+    existing_webhooks.each do |hook|
+      puts hook.inspect
+      if hook.config.url == "https://github-trello-poster.cloudapps.digital/payload"
+        client.remove_hook(repo[:full_name], hook.id)
+      end
+    end
 
     # GitHub Trello Poster
     if existing_webhooks.map(&:config).map(&:url).include?("https://govuk-github-trello-poster.herokuapp.com/payload")
