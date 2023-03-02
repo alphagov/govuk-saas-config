@@ -63,6 +63,16 @@ RSpec.describe ConfigureRepos do
       the_repo_has_branch_protection_activated
       the_repo_is_updated_with_correct_settings
     end
+
+    context "and the test job has a custom name" do
+      it "Uses the custom name" do
+        given_theres_a_repo(full_name: "alphagov/rubocop-govuk")
+        and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/rubocop-govuk")
+        and_the_repo_uses_github_actions_for_test(full_name: "alphagov/rubocop-govuk", job_name: "Run tests")
+        when_the_script_runs
+        the_repo_has_ci_enabled(full_name: "alphagov/rubocop-govuk", providers: ["github_actions"], github_actions: ["Run tests"])
+      end
+    end
   end
 
   context "when a repo uses GitHub Actions for CI and pre-commit" do
@@ -164,11 +174,11 @@ RSpec.describe ConfigureRepos do
       to_return(status: 404)
   end
 
-  def and_the_repo_uses_github_actions_for_test(full_name: "alphagov/govuk-coronavirus-content")
+  def and_the_repo_uses_github_actions_for_test(full_name: "alphagov/govuk-coronavirus-content", job_name: nil)
     content = {
       "on" => %w[push pull_request],
       "jobs" => {
-        "test" => {},
+        "test" => job_name.nil? ? {} : {"name" => job_name},
       }
     }
 
