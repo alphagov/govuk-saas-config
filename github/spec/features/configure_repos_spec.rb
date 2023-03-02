@@ -38,7 +38,7 @@ RSpec.describe ConfigureRepos do
     it "Updates a repo" do
       given_theres_a_repo(full_name: "alphagov/rubocop-govuk")
       and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/rubocop-govuk")
-      and_the_repo_uses_github_actions_for_test(full_name: "alphagov/rubocop-govuk")
+      and_the_repo_uses_github_actions_for_test(full_name: "alphagov/rubocop-govuk", workflow_filename: "ci.yml")
       when_the_script_runs
       the_repo_is_updated_with_correct_settings
       the_repo_has_branch_protection_activated
@@ -71,6 +71,16 @@ RSpec.describe ConfigureRepos do
         and_the_repo_uses_github_actions_for_test(full_name: "alphagov/rubocop-govuk", job_name: "Run tests")
         when_the_script_runs
         the_repo_has_ci_enabled(full_name: "alphagov/rubocop-govuk", providers: ["github_actions"], github_actions: ["Run tests"])
+      end
+    end
+
+    context "and the workflow is named ci.yaml" do
+      it "Updates a repo" do
+        given_theres_a_repo(full_name: "alphagov/rubocop-govuk")
+        and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/rubocop-govuk")
+        and_the_repo_uses_github_actions_for_test(full_name: "alphagov/rubocop-govuk", workflow_filename: "ci.yaml")
+        when_the_script_runs
+        the_repo_has_ci_enabled(full_name: "alphagov/rubocop-govuk", providers: ["github_actions"])
       end
     end
   end
@@ -161,7 +171,7 @@ RSpec.describe ConfigureRepos do
       to_return(status: 404)
   end
 
-  def and_the_repo_uses_github_actions_for_test(full_name: "alphagov/govuk-coronavirus-content", job_name: nil)
+  def and_the_repo_uses_github_actions_for_test(full_name: "alphagov/govuk-coronavirus-content", job_name: nil, workflow_filename: "ci.yml")
     content = {
       "on" => %w[push pull_request],
       "jobs" => {
@@ -173,13 +183,17 @@ RSpec.describe ConfigureRepos do
       content: Base64.encode64(content.to_yaml)
     }
 
-    stub_request(:get, "https://api.github.com/repos/#{full_name}/contents/.github/workflows/ci.yml").
+    stub_request(:get, %r{https://api.github.com/repos/#{full_name}/contents/.github/workflows/.+}).
+      to_return(status: 404)
+    stub_request(:get, "https://api.github.com/repos/#{full_name}/contents/.github/workflows/#{workflow_filename}").
       to_return(body: payload.to_json, headers: { content_type: "application/json" }, status: 200)
   end
 
   def and_the_repo_does_not_use_github_actions(full_name: "alphagov/smart-sandwich")
-    stub_request(:get, "https://api.github.com/repos/#{full_name}/contents/.github/workflows/ci.yml").
-      to_return(status: 404)
+    ["ci.yml", "ci.yaml"].each do |filename|
+      stub_request(:get, "https://api.github.com/repos/#{full_name}/contents/.github/workflows/#{filename}").
+        to_return(status: 404)
+    end
   end
 
   def and_the_repo_already_has_webhooks

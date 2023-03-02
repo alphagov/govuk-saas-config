@@ -129,14 +129,18 @@ private
     Base64.decode64(jenkinsfile.content)
   end
 
-  def github_actions
-    @github_actions ||= begin
-      encoded_content = client.contents(repo[:full_name], path: ".github/workflows/ci.yml").content
+  def workflow_definition(filename)
+    begin
+      encoded_content = client.contents(repo[:full_name], path: ".github/workflows/#{filename}").content
       decoded_content = Base64.decode64(encoded_content)
       YAML.load(decoded_content)
     rescue Octokit::NotFound
       nil
     end
+  end
+
+  def github_actions
+    @github_actions ||= workflow_definition("ci.yml") || workflow_definition("ci.yaml")
   end
 
   def github_actions_test_job_name
