@@ -1,5 +1,5 @@
-require 'base64'
-require 'yaml'
+require "base64"
+require "yaml"
 
 class ConfigureRepo
   attr_reader :repo, :client
