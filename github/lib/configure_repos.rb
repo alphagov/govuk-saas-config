@@ -1,7 +1,7 @@
 require "yaml"
-require "json"
 require "octokit"
 require_relative "./configure_repo"
+require_relative "./fetch_repos"
 
 class ConfigureRepos
   HOOKS_TO_DELETE = %w[
@@ -10,18 +10,17 @@ class ConfigureRepos
 
 
   def configure!
-    repos.each do |repo|
+    fetch_repos.each do |repo|
       ConfigureRepo.new(repo, client, repo_overrides[repo[:full_name]]).configure!
     end
   end
 
   def list_repos
-    puts repos.to_yaml
+    puts fetch_repos.to_yaml
   end
 
   def remove_old_webhooks!
-
-    repos.map do |repo|
+    fetch_repos.map do |repo|
       begin
       client.hooks(repo[:full_name]).each do |hook|
         next unless HOOKS_TO_DELETE.include?(hook.config.url)
@@ -36,17 +35,8 @@ class ConfigureRepos
 
 private
 
-  def repos
-    client
-      .org_repos("alphagov", accept: "application/vnd.github.mercy-preview+json")
-      .select { |repo| repo.topics.to_a.include?("govuk") }
-      .reject { |repo| ignored_repos.include?(repo.full_name) }
-      .reject { |repo| repo.archived }
-      .sort_by { |repo| repo[:full_name] }
-  end
-
-  def ignored_repos
-    @ignored_repos ||= YAML.load_file("#{__dir__}/../ignored_repos.yml")
+  def fetch_repos
+    @fetch_repos ||= FetchRepos.new(client).repos
   end
 
   def repo_overrides
