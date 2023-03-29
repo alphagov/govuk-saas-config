@@ -90,11 +90,11 @@ RSpec.describe ConfigureRepos do
 
   context "when a repo uses both Jenkins and GitHub Actions for CI" do
     it "sets up CI for both providers" do
-      given_theres_a_repo(full_name: "alphagov/static")
-      and_the_repo_has_a_jenkinsfile(full_name: "alphagov/static")
-      and_the_repo_uses_github_actions_for_test(full_name: "alphagov/static")
+      given_theres_a_repo(full_name: "alphagov/example")
+      and_the_repo_has_a_jenkinsfile(full_name: "alphagov/example")
+      and_the_repo_uses_github_actions_for_test(full_name: "alphagov/example")
       when_the_script_runs
-      the_repo_has_ci_enabled(full_name: "alphagov/static", providers: ["jenkins", "github_actions"])
+      the_repo_has_ci_enabled(full_name: "alphagov/example", providers: ["jenkins", "github_actions"])
       the_repo_has_branch_protection_activated
       the_repo_is_updated_with_correct_settings
     end
