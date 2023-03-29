@@ -13,6 +13,7 @@ alphagov/account-api:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Test Ruby
       - Lint Ruby / Run RuboCop
@@ -24,6 +25,7 @@ alphagov/asset-manager:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Test Ruby
       - Lint Ruby / Run RuboCop
@@ -35,6 +37,7 @@ alphagov/authenticating-proxy:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Test Ruby
       - Security Analysis / Run Brakeman
@@ -45,6 +48,7 @@ alphagov/bouncer:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Test Ruby
       - Lint Ruby / Run RuboCop
@@ -54,6 +58,7 @@ alphagov/collections:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Integration tests
       - Lint Ruby / Run RuboCop
@@ -69,6 +74,7 @@ alphagov/cache-clearing-service:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Security Analysis / Run Brakeman
       - Lint Ruby / Run RuboCop
@@ -79,6 +85,7 @@ alphagov/collections-publisher:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Lint Ruby / Run RuboCop
       - Security Analysis / Run Brakeman
@@ -91,6 +98,7 @@ alphagov/contacts-admin:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Lint Ruby / Run RuboCop
       - Security Analysis / Run Brakeman
@@ -103,6 +111,7 @@ alphagov/content-data-api:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Lint Ruby / Run RuboCop
       - Security Analysis / Run Brakeman
@@ -113,6 +122,7 @@ alphagov/content-store:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Lint Ruby / Run RuboCop
       - Run Pact tests / Verify pact tests
@@ -124,6 +134,7 @@ alphagov/content-tagger:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Security Analysis / Run Brakeman
       - Lint SCSS / Run Stylelint
@@ -142,6 +153,7 @@ alphagov/email-alert-api:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Test Ruby
       - Run Pact tests / Verify pact tests
@@ -153,6 +165,7 @@ alphagov/email-alert-frontend:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Security Analysis / Run Brakeman
       - Lint Ruby / Run RuboCop
@@ -166,6 +179,7 @@ alphagov/email-alert-service:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Lint Ruby / Run RuboCop
       - Test Ruby / Run RSpec
@@ -175,6 +189,7 @@ alphagov/feedback:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Security Analysis / Run Brakeman
       - Lint Ruby / Run RuboCop
@@ -188,6 +203,7 @@ alphagov/frontend:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Lint Ruby / Run RuboCop
       - Lint JavaScript / Run Standardx
@@ -211,6 +227,7 @@ alphagov/imminence:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Integration tests
       - Test Ruby
@@ -223,6 +240,7 @@ alphagov/link-checker-api:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Test Ruby
       - Security Analysis / Run Brakeman
@@ -234,6 +252,7 @@ alphagov/local-links-manager:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Test Ruby
       - Lint Ruby / Run RuboCop
@@ -246,6 +265,7 @@ alphagov/locations-api:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Test Ruby
       - Security Analysis / Run Brakeman
@@ -257,6 +277,7 @@ alphagov/release:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Test Ruby
       - Lint Ruby / Run RuboCop
@@ -269,6 +290,7 @@ alphagov/short-url-manager:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Lint Ruby / Run RuboCop
       - Security Analysis / Run Brakeman
@@ -281,6 +303,7 @@ alphagov/smart-answers:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Lint JavaScript / Run Standardx
       - Security Analysis / Run Brakeman
@@ -294,6 +317,7 @@ alphagov/specialist-publisher:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Lint Ruby / Run RuboCop
       - Lint JavaScript / Run Standardx
@@ -307,6 +331,7 @@ alphagov/support-api:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Test Ruby
       - Security Analysis / Run Brakeman
@@ -317,6 +342,7 @@ alphagov/travel-advice-publisher:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Security Analysis / Run Brakeman
       - Lint Ruby / Run RuboCop
@@ -330,6 +356,7 @@ alphagov/publisher:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Security Analysis / Run Brakeman
       - Lint JavaScript / Run Standardx
@@ -343,6 +370,7 @@ alphagov/publishing-api:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Check content schemas are built
       - Test Ruby
@@ -356,6 +384,7 @@ alphagov/finder-frontend:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Integration tests
       - Lint Ruby / Run RuboCop
@@ -370,6 +399,7 @@ alphagov/government-frontend:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Lint Ruby / Run RuboCop
       - Security Analysis / Run Brakeman
@@ -383,6 +413,7 @@ alphagov/hmrc-manuals-api:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Lint Ruby / Run RuboCop
       - Test Ruby / Run Minitest
@@ -393,6 +424,7 @@ alphagov/licence-finder:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Lint Ruby / Run RuboCop
       - Security Analysis / Run Brakeman
@@ -408,6 +440,7 @@ alphagov/manuals-publisher:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Integration tests
       - Lint JavaScript / Run Standardx
@@ -422,6 +455,7 @@ alphagov/maslow:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Test Ruby
       - Lint Ruby / Run RuboCop
@@ -435,6 +469,7 @@ alphagov/info-frontend:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Lint Ruby / Run RuboCop
       - Test Ruby / Run RSpec
@@ -445,6 +480,7 @@ alphagov/content-publisher:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Lint SCSS / Run Stylelint
       - Security Analysis / Run Brakeman
@@ -458,6 +494,7 @@ alphagov/content-data-admin:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Test Ruby
       - Lint SCSS / Run Stylelint
@@ -475,6 +512,7 @@ alphagov/service-manual-publisher:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Security Analysis / Run Brakeman
       - Lint Ruby / Run RuboCop
@@ -493,6 +531,7 @@ alphagov/signon:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Test Ruby
       - Lint JavaScript / Run Standardx
@@ -506,6 +545,7 @@ alphagov/support:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Test Ruby
       - Lint JavaScript / Run Standardx
@@ -518,6 +558,7 @@ alphagov/transition:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Integration tests
       - Test Ruby
@@ -530,6 +571,7 @@ alphagov/whitehall:
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Integration tests
       - Lint SCSS / Run Stylelint
@@ -549,6 +591,7 @@ alphagov/repo-for-govuk-saas-config-automated-tests:
 alphagov/router-api:
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Test Ruby
       - Security Analysis / Run Brakeman
@@ -557,6 +600,7 @@ alphagov/router-api:
 alphagov/search-admin:
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Integration tests
       - Lint Ruby / Run RuboCop
@@ -568,6 +612,7 @@ alphagov/search-admin:
 alphagov/search-api:
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Check Learn to Rank dependencies
       - Lint Ruby / Run RuboCop
@@ -576,6 +621,7 @@ alphagov/search-api:
 alphagov/static:
   need_production_access_to_merge: true
   required_status_checks:
+    ignore_jenkins: true
     additional_contexts:
       - Test Ruby
       - Lint Ruby / Run RuboCop

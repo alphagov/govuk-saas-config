@@ -99,10 +99,12 @@ private
   def required_status_checks
     return nil unless jenkinsfile_exists? || !github_actions_test_job_name.nil?
 
+    enforce_jenkins_checks = jenkinsfile_exists? && !overrides.dig("required_status_checks", "ignore_jenkins")
+
     {
       strict: overrides.fetch("up_to_date_branches", false),
       contexts: [
-        jenkinsfile_exists? ? "continuous-integration/jenkins/branch" : nil,
+        enforce_jenkins_checks ? "continuous-integration/jenkins/branch" : nil,
         github_actions_test_job_name,
         *overrides
           .fetch("required_status_checks", {})
