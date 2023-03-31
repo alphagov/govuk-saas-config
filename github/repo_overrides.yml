@@ -588,6 +588,13 @@ alphagov/govuk-coronavirus-content:
 alphagov/repo-for-govuk-saas-config-automated-tests:
   up_to_date_branches: true
 
+alphagov/router:
+  need_production_access_to_merge: true
+  required_status_checks:
+    ignore_jenkins: true
+    additional_contexts:
+     - Test Go
+
 alphagov/router-api:
   need_production_access_to_merge: true
   required_status_checks:
