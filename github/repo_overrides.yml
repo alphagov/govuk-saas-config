@@ -1,13 +1,3 @@
-alphagov/datagovuk_find:
-  required_status_checks:
-    additional_contexts:
-      - continuous-integration/travis-ci
-
-alphagov/datagovuk_publish:
-  required_status_checks:
-    additional_contexts:
-      - continuous-integration/travis-ci
-
 alphagov/account-api:
   # required for continuous deployment
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
