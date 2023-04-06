@@ -15,6 +15,8 @@ class ConfigureRepo
     update_repo_settings
     protect_branch
     update_webhooks
+    enable_vulnerability_alerts
+    enable_automated_security_fixes
     puts "√ #{repo[:full_name]}"
   rescue Octokit::NotFound => e
     puts "Could not find #{repo[:full_name]}. Possibly the govuk-ci user doesn't have admin access to this repo."
@@ -146,5 +148,13 @@ private
     unless test_job.nil?
       test_job.fetch("name", "test")
     end
+  end
+  
+  def enable_vulnerability_alerts
+    client.enable_vulnerability_alerts(repo[:full_name])
+  end
+
+  def enable_automated_security_fixes
+    client.put("https://api.github.com/repos/#{repo[:full_name]}/automated-security-fixes", accept: "application/vnd.github+json")
   end
 end
