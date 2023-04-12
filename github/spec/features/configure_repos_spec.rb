@@ -15,6 +15,8 @@ RSpec.describe ConfigureRepos do
       the_repo_has_branch_protection_activated
       the_repo_has_ci_enabled
       the_repo_has_webhooks_configured
+      the_repo_has_vulnerability_alerts_enabled
+      the_repo_has_automated_security_fixes_enabled
     end
 
     it "Updates an overridden repo" do
@@ -23,6 +25,8 @@ RSpec.describe ConfigureRepos do
       and_the_repo_does_not_use_github_actions(full_name: "alphagov/smart-answers")
       when_the_script_runs
       the_repo_is_updated_with_correct_settings
+      the_repo_has_vulnerability_alerts_enabled
+      the_repo_has_automated_security_fixes_enabled
     end
 
     it "Doesn't update a repo if it's archived" do
@@ -44,6 +48,8 @@ RSpec.describe ConfigureRepos do
       the_repo_has_branch_protection_activated
       the_repo_has_ci_enabled(full_name: "alphagov/rubocop-govuk", providers: ["github_actions"])
       the_repo_has_webhooks_configured(number_of_webhooks: 1)
+      the_repo_has_vulnerability_alerts_enabled
+      the_repo_has_automated_security_fixes_enabled
     end
 
     it "Updates a squash merge overridden repo" do
@@ -52,6 +58,8 @@ RSpec.describe ConfigureRepos do
       and_the_repo_uses_github_actions_for_test(full_name: "alphagov/govuk-coronavirus-content")
       when_the_script_runs
       the_repo_is_updated_with_correct_settings
+      the_repo_has_vulnerability_alerts_enabled
+      the_repo_has_automated_security_fixes_enabled
     end
 
     it "Updates a strict status checks overriden repo" do
@@ -62,6 +70,8 @@ RSpec.describe ConfigureRepos do
       the_repo_has_ci_enabled(full_name: "alphagov/repo-for-govuk-saas-config-automated-tests", providers: ["github_actions"], up_to_date_branches: true)
       the_repo_has_branch_protection_activated
       the_repo_is_updated_with_correct_settings
+      the_repo_has_vulnerability_alerts_enabled
+      the_repo_has_automated_security_fixes_enabled
     end
 
     context "and the test job has a custom name" do
@@ -71,6 +81,8 @@ RSpec.describe ConfigureRepos do
         and_the_repo_uses_github_actions_for_test(full_name: "alphagov/rubocop-govuk", job_name: "Run tests")
         when_the_script_runs
         the_repo_has_ci_enabled(full_name: "alphagov/rubocop-govuk", providers: ["github_actions"], github_actions: ["Run tests"])
+        the_repo_has_vulnerability_alerts_enabled
+        the_repo_has_automated_security_fixes_enabled
       end
     end
   end
@@ -85,6 +97,8 @@ RSpec.describe ConfigureRepos do
       the_repo_has_branch_protection_activated
       the_repo_has_ci_disabled
       the_repo_has_webhooks_configured(number_of_webhooks: 1)
+      the_repo_has_vulnerability_alerts_enabled
+      the_repo_has_automated_security_fixes_enabled
     end
   end
 
@@ -97,6 +111,8 @@ RSpec.describe ConfigureRepos do
       the_repo_has_ci_enabled(full_name: "alphagov/example", providers: ["jenkins", "github_actions"])
       the_repo_has_branch_protection_activated
       the_repo_is_updated_with_correct_settings
+      the_repo_has_vulnerability_alerts_enabled
+      the_repo_has_automated_security_fixes_enabled
     end
   end
 
@@ -143,6 +159,21 @@ RSpec.describe ConfigureRepos do
 
     @hook_creation = stub_request(:post, "https://api.github.com/repos/#{full_name}/hooks")
       .to_return(body: {}.to_json, status: archived ? 403 : 200)
+
+    @vulnerability_alerts_enabled = stub_request(:put, "https://api.github.com/repos/#{full_name}/vulnerability-alerts")
+      .to_return(body: {}.to_json, status: archived ? 403 : 204)
+
+    @automated_security_fixes_enabled = stub_request(:put, "https://api.github.com/repos/#{full_name}/automated-security-fixes")
+      .with(
+        body: "{}",
+        headers: {
+        'Accept'=>'application/vnd.github+json',
+        'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+        'Authorization'=>'token A_FAKE_TOKEN',
+        'Content-Type'=>'application/json',
+        'User-Agent'=>'Octokit Ruby Gem 6.0.1'
+        })
+      .to_return(status: archived ? 403 : 204, body: "", headers: {})
   end
 
   def and_the_repo_has_a_jenkinsfile(full_name: "alphagov/smart-sandwich")
@@ -239,5 +270,13 @@ RSpec.describe ConfigureRepos do
 
   def then_no_webhooks_are_changed
     expect(@hook_creation).not_to have_been_requested
+  end
+
+  def the_repo_has_vulnerability_alerts_enabled
+    expect(@vulnerability_alerts_enabled).to have_been_requested
+  end
+
+  def the_repo_has_automated_security_fixes_enabled
+    expect(@automated_security_fixes_enabled).to have_been_requested
   end
 end
