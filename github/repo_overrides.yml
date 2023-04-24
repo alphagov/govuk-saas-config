@@ -585,6 +585,13 @@ alphagov/router:
     additional_contexts:
      - Test Go
 
+alphagov/router-postgres:
+  need_production_access_to_merge: true
+  required_status_checks:
+    ignore_jenkins: true
+    additional_contexts:
+     - Test Go
+
 alphagov/router-api:
   need_production_access_to_merge: true
   required_status_checks:
