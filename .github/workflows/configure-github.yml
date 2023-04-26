@@ -1,0 +1,23 @@
+name: "Configure GitHub"
+
+on:
+  schedule:
+    - cron:  '0 8 * * *'
+  workflow_dispatch: {}
+
+jobs:
+  configure-github:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Configure GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: bundle exec rake github:configure_repos
