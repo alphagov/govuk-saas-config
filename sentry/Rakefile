@@ -29,7 +29,7 @@ task :api_keys do
   fetch_govuk_apps.each do |app|
     secret = SentryApi.client_keys("app-#{app["app_name"]}").first.dsn.secret
 
-    puts "govuk::apps::#{app["puppet_name"]}::sentry_dsn: DEC::GPG[#{secret}]!"
+    puts "govuk::apps::#{app["shortname"]}::sentry_dsn: DEC::GPG[#{secret}]!"
   end
 end
 
