@@ -43,6 +43,15 @@ jobs:
                   "text": {
                     "type": "mrkdwn",
                     "text": "Verify Repo Tags: Unresolved issues found. Check the build logs for details."
+                  },
+                  "accessory": {
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "View"
+                    },
+                    "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                    "action_id": "button-view-workflow"
                   }
                 },
                 {
@@ -58,15 +67,6 @@ jobs:
                     "type": "mrkdwn",
                     "text": "Falsely tagged govuk repos:\n${{ steps.verify_repo_tags.outputs.FALSELY_TAGGED_REPOS }}"
                   }
-                },
-                "accessory": {
-                  "type": "button",
-                  "text": {
-                      "type": "plain_text",
-                      "text": "View"
-                  },
-                  "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
-                  "action_id": "button-view-workflow"
                 }
               ]
             }
