@@ -1,0 +1,75 @@
+name: "Verify Repo Tags"
+
+on:
+  schedule:
+    - cron:  '0 9 * 1 5'
+  workflow_dispatch: {}
+
+jobs:
+  configure-github:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Verify Repo Tags
+        id: verify_repo_tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          output=$(bundle exec rake github:verify_repo_tags)
+
+          untagged_repos=$(echo "$output" | grep 'Untagged govuk repos:' -A 1 | tail -n +2)
+          falsely_tagged_repos=$(echo "$output" | grep 'Falsely tagged govuk repos:' -A 1 | tail -n +2)
+
+          echo "untagged_repos=$untagged_repos" >> "$GITHUB_OUTPUT"
+          echo "falsely_tagged_repos=$falsely_tagged_repos" >> "$GITHUB_OUTPUT"
+
+      - name: Notify failure
+        uses: slackapi/slack-github-action@v1
+        if: ${{ failure() }}
+        with:
+          payload: |
+            {
+              "text": "Verify Repo Tags: Unresolved issues found. Check the build logs for details.",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Verify Repo Tags: Unresolved issues found. Check the build logs for details."
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Untagged govuk repos:\n${{ steps.verify_repo_tags.outputs.UNTAGGED_REPOS }}"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Falsely tagged govuk repos:\n${{ steps.verify_repo_tags.outputs.FALSELY_TAGGED_REPOS }}"
+                  }
+                },
+                "accessory": {
+                  "type": "button",
+                  "text": {
+                      "type": "plain_text",
+                      "text": "View"
+                  },
+                  "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+                  "action_id": "button-view-workflow"
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
