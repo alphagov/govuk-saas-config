@@ -18,7 +18,7 @@ RSpec.describe ValidateRepos do
 
     stub_repos_json(repos)
 
-    expect { ValidateRepos.new(@octokit_mock).verify_repo_tags }.to output("\e[0;32;40mUntagged govuk repos: No mismatches found.\e[0m\n\n\e[0;32;40mFalsely tagged govuk repos: No mismatches found.\e[0m\n").to_stdout
+    expect { ValidateRepos.new(@octokit_mock).verify_repo_tags }.to_not output.to_stdout
   end
 
   it "should alert if finds an untagged repo in repos.json" do
@@ -29,7 +29,7 @@ RSpec.describe ValidateRepos do
 
     stub_repos_json(repos)
 
-    expect { ValidateRepos.new(@octokit_mock).verify_repo_tags }.to output("\e[0;31;40mUntagged govuk repos:\e[0m\nthis-govuk-repo-is-not-tagged!\n\n\e[0;32;40mFalsely tagged govuk repos: No mismatches found.\e[0m\n").to_stdout
+    expect { ValidateRepos.new(@octokit_mock).verify_repo_tags }.to output("Untagged govuk repos:\nthis-govuk-repo-is-not-tagged!\n").to_stdout.and raise_error(SystemExit)
   end
 
   it "should alert if it finds a repo that has falsely been tagged as govuk." do
@@ -37,7 +37,7 @@ RSpec.describe ValidateRepos do
 
     stub_repos_json(repos)
 
-    expect { ValidateRepos.new(@octokit_mock).verify_repo_tags }.to output("\e[0;32;40mUntagged govuk repos: No mismatches found.\e[0m\n\n\e[0;31;40mFalsely tagged govuk repos:\e[0m\nthis-is-a-govuk-repo\n").to_stdout
+    expect { ValidateRepos.new(@octokit_mock).verify_repo_tags }.to output("Falsely tagged govuk repos:\nthis-is-a-govuk-repo\n").to_stdout.and raise_error(SystemExit)
   end
 
   it "should alert reports findings accordingly and appropriately when it finds both." do
@@ -47,7 +47,7 @@ RSpec.describe ValidateRepos do
 
     stub_repos_json(repos)
 
-    expect { ValidateRepos.new(@octokit_mock).verify_repo_tags }.to output("\e[0;31;40mUntagged govuk repos:\e[0m\nthis-govuk-repo-is-not-tagged!\n\n\e[0;31;40mFalsely tagged govuk repos:\e[0m\nthis-is-a-govuk-repo\n").to_stdout
+    expect { ValidateRepos.new(@octokit_mock).verify_repo_tags }.to output("Untagged govuk repos:\nthis-govuk-repo-is-not-tagged!\nFalsely tagged govuk repos:\nthis-is-a-govuk-repo\n").to_stdout.and raise_error(SystemExit)
   end
 
   def stub_repos_json(repos)

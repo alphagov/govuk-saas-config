@@ -1,7 +1,6 @@
 require "json"
 require "octokit"
 require "open-uri"
-require "colorize"
 require_relative "./fetch_repos"
 
 class ValidateRepos
@@ -17,30 +16,13 @@ class ValidateRepos
   def verify_repo_tags
     govuk_repo_names = JSON.load(URI.open("https://docs.publishing.service.gov.uk/repos.json")).map { |repo| repo["app_name"] }
     github_repo_names = github_repos_tagged_govuk.map { |repo| repo["name"] }
-    
-    untagged_govuk_repo_names = govuk_repo_names - github_repo_names
-    falsely_tagged_govuk_repo_names = github_repo_names - govuk_repo_names
-    
-    if untagged_govuk_repo_names.empty?
-      puts "Untagged govuk repos: No mismatches found.".colorize(:color => :green, :background => :black)
-    
-    else
-      puts "Untagged govuk repos:".colorize(:color => :red, :background => :black)
-      untagged_govuk_repo_names.each do |untag|
-        puts untag
-      end
-    end  
+      
+    untagged_repos = (govuk_repo_names - github_repo_names).join("\n")
+    falsely_tagged_repos = (github_repo_names - govuk_repo_names).join("\n")
+  
+    puts "Untagged govuk repos:\n#{untagged_repos}" unless untagged_repos.empty?
+    puts "Falsely tagged govuk repos:\n#{falsely_tagged_repos}" unless falsely_tagged_repos.empty?
 
-    puts "\n"
-
-    if falsely_tagged_govuk_repo_names.empty?
-      puts "Falsely tagged govuk repos: No mismatches found.".colorize(:color => :green, :background => :black)
-    
-    else
-      puts "Falsely tagged govuk repos:".colorize(:color => :red, :background => :black)
-      falsely_tagged_govuk_repo_names.each do |falsetag|
-        puts falsetag
-      end
-    end
+    exit 1 unless untagged_repos.empty? && falsely_tagged_repos.empty?
   end
 end
