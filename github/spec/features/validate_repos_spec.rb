@@ -18,7 +18,10 @@ RSpec.describe ValidateRepos do
 
     stub_repos_json(repos)
 
-    expect { ValidateRepos.new(@octokit_mock).verify_repo_tags }.to_not output.to_stdout
+    validator = ValidateRepos.new(@octokit_mock)
+
+    expect(validator.untagged_repos).to eq("")
+    expect(validator.falsely_tagged_repos).to eq("")
   end
 
   it "should alert if finds an untagged repo in repos.json" do
@@ -29,7 +32,10 @@ RSpec.describe ValidateRepos do
 
     stub_repos_json(repos)
 
-    expect { ValidateRepos.new(@octokit_mock).verify_repo_tags }.to output("Untagged govuk repos:\nthis-govuk-repo-is-not-tagged!\n").to_stdout.and raise_error(SystemExit)
+    validator = ValidateRepos.new(@octokit_mock)
+
+    expect(validator.untagged_repos).to eq("this-govuk-repo-is-not-tagged!")
+    expect(validator.falsely_tagged_repos).to eq("")
   end
 
   it "should alert if it finds a repo that has falsely been tagged as govuk." do
@@ -37,17 +43,10 @@ RSpec.describe ValidateRepos do
 
     stub_repos_json(repos)
 
-    expect { ValidateRepos.new(@octokit_mock).verify_repo_tags }.to output("Falsely tagged govuk repos:\nthis-is-a-govuk-repo\n").to_stdout.and raise_error(SystemExit)
-  end
+    validator = ValidateRepos.new(@octokit_mock)
 
-  it "should alert reports findings accordingly and appropriately when it finds both." do
-    repos = [{
-      "app_name": "this-govuk-repo-is-not-tagged!", 
-    }]
-
-    stub_repos_json(repos)
-
-    expect { ValidateRepos.new(@octokit_mock).verify_repo_tags }.to output("Untagged govuk repos:\nthis-govuk-repo-is-not-tagged!\nFalsely tagged govuk repos:\nthis-is-a-govuk-repo\n").to_stdout.and raise_error(SystemExit)
+    expect(validator.falsely_tagged_repos).to eq("this-is-a-govuk-repo")
+    expect(validator.untagged_repos).to eq("")
   end
 
   def stub_repos_json(repos)

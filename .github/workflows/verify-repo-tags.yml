@@ -6,7 +6,7 @@ on:
   workflow_dispatch: {}
 
 jobs:
-  configure-github:
+  verify-repo-tags:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -22,13 +22,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          output=$(bundle exec rake github:verify_repo_tags)
+          EXIT_CODE=0
+          output=$(bundle exec rake github:verify_repo_tags) || EXIT_CODE=$?
 
-          untagged_repos=$(echo "$output" | grep 'Untagged govuk repos:' -A 1 | tail -n +2)
-          falsely_tagged_repos=$(echo "$output" | grep 'Falsely tagged govuk repos:' -A 1 | tail -n +2)
+          echo "$output"
 
-          echo "untagged_repos=$untagged_repos" >> "$GITHUB_OUTPUT"
-          echo "falsely_tagged_repos=$falsely_tagged_repos" >> "$GITHUB_OUTPUT"
+          exit $EXIT_CODE
 
       - name: Notify failure
         uses: slackapi/slack-github-action@v1
@@ -52,20 +51,6 @@ jobs:
                     },
                     "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
                     "action_id": "button-view-workflow"
-                  }
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "Untagged govuk repos:\n${{ steps.verify_repo_tags.outputs.UNTAGGED_REPOS }}"
-                  }
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "Falsely tagged govuk repos:\n${{ steps.verify_repo_tags.outputs.FALSELY_TAGGED_REPOS }}"
                   }
                 }
               ]
