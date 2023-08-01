@@ -21,8 +21,16 @@ namespace :github do
   task :verify_repo_tags do
     validator = ValidateRepos.new
 
-    puts "Untagged govuk repos:\n#{validator.untagged_repos}" unless validator.untagged_repos.empty?
-    puts "Falsely tagged govuk repos:\n#{validator.falsely_tagged_repos}" unless validator.falsely_tagged_repos.empty?
+    untagged_message = <<~UNTAGGED
+      The following repos in the repos.yml file in govuk-developer-docs do not have the govuk tag on GitHub:
+    UNTAGGED
+
+    falsely_tagged_message = <<~FALSETAG
+      The following repos have the govuk tag on GitHub but are not in the repos.yml file in govuk-developer-docs:
+    FALSETAG
+
+    puts "#{untagged_message}\n#{validator.untagged_repos}" unless validator.untagged_repos.empty?
+    puts "#{falsely_tagged_message}\n#{validator.falsely_tagged_repos}" unless validator.falsely_tagged_repos.empty?
 
     exit 1 unless validator.untagged_repos.empty? && validator.falsely_tagged_repos.empty?
   end
