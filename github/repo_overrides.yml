@@ -556,7 +556,6 @@ alphagov/whitehall:
       - Lint SCSS / Run Stylelint
       - Lint JavaScript / Run Standardx
       - Lint Ruby / Run RuboCop
-      - Run Pact tests / Verify pact tests
       - Security Analysis / Run Brakeman
       - Test JavaScript / Run Jasmine
       - Test Ruby / Run Minitest
