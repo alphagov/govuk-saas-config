@@ -33,28 +33,6 @@ task :api_keys do
   end
 end
 
-desc "Create all the teams"
-task :create_teams do
-  begin
-    puts "Creating #{DEFAULT_TEAM}"
-    SentryApi.create_team(name: "GOV.UK", slug: DEFAULT_TEAM)
-  rescue => e
-    puts e.message
-    puts e.inspect
-  end
-
-  team_names = fetch_govuk_apps.map { |a| team_name(a["team"]) }.compact.uniq
-  team_names.each do |team_name|
-    begin
-      puts "Creating #{team_name}"
-      SentryApi.create_team(name: team_name, slug: team_name)
-    rescue => e
-      puts e.message
-      puts e.inspect
-    end
-  end
-end
-
 desc "Create or update Sentry projects for all GOV.UK applications"
 task :update_projects do
   apps = fetch_govuk_apps
