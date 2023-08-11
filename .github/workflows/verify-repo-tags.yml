@@ -35,13 +35,13 @@ jobs:
         with:
           payload: |
             {
-              "text": "The <https://github.com/alphagov/govuk-developer-docs/blob/main/data/repos.yml|Developer Docs repo list> is out of sync with the repos tagged as 'govuk' in GitHub.",
+              "text": "The Developer Docs repo list (https://github.com/alphagov/govuk-developer-docs/blob/main/data/repos.yml) is out of sync with the repos tagged as govuk in GitHub.",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "The <https://github.com/alphagov/govuk-developer-docs/blob/main/data/repos.yml|Developer Docs repo list> is out of sync with the repos tagged as 'govuk' in GitHub.",
+                    "text": "The Developer Docs repo list (https://github.com/alphagov/govuk-developer-docs/blob/main/data/repos.yml) is out of sync with the repos tagged as govuk in GitHub.",
                   },
                   "accessory": {
                     "type": "button",
