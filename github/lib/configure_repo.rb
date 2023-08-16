@@ -13,7 +13,7 @@ class ConfigureRepo
   def configure!
     puts "Updating #{repo[:full_name]}"
     update_repo_settings
-    protect_branch
+    protect_default_branch
     update_webhooks
     enable_vulnerability_alerts
     enable_automated_security_fixes
@@ -36,7 +36,7 @@ private
     )
   end
 
-  def protect_branch
+  def protect_default_branch
     config = {
       enforce_admins: true,
       required_status_checks: required_status_checks,
