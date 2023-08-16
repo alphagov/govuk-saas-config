@@ -13,6 +13,7 @@ RSpec.describe ConfigureRepos do
       when_the_script_runs
       the_repo_is_updated_with_correct_settings
       the_repo_has_branch_protection_activated
+      the_repo_has_gh_pages_branch_protection_activated
       the_repo_has_ci_enabled
       the_repo_has_webhooks_configured
       the_repo_has_vulnerability_alerts_enabled
@@ -46,6 +47,7 @@ RSpec.describe ConfigureRepos do
       when_the_script_runs
       the_repo_is_updated_with_correct_settings
       the_repo_has_branch_protection_activated
+      the_repo_has_gh_pages_branch_protection_activated
       the_repo_has_ci_enabled(full_name: "alphagov/rubocop-govuk", providers: ["github_actions"])
       the_repo_has_webhooks_configured(number_of_webhooks: 1)
       the_repo_has_vulnerability_alerts_enabled
@@ -69,6 +71,7 @@ RSpec.describe ConfigureRepos do
       when_the_script_runs
       the_repo_has_ci_enabled(full_name: "alphagov/repo-for-govuk-saas-config-automated-tests", providers: ["github_actions"], up_to_date_branches: true)
       the_repo_has_branch_protection_activated
+      the_repo_has_gh_pages_branch_protection_activated
       the_repo_is_updated_with_correct_settings
       the_repo_has_vulnerability_alerts_enabled
       the_repo_has_automated_security_fixes_enabled
@@ -95,6 +98,7 @@ RSpec.describe ConfigureRepos do
       when_the_script_runs
       the_repo_is_updated_with_correct_settings
       the_repo_has_branch_protection_activated
+      the_repo_has_gh_pages_branch_protection_activated
       the_repo_has_ci_disabled
       the_repo_has_webhooks_configured(number_of_webhooks: 1)
       the_repo_has_vulnerability_alerts_enabled
@@ -110,6 +114,7 @@ RSpec.describe ConfigureRepos do
       when_the_script_runs
       the_repo_has_ci_enabled(full_name: "alphagov/example", providers: ["jenkins", "github_actions"])
       the_repo_has_branch_protection_activated
+      the_repo_has_gh_pages_branch_protection_activated
       the_repo_is_updated_with_correct_settings
       the_repo_has_vulnerability_alerts_enabled
       the_repo_has_automated_security_fixes_enabled
@@ -121,6 +126,17 @@ RSpec.describe ConfigureRepos do
       given_theres_a_repo
       and_the_repo_already_has_webhooks
       then_no_webhooks_are_changed
+    end
+  end
+
+  describe "branch protection" do
+    it "Avoids adding branch protection to gh-pages branch unless it exists" do
+      given_theres_a_repo
+      and_the_repo_does_not_have_a_jenkinsfile
+      and_the_repo_does_not_use_github_actions
+      and_the_repo_has_no_gh_pages_branch
+      when_the_script_runs
+      no_exception_is_raised_to_stop_the_configuration
     end
   end
 
@@ -156,6 +172,8 @@ RSpec.describe ConfigureRepos do
             })
       .to_return(body: {}.to_json, status: archived ? 403 : 200)
 
+    @gh_pages_branch_protection_update = stub_request(:put, "https://api.github.com/repos/#{full_name}/branches/gh-pages/protection")
+      .to_return(body: {}.to_json, status: archived ? 403 : 200)
 
     @hook_creation = stub_request(:post, "https://api.github.com/repos/#{full_name}/hooks")
       .to_return(body: {}.to_json, status: archived ? 403 : 200)
@@ -223,6 +241,18 @@ RSpec.describe ConfigureRepos do
       to_return(body: payload.to_json, headers: { content_type: 'application/json' })
   end
 
+  def and_the_repo_has_no_gh_pages_branch
+    @gh_pages_branch_protection_update = stub_request(:put, "https://api.github.com/repos/alphagov/smart-sandwich/branches/gh-pages/protection")
+      .to_return(body: {}.to_json, status: 404)
+  end
+
+  def no_exception_is_raised_to_stop_the_configuration
+    # `enable_automated_security_fixes` is the last step of the configuration.
+    # If it has succeeded, then we know the `Octokit::NotFound` exception raised
+    # by any earlier steps did not prevent the later steps from being actioned.
+    the_repo_has_automated_security_fixes_enabled
+  end
+
   def when_the_script_runs
     ConfigureRepos.new.configure!
   end
@@ -238,6 +268,10 @@ RSpec.describe ConfigureRepos do
 
   def the_repo_has_branch_protection_activated
     expect(@branch_protection_update).to have_been_requested
+  end
+
+  def the_repo_has_gh_pages_branch_protection_activated
+    expect(@gh_pages_branch_protection_update).to have_been_requested
   end
 
   def the_repo_has_ci_enabled(full_name: "alphagov/smart-sandwich", providers: ["jenkins"], up_to_date_branches: false, default_branch: "main", github_actions: "test")
