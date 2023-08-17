@@ -13,7 +13,8 @@ class ConfigureRepo
   def configure!
     puts "Updating #{repo[:full_name]}"
     update_repo_settings
-    protect_branch
+    protect_default_branch
+    protect_gh_pages_branch
     update_webhooks
     enable_vulnerability_alerts
     enable_automated_security_fixes
@@ -36,7 +37,7 @@ private
     )
   end
 
-  def protect_branch
+  def protect_default_branch
     config = {
       enforce_admins: true,
       required_status_checks: required_status_checks,
@@ -52,6 +53,18 @@ private
     end
 
     client.protect_branch(repo[:full_name], repo[:default_branch], config)
+  end
+
+  def protect_gh_pages_branch
+    # https://docs.github.com/en/rest/branches/branch-protection?apiVersion=2022-11-28#update-branch-protection
+    config = {
+      enforce_admins: nil,
+      required_status_checks: nil,
+      required_pull_request_reviews: nil,
+    }
+    client.protect_branch(repo[:full_name], "gh-pages", config)
+  rescue Octokit::NotFound => e
+    # no gh-pages branch exists. Continue.
   end
 
   def update_webhooks
