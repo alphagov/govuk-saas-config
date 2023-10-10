@@ -182,15 +182,6 @@ RSpec.describe ConfigureRepos do
       .to_return(body: {}.to_json, status: archived ? 403 : 204)
 
     @automated_security_fixes_enabled = stub_request(:put, "https://api.github.com/repos/#{full_name}/automated-security-fixes")
-      .with(
-        body: "{}",
-        headers: {
-        'Accept'=>'application/vnd.github+json',
-        'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-        'Authorization'=>'token A_FAKE_TOKEN',
-        'Content-Type'=>'application/json',
-        'User-Agent'=>'Octokit Ruby Gem 6.0.1'
-        })
       .to_return(status: archived ? 403 : 204, body: "", headers: {})
   end
 
