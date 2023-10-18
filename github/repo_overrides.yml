@@ -552,7 +552,7 @@ alphagov/whitehall:
   required_status_checks:
     ignore_jenkins: true
     additional_contexts:
-      - Integration tests
+      - Test features / Run Cucumber
       - Lint SCSS / Run Stylelint
       - Lint JavaScript / Run Standardx
       - Lint Ruby / Run RuboCop
