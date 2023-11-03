@@ -395,7 +395,7 @@ alphagov/hmrc-manuals-api:
     ignore_jenkins: true
     additional_contexts:
       - Lint Ruby / Run RuboCop
-      - Test Ruby / Run Minitest
+      - Test Ruby / Run RSpec
       - Security Analysis / Run Brakeman
 
 alphagov/licence-finder:
