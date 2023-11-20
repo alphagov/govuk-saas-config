@@ -192,6 +192,15 @@ alphagov/frontend:
       - Test JavaScript / Run Jasmine
       - Test Ruby / Run Minitest
 
+alphagov/govuk-aws:
+  need_production_access_to_merge: true
+  required_status_checks:
+    additional_contexts:
+      - lint / Docs up to date
+      - lint / Shellcheck
+      - lint / terraform fmt
+      - lint / Other linters
+
 alphagov/govuk-content-api-docs:
   allow_squash_merge: true
 
