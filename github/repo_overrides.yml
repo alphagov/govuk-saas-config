@@ -610,6 +610,29 @@ alphagov/search-api:
       - Lint Ruby / Run RuboCop
       - Test Ruby / Run RSpec
 
+alphagov/search-api-v2:
+  # required for continuous deployment
+  # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
+  # TODO: Enable me before going live with AB test (~ mid Dec 2023 or early Jan 2024)
+  # need_production_access_to_merge: true
+  required_status_checks:
+    ignore_jenkins: true
+    additional_contexts:
+      - Security Analysis / Run Brakeman
+      - Lint Ruby / Run RuboCop
+      - Test Ruby
+
+alphagov/search-v2-infrastructure:
+  # required for continuous deployment
+  # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
+  # TODO: Enable me before going live with AB test (~ mid Dec 2023 or early Jan 2024)
+  # need_production_access_to_merge: true
+  required_status_checks:
+    ignore_jenkins: true
+    additional_contexts:
+      - lint_and_validate
+      - validate-json-schema
+
 alphagov/static:
   need_production_access_to_merge: true
   required_status_checks:
