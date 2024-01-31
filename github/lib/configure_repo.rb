@@ -71,7 +71,7 @@ private
     existing_webhooks = client.hooks(repo[:full_name])
 
     # GitHub Trello Poster
-    if existing_webhooks.map(&:config).map(&:url).include?("https://govuk-github-trello-poster.herokuapp.com/payload")
+    if existing_webhooks.map(&:config).map(&:url).start_with?("https://govuk-github-trello-poster.herokuapp.com/")
       puts "√ GitHub Trello Poster webhook exists"
     else
       puts "Creating GitHub Trello Poster webhook"
