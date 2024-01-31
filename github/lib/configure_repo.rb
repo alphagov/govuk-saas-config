@@ -88,62 +88,20 @@ private
         }
       )
     end
-
-    # Jenkins CI
-    if jenkinsfile_exists?
-      if existing_webhooks.map(&:config).map(&:url).include?("https://ci.integration.publishing.service.gov.uk/github-webhook/")
-        puts "√ Jenkins CI webhook exists"
-      else
-        puts "Creating Jenkins CI webhook"
-        client.create_hook(
-          repo[:full_name],
-          "web",
-          {
-            url: "https://ci.integration.publishing.service.gov.uk/github-webhook/",
-            content_type: "json",
-          },
-          {
-            events: ["push"],
-            active: true,
-          }
-        )
-      end
-    end
   end
 
   def required_status_checks
-    return nil unless jenkinsfile_exists? || !github_actions_test_job_name.nil?
-
-    enforce_jenkins_checks = jenkinsfile_exists? && !overrides.dig("required_status_checks", "ignore_jenkins")
+    return if github_actions_test_job_name.nil?
 
     {
       strict: overrides.fetch("up_to_date_branches", false),
       contexts: [
-        enforce_jenkins_checks ? "continuous-integration/jenkins/branch" : nil,
         github_actions_test_job_name,
         *overrides
           .fetch("required_status_checks", {})
           .fetch("additional_contexts", [])
       ].compact
     }
-  end
-
-  def jenkinsfile
-    @jenkinsfile ||= begin
-      client.contents(repo[:full_name], path: "Jenkinsfile")
-    rescue Octokit::NotFound
-      nil
-    end
-  end
-
-  def jenkinsfile_exists?
-    !jenkinsfile.nil?
-  end
-
-  def jenkinsfile_content
-    return nil unless jenkinsfile_exists?
-    raise "Unknown encoding" unless jenkinsfile.encoding == "base64"
-    Base64.decode64(jenkinsfile.content)
   end
 
   def github_actions
