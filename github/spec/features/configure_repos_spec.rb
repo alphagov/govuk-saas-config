@@ -5,44 +5,9 @@ require 'base64'
 require 'yaml'
 
 RSpec.describe ConfigureRepos do
-  context "when a repo uses Jenkins for CI" do
-    it "Updates a repo" do
-      given_theres_a_repo
-      and_the_repo_has_a_jenkinsfile
-      and_the_repo_does_not_use_github_actions
-      when_the_script_runs
-      the_repo_is_updated_with_correct_settings
-      the_repo_has_branch_protection_activated
-      the_repo_has_gh_pages_branch_protection_activated
-      the_repo_has_ci_enabled
-      the_repo_has_webhooks_configured
-      the_repo_has_vulnerability_alerts_enabled
-      the_repo_has_automated_security_fixes_enabled
-    end
-
-    it "Updates an overridden repo" do
-      given_theres_a_repo(full_name: "alphagov/smart-answers", allow_squash_merge: true, need_production_access_to_merge: true)
-      and_the_repo_has_a_jenkinsfile(full_name: "alphagov/smart-answers")
-      and_the_repo_does_not_use_github_actions(full_name: "alphagov/smart-answers")
-      when_the_script_runs
-      the_repo_is_updated_with_correct_settings
-      the_repo_has_vulnerability_alerts_enabled
-      the_repo_has_automated_security_fixes_enabled
-    end
-
-    it "Doesn't update a repo if it's archived" do
-      given_theres_a_repo(archived: true)
-      and_the_repo_has_a_jenkinsfile
-      when_the_script_runs
-      then_no_webhooks_are_changed
-      the_repo_is_not_updated
-    end
-  end
-
   context "when a repo uses GitHub Actions for CI" do
     it "Updates a repo" do
       given_theres_a_repo(full_name: "alphagov/rubocop-govuk")
-      and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/rubocop-govuk")
       and_the_repo_uses_github_actions_for_test(full_name: "alphagov/rubocop-govuk")
       when_the_script_runs
       the_repo_is_updated_with_correct_settings
@@ -56,7 +21,6 @@ RSpec.describe ConfigureRepos do
 
     it "Updates a squash merge overridden repo" do
       given_theres_a_repo(full_name: "alphagov/govuk-coronavirus-content", allow_squash_merge: true)
-      and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/govuk-coronavirus-content")
       and_the_repo_uses_github_actions_for_test(full_name: "alphagov/govuk-coronavirus-content")
       when_the_script_runs
       the_repo_is_updated_with_correct_settings
@@ -66,7 +30,6 @@ RSpec.describe ConfigureRepos do
 
     it "Updates a strict status checks overriden repo" do
       given_theres_a_repo(full_name: "alphagov/repo-for-govuk-saas-config-automated-tests")
-      and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/repo-for-govuk-saas-config-automated-tests")
       and_the_repo_uses_github_actions_for_test(full_name: "alphagov/repo-for-govuk-saas-config-automated-tests")
       when_the_script_runs
       the_repo_has_ci_enabled(full_name: "alphagov/repo-for-govuk-saas-config-automated-tests", providers: ["github_actions"], up_to_date_branches: true)
@@ -80,7 +43,6 @@ RSpec.describe ConfigureRepos do
     context "and the test job has a custom name" do
       it "Uses the custom name" do
         given_theres_a_repo(full_name: "alphagov/rubocop-govuk")
-        and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/rubocop-govuk")
         and_the_repo_uses_github_actions_for_test(full_name: "alphagov/rubocop-govuk", job_name: "Run tests")
         when_the_script_runs
         the_repo_has_ci_enabled(full_name: "alphagov/rubocop-govuk", providers: ["github_actions"], github_actions: ["Run tests"])
@@ -91,9 +53,8 @@ RSpec.describe ConfigureRepos do
   end
 
   context "when there are no supported CI provider config files" do
-    it "doesn't set up CI if there is no Jenkinsfile or GitHub Actions config" do
+    it "doesn't set up CI if there is no GitHub Actions config" do
       given_theres_a_repo
-      and_the_repo_does_not_have_a_jenkinsfile
       and_the_repo_does_not_use_github_actions
       when_the_script_runs
       the_repo_is_updated_with_correct_settings
@@ -101,21 +62,6 @@ RSpec.describe ConfigureRepos do
       the_repo_has_gh_pages_branch_protection_activated
       the_repo_has_ci_disabled
       the_repo_has_webhooks_configured(number_of_webhooks: 1)
-      the_repo_has_vulnerability_alerts_enabled
-      the_repo_has_automated_security_fixes_enabled
-    end
-  end
-
-  context "when a repo uses both Jenkins and GitHub Actions for CI" do
-    it "sets up CI for both providers" do
-      given_theres_a_repo(full_name: "alphagov/example")
-      and_the_repo_has_a_jenkinsfile(full_name: "alphagov/example")
-      and_the_repo_uses_github_actions_for_test(full_name: "alphagov/example")
-      when_the_script_runs
-      the_repo_has_ci_enabled(full_name: "alphagov/example", providers: ["jenkins", "github_actions"])
-      the_repo_has_branch_protection_activated
-      the_repo_has_gh_pages_branch_protection_activated
-      the_repo_is_updated_with_correct_settings
       the_repo_has_vulnerability_alerts_enabled
       the_repo_has_automated_security_fixes_enabled
     end
@@ -132,7 +78,6 @@ RSpec.describe ConfigureRepos do
   describe "branch protection" do
     it "Avoids adding branch protection to gh-pages branch unless it exists" do
       given_theres_a_repo
-      and_the_repo_does_not_have_a_jenkinsfile
       and_the_repo_does_not_use_github_actions
       and_the_repo_has_no_gh_pages_branch
       when_the_script_runs
@@ -183,22 +128,6 @@ RSpec.describe ConfigureRepos do
 
     @automated_security_fixes_enabled = stub_request(:put, "https://api.github.com/repos/#{full_name}/automated-security-fixes")
       .to_return(status: archived ? 403 : 204, body: "", headers: {})
-  end
-
-  def and_the_repo_has_a_jenkinsfile(full_name: "alphagov/smart-sandwich")
-    payload = {
-      name: "Jenkinsfile",
-      content: "",
-      encoding: "base64",
-    }
-
-    stub_request(:get, "https://api.github.com/repos/#{full_name}/contents/Jenkinsfile").
-      to_return(body: payload.to_json, headers: { content_type: "application/json" }, status: 200)
-  end
-
-  def and_the_repo_does_not_have_a_jenkinsfile(full_name: "alphagov/smart-sandwich")
-    stub_request(:get, "https://api.github.com/repos/#{full_name}/contents/Jenkinsfile").
-      to_return(status: 404)
   end
 
   def and_the_repo_uses_github_actions_for_test(full_name: "alphagov/govuk-coronavirus-content", job_name: nil)
@@ -265,12 +194,11 @@ RSpec.describe ConfigureRepos do
     expect(@gh_pages_branch_protection_update).to have_been_requested
   end
 
-  def the_repo_has_ci_enabled(full_name: "alphagov/smart-sandwich", providers: ["jenkins"], up_to_date_branches: false, default_branch: "main", github_actions: "test")
+  def the_repo_has_ci_enabled(full_name: "alphagov/smart-sandwich", providers: ["github_actions"], up_to_date_branches: false, default_branch: "main", github_actions: "test")
     payload = {
       required_status_checks: {
         strict: up_to_date_branches,
         contexts: [
-          providers.include?("jenkins") ? "continuous-integration/jenkins/branch" : nil,
           providers.include?("github_actions") ? github_actions : nil,
         ].compact.flatten
       }
