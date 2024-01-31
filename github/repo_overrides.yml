@@ -204,8 +204,17 @@ alphagov/govuk-aws:
 alphagov/govuk-content-api-docs:
   allow_squash_merge: true
 
+alphagov/govuk-dns-tf:
+  up_to_date_branches: true
+
 alphagov/govuk-developer-docs:
   allow_squash_merge: true
+
+alphagov/govuk-fastly:
+  up_to_date_branches: true
+
+alphagov/govuk-fastly-secrets:
+  up_to_date_branches: true
 
 alphagov/govuk-kubernetes-cluster-user-docs:
   allow_squash_merge: true
