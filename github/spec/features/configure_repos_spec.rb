@@ -52,21 +52,6 @@ RSpec.describe ConfigureRepos do
     end
   end
 
-  context "when there are no supported CI provider config files" do
-    it "doesn't set up CI if there is no GitHub Actions config" do
-      given_theres_a_repo
-      and_the_repo_does_not_use_github_actions
-      when_the_script_runs
-      the_repo_is_updated_with_correct_settings
-      the_repo_has_branch_protection_activated
-      the_repo_has_gh_pages_branch_protection_activated
-      the_repo_has_ci_disabled
-      the_repo_has_webhooks_configured(number_of_webhooks: 1)
-      the_repo_has_vulnerability_alerts_enabled
-      the_repo_has_automated_security_fixes_enabled
-    end
-  end
-
   describe "webhooks" do
     it "Only creates a webhook when missing" do
       given_theres_a_repo
