@@ -91,8 +91,6 @@ private
   end
 
   def required_status_checks
-    return if github_actions_test_job_name.nil?
-
     {
       strict: overrides.fetch("up_to_date_branches", false),
       contexts: [
