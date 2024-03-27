@@ -197,9 +197,6 @@ alphagov/govuk-fastly:
 alphagov/govuk-fastly-secrets:
   up_to_date_branches: true
 
-alphagov/govuk-kubernetes-cluster-user-docs:
-  allow_squash_merge: true
-
 alphagov/imminence:
   # required for continuous deployment
   # https://github.com/alphagov/govuk-rfcs/blob/master/rfc-128-continuous-deployment.md#security-checks
@@ -528,19 +525,10 @@ alphagov/whitehall:
       - Test JavaScript / Run Jasmine
       - Test Ruby / Run Minitest
 
-alphagov/govuk-coronavirus-content:
-  allow_squash_merge: true
-
 alphagov/repo-for-govuk-saas-config-automated-tests:
   up_to_date_branches: true
 
 alphagov/router:
-  need_production_access_to_merge: true
-  required_status_checks:
-    additional_contexts:
-     - Test Go
-
-alphagov/router-postgres:
   need_production_access_to_merge: true
   required_status_checks:
     additional_contexts:
