@@ -31,7 +31,7 @@ private
     client.edit_repository(
       repo[:full_name],
       allow_merge_commit: true,
-      allow_squash_merge: overrides.fetch("allow_squash_merge", false),
+      allow_squash_merge: overrides.fetch(:allow_squash_merge, false),
       allow_rebase_merge: false,
       delete_branch_on_merge: true,
     )
@@ -46,7 +46,7 @@ private
       }
     }
 
-    if overrides["need_production_access_to_merge"]
+    if overrides.fetch(:need_production_access_to_merge, true)
       config.merge!(
         restrictions: { users: [], teams: %w[gov-uk-production-admin gov-uk-production-deploy] }
       )
@@ -92,12 +92,12 @@ private
 
   def required_status_checks
     {
-      strict: overrides.fetch("up_to_date_branches", false),
+      strict: overrides.fetch(:up_to_date_branches, false),
       contexts: [
         github_actions_test_job_name,
         *overrides
-          .fetch("required_status_checks", {})
-          .fetch("additional_contexts", [])
+          .fetch(:required_status_checks, {})
+          .fetch(:additional_contexts, [])
       ].compact
     }
   end
@@ -115,7 +115,7 @@ private
   def github_actions_test_job_name
     test_job = github_actions&.dig("jobs", "test")
     unless test_job.nil?
-      test_job.fetch("name", "test")
+      test_job.fetch(:name, "test")
     end
   end
   
