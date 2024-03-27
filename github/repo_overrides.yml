@@ -108,9 +108,11 @@ alphagov/content-tagger:
       - Test Ruby / Run RSpec
 
 alphagov/data-community-tech-docs:
+  need_production_access_to_merge: false
   allow_squash_merge: true
 
 alphagov/datagovuk-tech-docs:
+  need_production_access_to_merge: false
   allow_squash_merge: true
 
 alphagov/email-alert-api:
@@ -179,12 +181,14 @@ alphagov/govuk-aws:
       - terraform fmt
 
 alphagov/govuk-content-api-docs:
+  need_production_access_to_merge: false
   allow_squash_merge: true
 
 alphagov/govuk-dns-tf:
   up_to_date_branches: true
 
 alphagov/govuk-developer-docs:
+  need_production_access_to_merge: false
   allow_squash_merge: true
 
 alphagov/govuk-fastly:

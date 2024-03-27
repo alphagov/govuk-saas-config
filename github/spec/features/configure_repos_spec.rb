@@ -73,7 +73,7 @@ RSpec.describe ConfigureRepos do
   def given_theres_a_repo(archived: false,
                           full_name: "alphagov/smart-sandwich",
                           allow_squash_merge: false,
-                          need_production_access_to_merge: false,
+                          need_production_access_to_merge: true,
                           default_branch: "main")
     stub_request(:get, "https://api.github.com/orgs/alphagov/repos?per_page=100").
       to_return(headers: { content_type: 'application/json' }, body: [ { full_name: full_name, archived: archived, topics: ["govuk"], default_branch: default_branch }, { full_name: 'alphagov/ignored-for-test', topics: ["govuk"] } ].to_json)
