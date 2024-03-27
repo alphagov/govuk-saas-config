@@ -7,7 +7,6 @@ alphagov/account-api:
       - Test Ruby
       - Lint Ruby / Run RuboCop
       - Security Analysis / Run Brakeman
-      - Run Pact tests / Verify pact tests
 
 alphagov/asset-manager:
   # required for continuous deployment
@@ -17,7 +16,6 @@ alphagov/asset-manager:
     additional_contexts:
       - Test Ruby
       - Lint Ruby / Run RuboCop
-      - Run Pact tests / Verify pact tests
       - Security Analysis / Run Brakeman
 
 alphagov/authenticating-proxy:
@@ -50,7 +48,6 @@ alphagov/collections:
       - Lint JavaScript / Run Standardx
       - Lint SCSS / Run Stylelint
       - Security Analysis / Run Brakeman
-      - Run Pact tests / Verify pact tests
       - Test JavaScript / Run Jasmine
       - Test Ruby / Run RSpec
 
@@ -95,7 +92,6 @@ alphagov/content-store:
   required_status_checks:
     additional_contexts:
       - Lint Ruby / Run RuboCop
-      - Run Pact tests / Verify pact tests
       - Security Analysis / Run Brakeman
       - Test Ruby / Run RSpec
 
@@ -124,7 +120,6 @@ alphagov/email-alert-api:
   required_status_checks:
     additional_contexts:
       - Test Ruby
-      - Run Pact tests / Verify pact tests
       - Lint Ruby / Run RuboCop
       - Security Analysis / Run Brakeman
 
@@ -171,7 +166,6 @@ alphagov/frontend:
     additional_contexts:
       - Lint Ruby / Run RuboCop
       - Lint JavaScript / Run Standardx
-      - Run Pact tests / Verify pact tests
       - Lint SCSS / Run Stylelint
       - Security Analysis / Run Brakeman
       - Test JavaScript / Run Jasmine
@@ -211,7 +205,6 @@ alphagov/imminence:
       - Integration tests
       - Test Ruby
       - Lint Ruby / Run RuboCop
-      - Run Pact tests / Verify pact tests
       - Security Analysis / Run Brakeman
 
 alphagov/link-checker-api:
@@ -223,7 +216,6 @@ alphagov/link-checker-api:
       - Test Ruby
       - Security Analysis / Run Brakeman
       - Lint Ruby / Run RuboCop
-      - Run Pact tests / Verify pact tests
 
 alphagov/local-links-manager:
   # required for continuous deployment
@@ -246,7 +238,6 @@ alphagov/locations-api:
       - Test Ruby
       - Security Analysis / Run Brakeman
       - Lint Ruby / Run RuboCop
-      - Run Pact tests / Verify pact tests
 
 alphagov/release:
   # required for continuous deployment
@@ -343,9 +334,7 @@ alphagov/publishing-api:
       - Check content schemas are built
       - Test Ruby
       - Lint Ruby / Run RuboCop
-      - Run GDS API Adapter Pact tests / Verify pact tests
       - Security Analysis / Run Brakeman
-      - Run Content Store Pact tests / Verify pact tests
 
 alphagov/finder-frontend:
   # required for continuous deployment
