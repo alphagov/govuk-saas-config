@@ -20,8 +20,8 @@ RSpec.describe ConfigureRepos do
     end
 
     it "Updates a squash merge overridden repo" do
-      given_theres_a_repo(full_name: "alphagov/govuk-coronavirus-content", allow_squash_merge: true)
-      and_the_repo_uses_github_actions_for_test(full_name: "alphagov/govuk-coronavirus-content")
+      given_theres_a_repo(full_name: "alphagov/xx-test-fixture-with-allow-squash-merge", allow_squash_merge: true)
+      and_the_repo_uses_github_actions_for_test(full_name: "alphagov/xx-test-fixture-with-allow-squash-merge")
       when_the_script_runs
       the_repo_is_updated_with_correct_settings
       the_repo_has_vulnerability_alerts_enabled
@@ -115,7 +115,7 @@ RSpec.describe ConfigureRepos do
       .to_return(status: archived ? 403 : 204, body: "", headers: {})
   end
 
-  def and_the_repo_uses_github_actions_for_test(full_name: "alphagov/govuk-coronavirus-content", job_name: nil)
+  def and_the_repo_uses_github_actions_for_test(full_name: "alphagov/xx-test-fixture-with-allow-squash-merge", job_name: nil)
     content = {
       "on" => %w[push pull_request],
       "jobs" => {

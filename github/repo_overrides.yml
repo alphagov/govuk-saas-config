@@ -450,3 +450,6 @@ alphagov/static:
       - Lint SCSS / Run Stylelint
       - Security Analysis / Run Brakeman
       - Test JavaScript / Run Jasmine
+
+alphagov/xx-test-fixture-with-allow-squash-merge:
+  allow_squash_merge: true
