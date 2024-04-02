@@ -46,7 +46,7 @@ private
       }
     }
 
-    if overrides["need_production_access_to_merge"]
+    if overrides.fetch("need_production_access_to_merge", true)
       config.merge!(
         restrictions: { users: [], teams: %w[gov-uk-production-admin gov-uk-production-deploy] }
       )
