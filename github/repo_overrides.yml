@@ -151,6 +151,9 @@ alphagov/govuk-fastly:
 alphagov/govuk-fastly-secrets:
   up_to_date_branches: true
 
+alphagov/govuk-infrastructure:
+  up_to_date_branches: true
+
 alphagov/imminence:
   required_status_checks:
     additional_contexts:
