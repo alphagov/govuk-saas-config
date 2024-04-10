@@ -2,7 +2,7 @@ require "base64"
 require "yaml"
 
 class ConfigureRepo
-  attr_reader :repo, :client
+  attr_reader :repo, :client, :overrides
 
   def initialize(repo, client, overrides = nil)
     @repo = repo
@@ -22,10 +22,6 @@ class ConfigureRepo
   rescue Octokit::NotFound => e
     puts "Could not find #{repo[:full_name]}. Possibly the govuk-ci user doesn't have admin access to this repo."
   end
-
-private
-
-  attr_reader :overrides
 
   def update_repo_settings
     client.edit_repository(
