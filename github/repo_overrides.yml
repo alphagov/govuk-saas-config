@@ -51,9 +51,9 @@ repos:
         - Lint SCSS / Run Stylelint
         - Test JavaScript / Run Jasmine
         - Test Ruby / Run RSpec
+        - Lint ERB / Lint ERB
         # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/collections/blob/main/.github/workflows/ci.yml):
         # - SNYK security analysis
-        # - Lint ERB
         # - Run Pact tests
 
   alphagov/collections-publisher:
@@ -195,10 +195,10 @@ repos:
       additional_contexts:
         - Integration tests
         - Test Ruby
+        - Lint Views
         # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/imminence/blob/main/.github/workflows/ci.yml):
         # - SNYK security analysis
         # - Run Pact tests
-        # - Lint Views
 
   alphagov/link-checker-api:
     required_status_checks:
@@ -216,9 +216,9 @@ repos:
         - Test Ruby
         - Lint JavaScript / Run Standardx
         - Lint SCSS / Run Stylelint
+        - Lint Views
         # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/local-links-manager/blob/main/.github/workflows/ci.yml):
         # - SNYK security analysis
-        # - Lint Views
 
   alphagov/locations-api:
     required_status_checks:
@@ -408,7 +408,7 @@ repos:
         - Test JavaScript / Run Jasmine
         # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/signon/blob/main/.github/workflows/ci.yml):
         # - SNYK security analysis
-        # - test-ruby-matrix
+        # - test-ruby-matrix # due to it creating dynamic job names such as `test-ruby-matrix (4, 0)` - a bit too brittle to encode here
 
   alphagov/support:
     required_status_checks:
@@ -439,10 +439,10 @@ repos:
         - Lint JavaScript / Run Standardx
         - Test JavaScript / Run Jasmine
         - Test Ruby / Run Minitest
+        - Lint ERB / Run ERB lint
+        - Prettier / Run Prettier
         # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/whitehall/blob/main/.github/workflows/ci.yml):
         # - SNYK security analysis
-        # - Lint ERB
-        # - Lint Prettier
 
   alphagov/repo-for-govuk-saas-config-automated-tests:
     up_to_date_branches: true
