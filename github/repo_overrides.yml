@@ -419,15 +419,6 @@ alphagov/hmrc-manuals-api:
       # - CodeQL SAST scan
       # - Dependency Review scan
 
-alphagov/licence-finder:
-  required_status_checks:
-    additional_contexts:
-      - Lint Ruby / Run RuboCop
-      - Security Analysis / Run Brakeman
-      - Test Ruby / Run RSpec
-
-alphagov/manuals-frontend:
-
 alphagov/manuals-publisher:
   required_status_checks:
     additional_contexts:
@@ -457,13 +448,6 @@ alphagov/maslow:
       # - CodeQL SAST scan
       # - Dependency Review scan
 
-alphagov/info-frontend:
-  required_status_checks:
-    additional_contexts:
-      - Lint Ruby / Run RuboCop
-      - Test Ruby / Run RSpec
-      - Security Analysis / Run Brakeman
-
 alphagov/content-publisher:
   required_status_checks:
     additional_contexts:
@@ -491,8 +475,6 @@ alphagov/content-data-admin:
       # - CodeQL SAST scan
       # - Dependency Review scan
 
-alphagov/service-manual-frontend:
-
 alphagov/service-manual-publisher:
   required_status_checks:
     additional_contexts:
@@ -506,8 +488,6 @@ alphagov/service-manual-publisher:
       # - SNYK security analysis
       # - CodeQL SAST scan
       # - Dependency Review scan
-
-alphagov/sidekiq-monitoring:
 
 alphagov/signon:
   required_status_checks:
