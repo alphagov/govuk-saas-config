@@ -93,7 +93,10 @@ class ConfigureRepo
         github_actions_test_job_name,
         *overrides
           .fetch("required_status_checks", {})
-          .fetch("additional_contexts", [])
+          .fetch("standard_contexts", []),
+        *overrides
+          .fetch("required_status_checks", {})
+          .fetch("additional_contexts", []),
       ].compact
     }
   end

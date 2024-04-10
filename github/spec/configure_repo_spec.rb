@@ -51,6 +51,29 @@ RSpec.describe ConfigureRepo do
       })
     end
 
+    it "should include standard_contexts if provided" do
+      overrides = {
+        "required_status_checks" => {
+          "standard_contexts" => [
+            "foo",
+          ],
+          "additional_contexts" => [
+            "bar",
+          ],
+        }
+      }
+      configured_repo = ConfigureRepo.new(repo, client, overrides)
+      allow(configured_repo).to receive(:github_actions_test_job_name).and_return(nil)
+
+      expect(configured_repo.required_status_checks).to eq({
+        strict: false,
+        contexts: [
+          "foo",
+          "bar",
+        ],
+      })
+    end
+
     it "should include the GitHub Actions test job name if it exists" do
       overrides = {
         "required_status_checks" => {
