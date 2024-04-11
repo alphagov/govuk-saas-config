@@ -40,7 +40,7 @@ private
   end
 
   def repo_overrides
-    @repo_overrides ||= YAML.load_file("#{__dir__}/../repo_overrides.yml")
+    @repo_overrides ||= YAML.load_file("#{__dir__}/../repo_overrides.yml", aliases: true)["repos"]
   end
 
   def client

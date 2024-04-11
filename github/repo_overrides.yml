@@ -1,458 +1,580 @@
-alphagov/account-api:
-  required_status_checks:
-    additional_contexts:
-      - Test Ruby
-      - Lint Ruby / Run RuboCop
-      - Security Analysis / Run Brakeman
+access_levels:
+  standard_security_checks: &standard_security_checks
+    - CodeQL SAST scan / Analyze
+    - Dependency Review scan / dependency-review-pr
+  standard_govuk_rails_checks: &standard_govuk_rails_checks
+    - CodeQL SAST scan / Analyze
+    - Dependency Review scan / dependency-review-pr
+    - Lint Ruby / Run RuboCop
+    - Security Analysis / Run Brakeman
 
-alphagov/asset-manager:
-  required_status_checks:
-    additional_contexts:
-      - Test Ruby
-      - Lint Ruby / Run RuboCop
-      - Security Analysis / Run Brakeman
+repos:
+  alphagov/account-api:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby
+        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/account-api/blob/main/.github/workflows/ci.yml):
+        # - Run Pact tests
 
-alphagov/authenticating-proxy:
-  required_status_checks:
-    additional_contexts:
-      - Test Ruby
-      - Security Analysis / Run Brakeman
-      - Lint Ruby / Run RuboCop
+  alphagov/asset-manager:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby
+        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/asset-manager/blob/main/.github/workflows/ci.yml):
+        # - Run Pact tests
 
-alphagov/bouncer:
-  required_status_checks:
-    additional_contexts:
-      - Test Ruby
-      - Lint Ruby / Run RuboCop
+  alphagov/authenticating-proxy:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby
 
-alphagov/collections:
-  required_status_checks:
-    additional_contexts:
-      - Integration tests
-      - Lint Ruby / Run RuboCop
-      - Lint JavaScript / Run Standardx
-      - Lint SCSS / Run Stylelint
-      - Security Analysis / Run Brakeman
-      - Test JavaScript / Run Jasmine
-      - Test Ruby / Run RSpec
+  alphagov/bouncer:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
+      additional_contexts:
+        - Test Ruby
+        - Lint Ruby / Run RuboCop
 
-alphagov/collections-publisher:
-  required_status_checks:
-    additional_contexts:
-      - Lint Ruby / Run RuboCop
-      - Security Analysis / Run Brakeman
-      - Lint JavaScript / Run Standardx
-      - Lint SCSS / Run Stylelint
-      - Test Ruby / Run RSpec
+  alphagov/bulk-changer:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/contacts-admin:
-  required_status_checks:
-    additional_contexts:
-      - Lint Ruby / Run RuboCop
-      - Security Analysis / Run Brakeman
-      - Lint JavaScript / Run Standardx
-      - Lint SCSS / Run Stylelint
-      - Test Ruby / Run RSpec
+  alphagov/collections:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Integration tests
+        - Lint JavaScript / Run Standardx
+        - Lint SCSS / Run Stylelint
+        - Test JavaScript / Run Jasmine
+        - Test Ruby / Run RSpec
+        - Lint ERB / Lint ERB
+        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/collections/blob/main/.github/workflows/ci.yml):
+        # - Run Pact tests
 
-alphagov/content-data-api:
-  required_status_checks:
-    additional_contexts:
-      - Lint Ruby / Run RuboCop
-      - Security Analysis / Run Brakeman
-      - Test Ruby / Run RSpec
+  alphagov/collections-publisher:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Lint JavaScript / Run Standardx
+        - Lint SCSS / Run Stylelint
+        - Test Ruby / Run RSpec
 
-alphagov/content-store:
-  required_status_checks:
-    additional_contexts:
-      - Lint Ruby / Run RuboCop
-      - Security Analysis / Run Brakeman
-      - Test Ruby / Run RSpec
+  alphagov/contacts-admin:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Lint JavaScript / Run Standardx
+        - Lint SCSS / Run Stylelint
+        - Test Ruby / Run RSpec
 
-alphagov/content-tagger:
-  required_status_checks:
-    additional_contexts:
-      - Security Analysis / Run Brakeman
-      - Lint SCSS / Run Stylelint
-      - Lint Ruby / Run RuboCop
-      - Lint JavaScript / Run Standardx
-      - Test Ruby / Run RSpec
+  alphagov/content-data-admin:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby
+        - Lint SCSS / Run Stylelint
+        - Lint JavaScript / Run Standardx
 
-alphagov/data-community-tech-docs:
-  need_production_access_to_merge: false
-  allow_squash_merge: true
+  alphagov/content-data-api:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby / Run RSpec
 
-alphagov/datagovuk-tech-docs:
-  need_production_access_to_merge: false
-  allow_squash_merge: true
+  alphagov/content-publisher:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Lint SCSS / Run Stylelint
+        - Lint JavaScript / Run Standardx
+        - Test JavaScript / Run Jasmine
+        - Test Ruby / Run RSpec
 
-alphagov/email-alert-api:
-  required_status_checks:
-    additional_contexts:
-      - Test Ruby
-      - Lint Ruby / Run RuboCop
-      - Security Analysis / Run Brakeman
+  alphagov/content-store:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby / Run RSpec
 
-alphagov/email-alert-frontend:
-  required_status_checks:
-    additional_contexts:
-      - Security Analysis / Run Brakeman
-      - Lint Ruby / Run RuboCop
-      - Lint SCSS / Run Stylelint
-      - Lint JavaScript / Run Standardx
-      - Test JavaScript / Run Jasmine
-      - Test Ruby / Run RSpec
+  alphagov/content-tagger:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Lint SCSS / Run Stylelint
+        - Lint JavaScript / Run Standardx
+        - Test Ruby / Run RSpec
 
-alphagov/email-alert-service:
-  required_status_checks:
-    additional_contexts:
-      - Lint Ruby / Run RuboCop
-      - Test Ruby / Run RSpec
+  alphagov/data-community-tech-docs:
+    need_production_access_to_merge: false
+    allow_squash_merge: true
 
-alphagov/feedback:
-  required_status_checks:
-    additional_contexts:
-      - Security Analysis / Run Brakeman
-      - Lint Ruby / Run RuboCop
-      - Lint JavaScript / Run Standardx
-      - Lint SCSS / Run Stylelint
-      - Test JavaScript / Run Jasmine
-      - Test Ruby / Run RSpec
+  alphagov/datagovuk-tech-docs:
+    need_production_access_to_merge: false
+    allow_squash_merge: true
 
-alphagov/frontend:
-  required_status_checks:
-    additional_contexts:
-      - Lint Ruby / Run RuboCop
-      - Lint JavaScript / Run Standardx
-      - Lint SCSS / Run Stylelint
-      - Security Analysis / Run Brakeman
-      - Test JavaScript / Run Jasmine
-      - Test Ruby / Run Minitest
+  alphagov/email-alert-api:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby
+        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/email-alert-api/blob/main/.github/workflows/ci.yml):
+        # - Run Pact tests
 
-alphagov/govuk-aws:
-  required_status_checks:
-    additional_contexts:
-      - Shellcheck
-      - terraform fmt
+  alphagov/email-alert-frontend:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Lint SCSS / Run Stylelint
+        - Lint JavaScript / Run Standardx
+        - Test JavaScript / Run Jasmine
+        - Test Ruby / Run RSpec
 
-alphagov/govuk-content-api-docs:
-  need_production_access_to_merge: false
-  allow_squash_merge: true
+  alphagov/email-alert-service:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
+      additional_contexts:
+        - Lint Ruby / Run RuboCop
+        - Test Ruby / Run RSpec
 
-alphagov/govuk-dns-tf:
-  up_to_date_branches: true
+  alphagov/feedback:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Lint JavaScript / Run Standardx
+        - Lint SCSS / Run Stylelint
+        - Test JavaScript / Run Jasmine
+        - Test Ruby / Run RSpec
 
-alphagov/govuk-developer-docs:
-  need_production_access_to_merge: false
-  allow_squash_merge: true
+  alphagov/finder-frontend:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Integration tests
+        - Lint SCSS / Run Stylelint
+        - Lint JavaScript / Run Standardx
+        - Test JavaScript / Run Jasmine
+        - Test Ruby / Run RSpec
 
-alphagov/govuk-fastly:
-  up_to_date_branches: true
+  alphagov/frontend:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Lint JavaScript / Run Standardx
+        - Lint SCSS / Run Stylelint
+        - Test JavaScript / Run Jasmine
+        - Test Ruby / Run Minitest
+        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/frontend/blob/main/.github/workflows/ci.yml):
+        # - Run Pact tests
 
-alphagov/govuk-fastly-secrets:
-  up_to_date_branches: true
+  alphagov/gds-api-adapters:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
+      additional_contexts:
+        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/gds-api-adapters/blob/main/.github/workflows/ci.yml):
+        # - Many different pact tests
 
-alphagov/govuk-infrastructure:
-  up_to_date_branches: true
+  alphagov/gds-sso:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/imminence:
-  required_status_checks:
-    additional_contexts:
-      - Integration tests
-      - Test Ruby
-      - Lint Ruby / Run RuboCop
-      - Security Analysis / Run Brakeman
+  alphagov/gds_zendesk:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/link-checker-api:
-  required_status_checks:
-    additional_contexts:
-      - Test Ruby
-      - Security Analysis / Run Brakeman
-      - Lint Ruby / Run RuboCop
+  alphagov/github-trello-poster:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/local-links-manager:
-  required_status_checks:
-    additional_contexts:
-      - Test Ruby
-      - Lint Ruby / Run RuboCop
-      - Lint JavaScript / Run Standardx
-      - Lint SCSS / Run Stylelint
-      - Security Analysis / Run Brakeman
+  alphagov/government-frontend:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Lint SCSS / Run Stylelint
+        - Lint JavaScript / Run Standardx
+        - Test JavaScript / Run Jasmine
+        - Test Ruby / Run Minitest
 
-alphagov/locations-api:
-  required_status_checks:
-    additional_contexts:
-      - Test Ruby
-      - Security Analysis / Run Brakeman
-      - Lint Ruby / Run RuboCop
+  alphagov/govspeak:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/release:
-  required_status_checks:
-    additional_contexts:
-      - Test Ruby
-      - Lint Ruby / Run RuboCop
-      - Security Analysis / Run Brakeman
-      - Lint JavaScript / Run Standardx
-      - Lint SCSS / Run Stylelint
+  alphagov/govspeak-preview:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/short-url-manager:
-  required_status_checks:
-    additional_contexts:
-      - Lint Ruby / Run RuboCop
-      - Security Analysis / Run Brakeman
-      - Test Ruby / Run RSpec
-      - Lint SCSS / Run Stylelint
+  alphagov/govuk-aws:
+    required_status_checks:
+      additional_contexts:
+        - Shellcheck
+        - terraform fmt
 
-alphagov/smart-answers:
-  allow_squash_merge: true
-  required_status_checks:
-    additional_contexts:
-      - Lint JavaScript / Run Standardx
-      - Security Analysis / Run Brakeman
-      - Lint SCSS / Run Stylelint
-      - Lint Ruby / Run RuboCop
-      - Test JavaScript / Run Jasmine
-      - Test Ruby / Run Minitest
+  alphagov/govuk-content-api-docs:
+    need_production_access_to_merge: false
+    allow_squash_merge: true
 
-alphagov/specialist-publisher:
-  required_status_checks:
-    additional_contexts:
-      - Lint Ruby / Run RuboCop
-      - Lint JavaScript / Run Standardx
-      - Security Analysis / Run Brakeman
-      - Lint SCSS / Run Stylelint
-      - Test JavaScript / Run Jasmine
-      - Test Ruby / Run RSpec
+  alphagov/govuk-dependabot-merger:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/support-api:
-  required_status_checks:
-    additional_contexts:
-      - Test Ruby
-      - Security Analysis / Run Brakeman
-      - Lint Ruby / Run RuboCop
+  alphagov/govuk-dependency-checker:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/travel-advice-publisher:
-  required_status_checks:
-    additional_contexts:
-      - Security Analysis / Run Brakeman
-      - Lint Ruby / Run RuboCop
-      - Lint SCSS / Run Stylelint
-      - Lint JavaScript / Run Standardx
-      - Test JavaScript / Run Jasmine
-      - Test Ruby / Run RSpec
+  alphagov/govuk-developer-docs:
+    need_production_access_to_merge: false
+    allow_squash_merge: true
 
-alphagov/publisher:
-  required_status_checks:
-    additional_contexts:
-      - Security Analysis / Run Brakeman
-      - Lint JavaScript / Run Standardx
-      - Lint Ruby / Run RuboCop
-      - Lint SCSS / Run Stylelint
-      - Test JavaScript / Run Jasmine
-      - Test Ruby / Run Minitest
+  alphagov/govuk-dns-tf:
+    up_to_date_branches: true
 
-alphagov/publishing-api:
-  required_status_checks:
-    additional_contexts:
-      - Check content schemas are built
-      - Test Ruby
-      - Lint Ruby / Run RuboCop
-      - Security Analysis / Run Brakeman
+  alphagov/govuk-fastly:
+    up_to_date_branches: true
 
-alphagov/finder-frontend:
-  required_status_checks:
-    additional_contexts:
-      - Integration tests
-      - Lint Ruby / Run RuboCop
-      - Lint SCSS / Run Stylelint
-      - Security Analysis / Run Brakeman
-      - Lint JavaScript / Run Standardx
-      - Test JavaScript / Run Jasmine
-      - Test Ruby / Run RSpec
+  alphagov/govuk-fastly-secrets:
+    up_to_date_branches: true
 
-alphagov/government-frontend:
-  required_status_checks:
-    additional_contexts:
-      - Lint Ruby / Run RuboCop
-      - Security Analysis / Run Brakeman
-      - Lint SCSS / Run Stylelint
-      - Lint JavaScript / Run Standardx
-      - Test JavaScript / Run Jasmine
-      - Test Ruby / Run Minitest
+  alphagov/govuk-infrastructure:
+    up_to_date_branches: true
 
-alphagov/hmrc-manuals-api:
-  required_status_checks:
-    additional_contexts:
-      - Lint Ruby / Run RuboCop
-      - Test Ruby / Run RSpec
-      - Security Analysis / Run Brakeman
+  alphagov/govuk-rota-generator:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/licence-finder:
-  required_status_checks:
-    additional_contexts:
-      - Lint Ruby / Run RuboCop
-      - Security Analysis / Run Brakeman
-      - Test Ruby / Run RSpec
+  alphagov/govuk-saas-config:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/manuals-frontend:
+  alphagov/govuk-sli-collector:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/manuals-publisher:
-  required_status_checks:
-    additional_contexts:
-      - Integration tests
-      - Lint JavaScript / Run Standardx
-      - Lint Ruby / Run RuboCop
-      - Lint SCSS / Run Stylelint
-      - Security Analysis / Run Brakeman
-      - Test JavaScript / Run Jasmine
-      - Test Ruby / Run RSpec
+  alphagov/govuk_ab_testing:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/maslow:
-  required_status_checks:
-    additional_contexts:
-      - Test Ruby
-      - Lint Ruby / Run RuboCop
-      - Lint JavaScript / Run Standardx
-      - Lint SCSS / Run Stylelint
-      - Security Analysis / Run Brakeman
-      - Test JavaScript / Run Jasmine
+  alphagov/govuk_admin_template:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/info-frontend:
-  required_status_checks:
-    additional_contexts:
-      - Lint Ruby / Run RuboCop
-      - Test Ruby / Run RSpec
-      - Security Analysis / Run Brakeman
+  alphagov/govuk_app_config:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/content-publisher:
-  required_status_checks:
-    additional_contexts:
-      - Lint SCSS / Run Stylelint
-      - Security Analysis / Run Brakeman
-      - Lint Ruby / Run RuboCop
-      - Lint JavaScript / Run Standardx
-      - Test JavaScript / Run Jasmine
-      - Test Ruby / Run RSpec
+  alphagov/govuk_document_types:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/content-data-admin:
-  required_status_checks:
-    additional_contexts:
-      - Test Ruby
-      - Lint SCSS / Run Stylelint
-      - Lint JavaScript / Run Standardx
-      - Lint Ruby / Run RuboCop
-      - Security Analysis / Run Brakeman
+  alphagov/govuk_message_queue_consumer:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/service-manual-frontend:
+  alphagov/govuk_personalisation:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/service-manual-publisher:
-  required_status_checks:
-    additional_contexts:
-      - Security Analysis / Run Brakeman
-      - Lint Ruby / Run RuboCop
-      - Lint SCSS / Run Stylelint
-      - Lint JavaScript / Run Standardx
-      - Test JavaScript / Run Jasmine
-      - Test Ruby / Run RSpec
+  alphagov/govuk_publishing_components:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/sidekiq-monitoring:
+  alphagov/govuk_schemas:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/signon:
-  required_status_checks:
-    additional_contexts:
-      - Test Ruby
-      - Lint JavaScript / Run Standardx
-      - Lint Ruby / Run RuboCop
-      - Lint SCSS / Run Stylelint
-      - Security Analysis / Run Brakeman
-      - Test JavaScript / Run Jasmine
+  alphagov/govuk_sidekiq:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/support:
-  required_status_checks:
-    additional_contexts:
-      - Test Ruby
-      - Lint JavaScript / Run Standardx
-      - Lint SCSS / Run Stylelint
-      - Lint Ruby / Run RuboCop
-      - Security Analysis / Run Brakeman
+  alphagov/govuk_test:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/transition:
-  required_status_checks:
-    additional_contexts:
-      - Integration tests
-      - Test Ruby
-      - Lint Ruby / Run RuboCop
-      - Security Analysis / Run Brakeman
-      - Test JavaScript / Run Jasmine
+  alphagov/hmrc-manuals-api:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby / Run RSpec
 
-alphagov/whitehall:
-  required_status_checks:
-    additional_contexts:
-      - Test features / Run Cucumber
-      - Lint SCSS / Run Stylelint
-      - Lint JavaScript / Run Standardx
-      - Lint Ruby / Run RuboCop
-      - Security Analysis / Run Brakeman
-      - Test JavaScript / Run Jasmine
-      - Test Ruby / Run Minitest
+  alphagov/imminence:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Integration tests
+        - Test Ruby
+        - Lint Views
+        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/imminence/blob/main/.github/workflows/ci.yml):
+        # - Run Pact tests
 
-alphagov/repo-for-govuk-saas-config-automated-tests:
-  up_to_date_branches: true
+  alphagov/link-checker-api:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby
+        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/link-checker-api/blob/main/.github/workflows/ci.yml):
+        # - Run Pact tests
 
-alphagov/router:
-  required_status_checks:
-    additional_contexts:
-     - Test Go
+  alphagov/local-links-manager:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby
+        - Lint JavaScript / Run Standardx
+        - Lint SCSS / Run Stylelint
+        - Lint Views
 
-alphagov/router-api:
-  required_status_checks:
-    additional_contexts:
-      - Test Ruby
-      - Security Analysis / Run Brakeman
-      - Lint Ruby / Run RuboCop
+  alphagov/locations-api:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby
+        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/locations-api/blob/main/.github/workflows/ci.yml):
+        # - Run Pact tests
 
-alphagov/search-admin:
-  required_status_checks:
-    additional_contexts:
-      - Integration tests
-      - Lint Ruby / Run RuboCop
-      - Lint JavaScript / Run Standardx
-      - Lint SCSS / Run Stylelint
-      - Security Analysis / Run Brakeman
-      - Test Ruby / Run RSpec
+  alphagov/manuals-publisher:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Integration tests
+        - Lint JavaScript / Run Standardx
+        - Lint SCSS / Run Stylelint
+        - Test JavaScript / Run Jasmine
+        - Test Ruby / Run RSpec
 
-alphagov/search-api:
-  required_status_checks:
-    additional_contexts:
-      - Check Learn to Rank dependencies
-      - Lint Ruby / Run RuboCop
-      - Test Ruby / Run RSpec
+  alphagov/markdown-toolbar-element:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/search-api-v2:
-  required_status_checks:
-    ignore_jenkins: true
-    additional_contexts:
-      - Security Analysis / Run Brakeman
-      - Lint Ruby / Run RuboCop
-      - Test Ruby
+  alphagov/maslow:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby
+        - Lint JavaScript / Run Standardx
+        - Lint SCSS / Run Stylelint
+        - Test JavaScript / Run Jasmine
 
-alphagov/search-v2-evaluator:
+  alphagov/miller-columns-element:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/search-v2-infrastructure:
-  required_status_checks:
-    ignore_jenkins: true
-    additional_contexts:
-      - lint_and_validate
-      - validate-json-schema
+  alphagov/optic14n:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/static:
-  required_status_checks:
-    additional_contexts:
-      - Test Ruby
-      - Lint Ruby / Run RuboCop
-      - Lint JavaScript / Run Standardx
-      - Lint SCSS / Run Stylelint
-      - Security Analysis / Run Brakeman
-      - Test JavaScript / Run Jasmine
+  alphagov/paste-html-to-govspeak:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
 
-alphagov/xx-test-fixture-with-allow-squash-merge:
-  allow_squash_merge: true
+  alphagov/plek:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
+
+  alphagov/publisher:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Lint JavaScript / Run Standardx
+        - Lint SCSS / Run Stylelint
+        - Test JavaScript / Run Jasmine
+        - Test Ruby / Run Minitest
+
+  alphagov/publishing-api:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Check content schemas are built
+        - Test Ruby
+        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/publishing-api/blob/main/.github/workflows/ci.yml):
+        # - Run Content Store Pact tests
+        # - Run GDS API Adapter Pact tests
+
+  alphagov/rack-logstasher:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
+
+  alphagov/rails_translation_manager:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
+
+  alphagov/release:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby
+        - Lint JavaScript / Run Standardx
+        - Lint SCSS / Run Stylelint
+
+  alphagov/router:
+    required_status_checks:
+      additional_contexts:
+      - Test Go
+
+  alphagov/router-api:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby
+
+  alphagov/rubocop-govuk:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
+  
+  alphagov/seal:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
+
+  alphagov/search-admin:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Integration tests
+        - Lint JavaScript / Run Standardx
+        - Lint SCSS / Run Stylelint
+        - Test Ruby / Run RSpec
+
+  alphagov/search-api:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
+      additional_contexts:
+        - Check Learn to Rank dependencies
+        - Lint Ruby / Run RuboCop
+        - Test Ruby / Run RSpec
+
+  alphagov/search-api-v2:
+    required_status_checks:
+      ignore_jenkins: true
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby
+
+  alphagov/search-v2-evaluator:
+
+  alphagov/search-v2-infrastructure:
+    required_status_checks:
+      ignore_jenkins: true
+      additional_contexts:
+        - lint_and_validate
+        - validate-json-schema
+
+  alphagov/service-manual-publisher:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Lint SCSS / Run Stylelint
+        - Lint JavaScript / Run Standardx
+        - Test JavaScript / Run Jasmine
+        - Test Ruby / Run RSpec
+
+  alphagov/short-url-manager:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby / Run RSpec
+        - Lint SCSS / Run Stylelint
+
+  alphagov/signon:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby
+        - Lint JavaScript / Run Standardx
+        - Lint SCSS / Run Stylelint
+        - Test JavaScript / Run Jasmine
+
+  alphagov/siteimprove_api_client:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
+
+  alphagov/slimmer:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
+
+  alphagov/smart-answers:
+    allow_squash_merge: true
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Lint JavaScript / Run Standardx
+        - Lint SCSS / Run Stylelint
+        - Test JavaScript / Run Jasmine
+        - Test Ruby / Run Minitest
+
+  alphagov/smokey:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
+
+  alphagov/special-route-publisher:
+    required_status_checks:
+      standard_contexts: *standard_security_checks
+
+  alphagov/specialist-publisher:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Lint JavaScript / Run Standardx
+        - Lint SCSS / Run Stylelint
+        - Test JavaScript / Run Jasmine
+        - Test Ruby / Run RSpec
+
+  alphagov/static:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby
+        - Lint JavaScript / Run Standardx
+        - Lint SCSS / Run Stylelint
+        - Test JavaScript / Run Jasmine
+
+  alphagov/support:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby
+        - Lint JavaScript / Run Standardx
+        - Lint SCSS / Run Stylelint
+
+  alphagov/support-api:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test Ruby
+
+  alphagov/transition:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Integration tests
+        - Test Ruby
+        - Test JavaScript / Run Jasmine
+
+  alphagov/travel-advice-publisher:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Lint SCSS / Run Stylelint
+        - Lint JavaScript / Run Standardx
+        - Test JavaScript / Run Jasmine
+        - Test Ruby / Run RSpec
+
+  alphagov/whitehall:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Test features / Run Cucumber
+        - Lint SCSS / Run Stylelint
+        - Lint JavaScript / Run Standardx
+        - Test JavaScript / Run Jasmine
+        - Test Ruby / Run Minitest
+        - Lint ERB / Run ERB lint
+        - Prettier / Run Prettier
+
+  ##### GOVUK-SAAS-CONFIG TEST REPOS _ONLY_ BELOW THIS LINE #####
+
+  alphagov/repo-for-govuk-saas-config-automated-tests:
+    up_to_date_branches: true
+
+  alphagov/xx-test-fixture-with-allow-squash-merge:
+    allow_squash_merge: true

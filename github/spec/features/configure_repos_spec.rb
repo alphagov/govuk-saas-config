@@ -7,13 +7,13 @@ require 'yaml'
 RSpec.describe ConfigureRepos do
   context "when a repo uses GitHub Actions for CI" do
     it "Updates a repo" do
-      given_theres_a_repo(full_name: "alphagov/rubocop-govuk")
-      and_the_repo_uses_github_actions_for_test(full_name: "alphagov/rubocop-govuk")
+      given_theres_a_repo(full_name: "alphagov/foo")
+      and_the_repo_uses_github_actions_for_test(full_name: "alphagov/foo")
       when_the_script_runs
       the_repo_is_updated_with_correct_settings
       the_repo_has_branch_protection_activated
       the_repo_has_gh_pages_branch_protection_activated
-      the_repo_has_ci_enabled(full_name: "alphagov/rubocop-govuk", providers: ["github_actions"])
+      the_repo_has_ci_enabled(full_name: "alphagov/foo", providers: ["github_actions"])
       the_repo_has_webhooks_configured(number_of_webhooks: 1)
       the_repo_has_vulnerability_alerts_enabled
       the_repo_has_automated_security_fixes_enabled
@@ -42,10 +42,10 @@ RSpec.describe ConfigureRepos do
 
     context "and the test job has a custom name" do
       it "Uses the custom name" do
-        given_theres_a_repo(full_name: "alphagov/rubocop-govuk")
-        and_the_repo_uses_github_actions_for_test(full_name: "alphagov/rubocop-govuk", job_name: "Run tests")
+        given_theres_a_repo(full_name: "alphagov/foo")
+        and_the_repo_uses_github_actions_for_test(full_name: "alphagov/foo", job_name: "Run tests")
         when_the_script_runs
-        the_repo_has_ci_enabled(full_name: "alphagov/rubocop-govuk", providers: ["github_actions"], github_actions: ["Run tests"])
+        the_repo_has_ci_enabled(full_name: "alphagov/foo", providers: ["github_actions"], github_actions: ["Run tests"])
         the_repo_has_vulnerability_alerts_enabled
         the_repo_has_automated_security_fixes_enabled
       end
