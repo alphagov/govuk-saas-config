@@ -419,7 +419,6 @@ repos:
         - Test JavaScript / Run Jasmine
         # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/signon/blob/main/.github/workflows/ci.yml):
         # - SNYK security analysis
-        # - test-ruby-matrix # due to it creating dynamic job names such as `test-ruby-matrix (4, 0)` - a bit too brittle to encode here
 
   alphagov/smart-answers:
     allow_squash_merge: true
