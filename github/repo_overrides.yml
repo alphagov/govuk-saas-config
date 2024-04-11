@@ -1,9 +1,12 @@
 access_levels:
-  standard_govuk_rails_checks: &standard_govuk_rails_checks
-    - Lint Ruby / Run RuboCop
-    - Security Analysis / Run Brakeman
+  standard_security_checks: &standard_security_checks
     - CodeQL SAST scan
     - Dependency Review scan
+  standard_govuk_rails_checks: &standard_govuk_rails_checks
+    - CodeQL SAST scan
+    - Dependency Review scan
+    - Lint Ruby / Run RuboCop
+    - Security Analysis / Run Brakeman
 
 repos:
   alphagov/account-api:
@@ -30,11 +33,10 @@ repos:
 
   alphagov/bouncer:
     required_status_checks:
+      standard_contexts: *standard_security_checks
       additional_contexts:
         - Test Ruby
         - Lint Ruby / Run RuboCop
-        - CodeQL SAST scan
-        - Dependency Review scan
 
   alphagov/collections:
     required_status_checks:
@@ -129,11 +131,10 @@ repos:
 
   alphagov/email-alert-service:
     required_status_checks:
+      standard_contexts: *standard_security_checks
       additional_contexts:
         - Lint Ruby / Run RuboCop
         - Test Ruby / Run RSpec
-        - CodeQL SAST scan
-        - Dependency Review scan
 
   alphagov/feedback:
     required_status_checks:
@@ -309,12 +310,11 @@ repos:
 
   alphagov/search-api:
     required_status_checks:
+      standard_contexts: *standard_security_checks
       additional_contexts:
         - Check Learn to Rank dependencies
         - Lint Ruby / Run RuboCop
         - Test Ruby / Run RSpec
-        - CodeQL SAST scan
-        - Dependency Review scan
 
   alphagov/search-api-v2:
     required_status_checks:
