@@ -12,7 +12,6 @@ repos:
       additional_contexts:
         - Test Ruby
         # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/account-api/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
         # - Run Pact tests
 
   alphagov/asset-manager:
@@ -21,7 +20,6 @@ repos:
       additional_contexts:
         - Test Ruby
         # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/asset-manager/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
         # - Run Pact tests
 
   alphagov/authenticating-proxy:
@@ -29,8 +27,6 @@ repos:
       standard_contexts: *standard_govuk_rails_checks
       additional_contexts:
         - Test Ruby
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/authenticating-proxy/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/bouncer:
     required_status_checks:
@@ -39,8 +35,6 @@ repos:
         - Lint Ruby / Run RuboCop
         - CodeQL SAST scan
         - Dependency Review scan
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/bouncer/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/collections:
     required_status_checks:
@@ -53,7 +47,6 @@ repos:
         - Test Ruby / Run RSpec
         - Lint ERB / Lint ERB
         # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/collections/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
         # - Run Pact tests
 
   alphagov/collections-publisher:
@@ -63,8 +56,6 @@ repos:
         - Lint JavaScript / Run Standardx
         - Lint SCSS / Run Stylelint
         - Test Ruby / Run RSpec
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/collections-publisher/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/contacts-admin:
     required_status_checks:
@@ -73,8 +64,6 @@ repos:
         - Lint JavaScript / Run Standardx
         - Lint SCSS / Run Stylelint
         - Test Ruby / Run RSpec
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/contacts-admin/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/content-data-admin:
     required_status_checks:
@@ -83,16 +72,12 @@ repos:
         - Test Ruby
         - Lint SCSS / Run Stylelint
         - Lint JavaScript / Run Standardx
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/content-data-admin/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/content-data-api:
     required_status_checks:
       standard_contexts: *standard_govuk_rails_checks
       additional_contexts:
         - Test Ruby / Run RSpec
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/content-data-api/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/content-publisher:
     required_status_checks:
@@ -102,16 +87,12 @@ repos:
         - Lint JavaScript / Run Standardx
         - Test JavaScript / Run Jasmine
         - Test Ruby / Run RSpec
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/content-publisher/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/content-store:
     required_status_checks:
       standard_contexts: *standard_govuk_rails_checks
       additional_contexts:
         - Test Ruby / Run RSpec
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/content-store/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/content-tagger:
     required_status_checks:
@@ -120,8 +101,6 @@ repos:
         - Lint SCSS / Run Stylelint
         - Lint JavaScript / Run Standardx
         - Test Ruby / Run RSpec
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/content-tagger/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/data-community-tech-docs:
     need_production_access_to_merge: false
@@ -137,7 +116,6 @@ repos:
       additional_contexts:
         - Test Ruby
         # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/email-alert-api/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
         # - Run Pact tests
 
   alphagov/email-alert-frontend:
@@ -148,8 +126,6 @@ repos:
         - Lint JavaScript / Run Standardx
         - Test JavaScript / Run Jasmine
         - Test Ruby / Run RSpec
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/email-alert-frontend/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/email-alert-service:
     required_status_checks:
@@ -158,8 +134,6 @@ repos:
         - Test Ruby / Run RSpec
         - CodeQL SAST scan
         - Dependency Review scan
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/email-alert-service/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/feedback:
     required_status_checks:
@@ -169,8 +143,6 @@ repos:
         - Lint SCSS / Run Stylelint
         - Test JavaScript / Run Jasmine
         - Test Ruby / Run RSpec
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/feedback/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/finder-frontend:
     required_status_checks:
@@ -181,8 +153,6 @@ repos:
         - Lint JavaScript / Run Standardx
         - Test JavaScript / Run Jasmine
         - Test Ruby / Run RSpec
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/finder-frontend/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/frontend:
     required_status_checks:
@@ -193,7 +163,6 @@ repos:
         - Test JavaScript / Run Jasmine
         - Test Ruby / Run Minitest
         # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/frontend/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
         # - Run Pact tests
 
   alphagov/government-frontend:
@@ -204,8 +173,6 @@ repos:
         - Lint JavaScript / Run Standardx
         - Test JavaScript / Run Jasmine
         - Test Ruby / Run Minitest
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/government-frontend/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/govuk-aws:
     required_status_checks:
@@ -238,8 +205,6 @@ repos:
       standard_contexts: *standard_govuk_rails_checks
       additional_contexts:
         - Test Ruby / Run RSpec
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/hmrc-manuals-api/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/imminence:
     required_status_checks:
@@ -249,7 +214,6 @@ repos:
         - Test Ruby
         - Lint Views
         # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/imminence/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
         # - Run Pact tests
 
   alphagov/link-checker-api:
@@ -258,7 +222,6 @@ repos:
       additional_contexts:
         - Test Ruby
         # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/link-checker-api/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
         # - Run Pact tests
 
   alphagov/local-links-manager:
@@ -269,8 +232,6 @@ repos:
         - Lint JavaScript / Run Standardx
         - Lint SCSS / Run Stylelint
         - Lint Views
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/local-links-manager/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/locations-api:
     required_status_checks:
@@ -278,7 +239,6 @@ repos:
       additional_contexts:
         - Test Ruby
         # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/locations-api/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
         # - Run Pact tests
 
   alphagov/manuals-publisher:
@@ -290,8 +250,6 @@ repos:
         - Lint SCSS / Run Stylelint
         - Test JavaScript / Run Jasmine
         - Test Ruby / Run RSpec
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/manuals-publisher/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/maslow:
     required_status_checks:
@@ -301,8 +259,6 @@ repos:
         - Lint JavaScript / Run Standardx
         - Lint SCSS / Run Stylelint
         - Test JavaScript / Run Jasmine
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/maslow/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/publisher:
     required_status_checks:
@@ -312,8 +268,6 @@ repos:
         - Lint SCSS / Run Stylelint
         - Test JavaScript / Run Jasmine
         - Test Ruby / Run Minitest
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/publisher/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/publishing-api:
     required_status_checks:
@@ -322,7 +276,6 @@ repos:
         - Check content schemas are built
         - Test Ruby
         # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/publishing-api/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
         # - Run Content Store Pact tests
         # - Run GDS API Adapter Pact tests
 
@@ -333,8 +286,6 @@ repos:
         - Test Ruby
         - Lint JavaScript / Run Standardx
         - Lint SCSS / Run Stylelint
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/release/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/router:
     required_status_checks:
@@ -346,8 +297,6 @@ repos:
       standard_contexts: *standard_govuk_rails_checks
       additional_contexts:
         - Test Ruby
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/router-api/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/search-admin:
     required_status_checks:
@@ -357,8 +306,6 @@ repos:
         - Lint JavaScript / Run Standardx
         - Lint SCSS / Run Stylelint
         - Test Ruby / Run RSpec
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/search-admin/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/search-api:
     required_status_checks:
@@ -368,8 +315,6 @@ repos:
         - Test Ruby / Run RSpec
         - CodeQL SAST scan
         - Dependency Review scan
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/search-api/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/search-api-v2:
     required_status_checks:
@@ -377,8 +322,6 @@ repos:
       standard_contexts: *standard_govuk_rails_checks
       additional_contexts:
         - Test Ruby
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/search-api-v2/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/search-v2-evaluator:
 
@@ -397,8 +340,6 @@ repos:
         - Lint JavaScript / Run Standardx
         - Test JavaScript / Run Jasmine
         - Test Ruby / Run RSpec
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/service-manual-publisher/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/short-url-manager:
     required_status_checks:
@@ -406,8 +347,6 @@ repos:
       additional_contexts:
         - Test Ruby / Run RSpec
         - Lint SCSS / Run Stylelint
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/short-url-manager/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/signon:
     required_status_checks:
@@ -417,8 +356,6 @@ repos:
         - Lint JavaScript / Run Standardx
         - Lint SCSS / Run Stylelint
         - Test JavaScript / Run Jasmine
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/signon/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/smart-answers:
     allow_squash_merge: true
@@ -429,8 +366,6 @@ repos:
         - Lint SCSS / Run Stylelint
         - Test JavaScript / Run Jasmine
         - Test Ruby / Run Minitest
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/smart-answers/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/specialist-publisher:
     required_status_checks:
@@ -440,8 +375,6 @@ repos:
         - Lint SCSS / Run Stylelint
         - Test JavaScript / Run Jasmine
         - Test Ruby / Run RSpec
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/specialist-publisher/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/static:
     required_status_checks:
@@ -451,8 +384,6 @@ repos:
         - Lint JavaScript / Run Standardx
         - Lint SCSS / Run Stylelint
         - Test JavaScript / Run Jasmine
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/static/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/support:
     required_status_checks:
@@ -461,16 +392,12 @@ repos:
         - Test Ruby
         - Lint JavaScript / Run Standardx
         - Lint SCSS / Run Stylelint
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/support/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/support-api:
     required_status_checks:
       standard_contexts: *standard_govuk_rails_checks
       additional_contexts:
         - Test Ruby
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/support-api/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/transition:
     required_status_checks:
@@ -479,8 +406,6 @@ repos:
         - Integration tests
         - Test Ruby
         - Test JavaScript / Run Jasmine
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/transition/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/travel-advice-publisher:
     required_status_checks:
@@ -490,8 +415,6 @@ repos:
         - Lint JavaScript / Run Standardx
         - Test JavaScript / Run Jasmine
         - Test Ruby / Run RSpec
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/travel-advice-publisher/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   alphagov/whitehall:
     required_status_checks:
@@ -504,8 +427,6 @@ repos:
         - Test Ruby / Run Minitest
         - Lint ERB / Run ERB lint
         - Prettier / Run Prettier
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/whitehall/blob/main/.github/workflows/ci.yml):
-        # - SNYK security analysis
 
   ##### GOVUK-SAAS-CONFIG TEST REPOS _ONLY_ BELOW THIS LINE #####
 
