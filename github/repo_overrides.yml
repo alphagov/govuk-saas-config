@@ -1,10 +1,10 @@
 access_levels:
   standard_security_checks: &standard_security_checks
-    - CodeQL SAST scan
-    - Dependency Review scan
+    - CodeQL SAST scan / Analyze
+    - Dependency Review scan / dependency-review-pr
   standard_govuk_rails_checks: &standard_govuk_rails_checks
-    - CodeQL SAST scan
-    - Dependency Review scan
+    - CodeQL SAST scan / Analyze
+    - Dependency Review scan / dependency-review-pr
     - Lint Ruby / Run RuboCop
     - Security Analysis / Run Brakeman
 
