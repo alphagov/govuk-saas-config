@@ -240,6 +240,30 @@ repos:
   alphagov/govuk-infrastructure:
     up_to_date_branches: true
 
+  alphagov/govuk-mobile-android-app:
+    allow_squash_merge: true
+
+  alphagov/govuk-mobile-android-homepage:
+    allow_squash_merge: true
+
+  alphagov/govuk-mobile-android-onboarding:
+    allow_squash_merge: true
+
+  alphagov/govuk-mobile-android-services:
+    allow_squash_merge: true
+
+  alphagov/govuk-mobile-ios-app:
+    allow_squash_merge: true
+
+  alphagov/govuk-mobile-ios-homepage:
+    allow_squash_merge: true
+
+  alphagov/govuk-mobile-ios-onboarding:
+    allow_squash_merge: true
+
+  alphagov/govuk-mobile-ios-services:
+    allow_squash_merge: true
+
   alphagov/govuk-rota-generator:
     required_status_checks:
       standard_contexts: *standard_security_checks
