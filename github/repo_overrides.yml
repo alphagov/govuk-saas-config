@@ -445,7 +445,7 @@ repos:
   alphagov/rubocop-govuk:
     required_status_checks:
       standard_contexts: *standard_security_checks
-  
+
   alphagov/seal:
     required_status_checks:
       standard_contexts: *standard_security_checks
@@ -462,7 +462,6 @@ repos:
     required_status_checks:
       standard_contexts: *standard_security_checks
       additional_contexts:
-        - Check Learn to Rank dependencies
         - Lint Ruby / Run RuboCop
         - Test Ruby / Run RSpec
 
