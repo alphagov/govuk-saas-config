@@ -479,7 +479,6 @@ repos:
       ignore_jenkins: true
       additional_contexts:
         - lint_and_validate
-        - validate-json-schema
 
   alphagov/service-manual-publisher:
     required_status_checks:
