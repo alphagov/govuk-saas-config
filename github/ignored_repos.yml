@@ -1,4 +1,5 @@
 # Repos that should not be auto-configured
+- alphagov/search-analytics
 
 # Ignored for the specs
 - alphagov/ignored-for-test
