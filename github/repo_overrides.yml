@@ -322,16 +322,6 @@ repos:
       additional_contexts:
         - Test Ruby / Run RSpec
 
-  alphagov/imminence:
-    required_status_checks:
-      standard_contexts: *standard_govuk_rails_checks
-      additional_contexts:
-        - Integration tests
-        - Test Ruby
-        - Lint Views
-        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/imminence/blob/main/.github/workflows/ci.yml):
-        # - Run Pact tests
-
   alphagov/link-checker-api:
     required_status_checks:
       standard_contexts: *standard_govuk_rails_checks
@@ -391,6 +381,16 @@ repos:
   alphagov/paste-html-to-govspeak:
     required_status_checks:
       standard_contexts: *standard_security_checks
+
+  alphagov/places-manager:
+    required_status_checks:
+      standard_contexts: *standard_govuk_rails_checks
+      additional_contexts:
+        - Integration tests
+        - Test Ruby
+        - Lint Views
+        # Status checks missing from here but present in [ci.yml](https://github.com/alphagov/places-manager/blob/main/.github/workflows/ci.yml):
+        # - Run Pact tests
 
   alphagov/plek:
     required_status_checks:
