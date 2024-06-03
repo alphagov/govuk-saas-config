@@ -4,9 +4,8 @@ require_relative "../../lib/validate_repos"
 RSpec.describe ValidateRepos do
 
   before do
-    @repo_mock = double("Repo", topics: ["govuk"], archived: false)
+    @repo_mock = double("Repo", topics: ["govuk"], archived: false, full_name: "this-is-a-govuk-repo")
     allow(@repo_mock).to receive(:[]).with("name").and_return("this-is-a-govuk-repo")
-    allow(@repo_mock).to receive(:full_name).and_return("this-is-a-govuk-repo")
     allow(@repo_mock).to receive(:[]).with(:full_name).and_return("this-is-a-govuk-repo")
     @octokit_mock = double("Octokit::Client", org_repos: [@repo_mock])
   end
@@ -14,6 +13,22 @@ RSpec.describe ValidateRepos do
   it "should ignore any repos that exist in repos.json AND are tagged govuk in GitHub" do
     repos = [{
       "app_name": "this-is-a-govuk-repo",
+    }]
+
+    stub_repos_json(repos)
+
+    validator = ValidateRepos.new(@octokit_mock)
+
+    expect(validator.untagged_repos).to eq("")
+    expect(validator.falsely_tagged_repos).to eq("")
+  end
+
+  it "doesn't say that a repo is missing the govuk tag if it has been added to the ignore list" do
+    app_name = "this-is-a-govuk-repo"
+    allow_any_instance_of(FetchRepos).to receive(:ignored_repos).and_return([app_name])
+    
+    repos = [{
+      "app_name": app_name,
     }]
 
     stub_repos_json(repos)
