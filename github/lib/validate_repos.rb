@@ -10,7 +10,7 @@ class ValidateRepos
   end
   
   def github_repos_tagged_govuk
-    @github_repos_tagged_govuk ||= FetchRepos.new(@client).repos.map { |repo| repo["name"] }
+    @github_repos_tagged_govuk ||= FetchRepos.new(@client).repos(with_ignored: true).map { |repo| repo["name"] }
   end
 
   def govuk_repo_names

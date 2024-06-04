@@ -2,6 +2,10 @@ require_relative "./spec_helper"
 require_relative "../lib/configure_repo"
 
 RSpec.describe ConfigureRepo do
+  before do
+    allow_any_instance_of(FetchRepos).to receive(:ignored_repos).and_return(["alphagov/ignored-for-test"])
+  end
+
   describe "required_status_checks" do
     let(:repo) {  { full_name: "alphagov/foo" } }
     let(:client) { nil }

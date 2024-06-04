@@ -5,6 +5,10 @@ require 'base64'
 require 'yaml'
 
 RSpec.describe ConfigureRepos do
+  before do
+    allow_any_instance_of(FetchRepos).to receive(:ignored_repos).and_return(["alphagov/ignored-for-test"])
+  end
+
   context "when a repo uses GitHub Actions for CI" do
     it "Updates a repo" do
       given_theres_a_repo(full_name: "alphagov/foo")
