@@ -11,6 +11,9 @@ class ValidateRepos
   
   def github_repos_tagged_govuk
     @github_repos_tagged_govuk ||= FetchRepos.new(@client).repos(with_ignored: true).map { |repo| repo["name"] }
+    puts ">>>> github_repos_tagged_govuk"
+    puts @github_repos_tagged_govuk
+    @github_repos_tagged_govuk
   end
 
   def govuk_repo_names
@@ -18,6 +21,8 @@ class ValidateRepos
   end
 
   def untagged_repos
+    puts ">>>> UNTAGGED"
+    puts (govuk_repo_names - github_repos_tagged_govuk).join("\n")
     (govuk_repo_names - github_repos_tagged_govuk).join("\n")
   end
 
