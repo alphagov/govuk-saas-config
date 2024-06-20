@@ -264,6 +264,9 @@ repos:
   alphagov/govuk-mobile-ios-services:
     allow_squash_merge: true
 
+  alphagov/govuk-mobile-ios-ui-components:
+    allow_squash_merge: true
+
   alphagov/govuk-rota-generator:
     required_status_checks:
       standard_contexts: *standard_security_checks
