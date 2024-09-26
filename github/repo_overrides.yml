@@ -530,10 +530,6 @@ repos:
     required_status_checks:
       standard_contexts: *standard_security_checks
 
-  alphagov/special-route-publisher:
-    required_status_checks:
-      standard_contexts: *standard_security_checks
-
   alphagov/specialist-publisher:
     required_status_checks:
       standard_contexts: *standard_govuk_rails_checks
