@@ -1,3 +1,8 @@
+> This repository was archived. 
+- GitHub configuration was ported to [govuk-infrastructure](https://github.com/alphagov/govuk-infrastructure/tree/main/terraform/deployments/github)
+- Logit configuration was migrated to [govuk-infrastructure](https://github.com/alphagov/govuk-infrastructure/tree/main/docs/logit/logit)
+- Verify repos script was migrated to [seal](https://github.com/alphagov/seal/pull/561/files)
+
 # GOV.UK SaaS Config
 
 Collection of scripts to configure Software as a Service applications we use.
